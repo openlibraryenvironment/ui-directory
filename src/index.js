@@ -2,8 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Switch from 'react-router-dom/Switch';
 import Route from 'react-router-dom/Route';
-import Application from './routes/application';
-import ExamplePage from './routes/example-page';
+import DirectoryEntries from './routes/directory-entries';
 import Settings from './settings';
 
 /*
@@ -12,9 +11,20 @@ import Settings from './settings';
 */
 
 class Directory extends React.Component {
+
   static propTypes = {
     match: PropTypes.object.isRequired,
     showSettings: PropTypes.bool,
+    mutator: PropTypes.object,
+    resources: PropTypes.object,
+    stripes: PropTypes.shape({
+      connect: PropTypes.func,
+    }),
+  }
+
+  constructor(props) {
+    super(props);
+    this.connectedDirectoryEntries = props.stripes.connect(DirectoryEntries);
   }
 
   render() {
@@ -23,8 +33,15 @@ class Directory extends React.Component {
     }
     return (
       <Switch>
-        <Route path={`${this.props.match.path}`} exact component={Application} />
-        <Route path={`${this.props.match.path}/examples`} exact component={ExamplePage} />
+        <Route
+          path={`${match.path}/entries`}
+          render={() => <this.connectedDirectoryEntries stripes={stripes} />}
+        />
+        <Redirect
+          exact
+          from={`${match.path}`}
+          to={`${match.path}/entries`}
+        />
       </Switch>
     );
   }
