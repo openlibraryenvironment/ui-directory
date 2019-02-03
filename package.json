@@ -45,8 +45,8 @@
   },
   "stripes": {
     "type": "app",
-    "displayName": "ui-rs.meta.title",
-    "route": "/rs",
+    "displayName": "ui-directory.meta.title",
+    "route": "/directory",
     "queryResource": "query",
     "hasSettings": true,
     "okapiInterfaces": {
