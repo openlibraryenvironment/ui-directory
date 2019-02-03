@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Switch from 'react-router-dom/Switch';
-import Route from 'react-router-dom/Route';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import DirectoryEntries from './routes/directory-entries';
 import Settings from './settings';
 
@@ -28,6 +27,8 @@ class Directory extends React.Component {
   }
 
   render() {
+    const { stripes, match } = this.props;
+
     if (this.props.showSettings) {
       return <Settings {...this.props} />;
     }
