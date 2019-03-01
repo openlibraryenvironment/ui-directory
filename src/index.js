@@ -13,8 +13,6 @@ class Directory extends React.Component {
   static propTypes = {
     match: PropTypes.object.isRequired,
     showSettings: PropTypes.bool,
-    mutator: PropTypes.object,
-    resources: PropTypes.object,
     stripes: PropTypes.shape({
       connect: PropTypes.func,
     }),
