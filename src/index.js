@@ -16,7 +16,7 @@ class Directory extends React.Component {
     stripes: PropTypes.shape({
       connect: PropTypes.func,
     }),
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -24,21 +24,27 @@ class Directory extends React.Component {
   }
 
   render() {
-    const { stripes, match } = this.props;
+    const {
+      showSettings,
+      stripes,
+      match: {
+        path
+      }
+    } = this.props;
 
-    if (this.props.showSettings) {
+    if (showSettings) {
       return <Settings {...this.props} />;
     }
     return (
       <Switch>
-        <Route
-          path={`${match.path}/entries`}
-          render={() => <this.connectedDirectoryEntries stripes={stripes} />}
-        />
         <Redirect
           exact
-          from={`${match.path}`}
-          to={`${match.path}/entries`}
+          from={path}
+          to={`${path}/entries`}
+        />
+        <Route
+          path={`${path}/entries`}
+          render={() => <this.connectedDirectoryEntries stripes={stripes} />}
         />
       </Switch>
     );
