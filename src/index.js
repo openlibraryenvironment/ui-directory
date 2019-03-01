@@ -26,7 +26,6 @@ class Directory extends React.Component {
   render() {
     const {
       showSettings,
-      stripes,
       match: {
         path
       }
@@ -44,7 +43,7 @@ class Directory extends React.Component {
         />
         <Route
           path={`${path}/entries`}
-          render={() => <this.connectedDirectoryEntries stripes={stripes} />}
+          component={this.connectedDirectoryEntries}
         />
       </Switch>
     );
