@@ -10,7 +10,6 @@ import Settings from './settings';
 */
 
 class Directory extends React.Component {
-
   static propTypes = {
     match: PropTypes.object.isRequired,
     showSettings: PropTypes.bool,
