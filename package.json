@@ -16,6 +16,10 @@
     "lint": "eslint ."
   },
   "devDependencies": {
+    "@bigtest/interactor": "^0.8.1",
+    "@bigtest/mirage": "^0.0.1",
+    "@bigtest/mocha": "^0.5.1",
+    "@folio/stripes-core": "^3.0.0",
     "@folio/eslint-config-stripes": "^3.2.1",
     "@folio/stripes-cli": "^1.8.0",
     "@folio/stripes": "^2.0.0",
