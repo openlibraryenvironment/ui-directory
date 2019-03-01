@@ -59,7 +59,7 @@
     "permissionSets": [
       {
         "permissionName": "module.directory.enabled",
-        "displayName": "UI: ui-directory module is enabled",
+        "displayName": "UI: Directory module is enabled",
         "visible": true
       },
       {
