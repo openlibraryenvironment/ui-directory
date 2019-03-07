@@ -38,7 +38,7 @@ class Directory extends React.Component {
         />
         <Route
           path={`${path}/entries`}
-          component={this.connectedDirectoryEntries}
+          render={() => <this.connectedDirectoryEntries {...this.props} />}
         />
       </Switch>
     );
