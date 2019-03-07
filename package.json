@@ -35,6 +35,7 @@
     "sinon": "^6.3.4"
   },
   "dependencies": {
+    "@folio/stripes-erm-components": "^1.0.7",
     "lodash": "^4.17.4",
     "prop-types": "^15.6.0",
     "react-intl": "^2.4.0",
