@@ -4,11 +4,6 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import DirectoryEntries from './routes/directory-entries';
 import Settings from './settings';
 
-/*
-  STRIPES-NEW-APP
-  This is the main entry point into your new app.
-*/
-
 class Directory extends React.Component {
   static propTypes = {
     match: PropTypes.object.isRequired,
