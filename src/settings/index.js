@@ -1,26 +1,20 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Settings } from '@folio/stripes/smart-components';
-import GeneralSettings from './GeneralSettings';
-import SomeFeatureSettings from './SomeFeatureSettings';
-
-/*
-  STRIPES-NEW-APP
-  Your app's settings pages are defined here.
-  The pages "general" and "some feature" are examples. Name them however you like.
-*/
+import TagSettings from './TagSettings';
+import StatusSettings from './StatusSettings';
 
 export default class DirectorySettings extends React.Component {
   pages = [
     {
-      route: 'general',
-      label: <FormattedMessage id="ui-directory.settings.general" />,
-      component: GeneralSettings,
+      route: 'tags',
+      label: <FormattedMessage id="ui-directory.settings.tags" />,
+      component: TagSettings,
     },
     {
-      route: 'somefeature',
-      label: <FormattedMessage id="ui-directory.settings.some-feature" />,
-      component: SomeFeatureSettings,
+      route: 'status',
+      label: <FormattedMessage id="ui-directory.settings.status" />,
+      component: StatusSettings,
     },
   ];
 
