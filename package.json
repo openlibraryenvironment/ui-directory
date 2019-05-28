@@ -52,6 +52,13 @@
     "route": "/directory",
     "queryResource": "query",
     "hasSettings": true,
+    "icons": [
+      {
+        "name": "app",
+        "alt": "Create, view and manage directory entries",
+        "title": "Directory"
+      }
+    ],
     "okapiInterfaces": {
       "directory": "1.0"
     },
