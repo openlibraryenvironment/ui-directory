@@ -7,7 +7,7 @@ import Settings from './settings';
 class Directory extends React.Component {
   static propTypes = {
     match: PropTypes.object.isRequired,
-    showSettings: PropTypes.bool,
+    actAs: PropTypes.string.isRequired,
     stripes: PropTypes.shape({
       connect: PropTypes.func,
     }),
@@ -20,13 +20,13 @@ class Directory extends React.Component {
 
   render() {
     const {
-      showSettings,
+      actAs,
       match: {
         path
       }
     } = this.props;
 
-    if (showSettings) {
+    if (actAs === 'settings') {
       return <Settings {...this.props} />;
     }
     return (
