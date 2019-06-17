@@ -47,10 +47,10 @@
   },
   "stripes": {
     "type": "app",
+    "actsAs": ["app", "settings"],
     "displayName": "ui-directory.meta.title",
     "route": "/directory",
     "queryResource": "query",
-    "hasSettings": true,
     "icons": [
       {
         "name": "app",
