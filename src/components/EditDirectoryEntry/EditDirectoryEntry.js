@@ -79,12 +79,11 @@ class EditDirectoryEntry extends React.Component {
   render() {
     const { initialValues, onSubmit } = this.props;
     // the submit handler passed in from SearchAndSort expects props as provided by redux-form
-    const compatSubmit = values => onSubmit(values, null , this.props);
+    const compatSubmit = values => onSubmit(values, null, this.props);
     const paneTitle = initialValues && initialValues.id ?
       initialValues.name : <FormattedMessage id="ui-directory.createDirectoryEntry" />;
 
     return (
-      
       <Form
         onSubmit={compatSubmit}
         initialValues={initialValues}
@@ -95,7 +94,7 @@ class EditDirectoryEntry extends React.Component {
             <Pane
               defaultWidth="100%"
               firstMenu={this.renderFirstMenu()}
-              lastMenu={this.renderLastMenu()}
+              lastMenu={this.renderLastMenu(pristine, submitting, handleSubmit)}
               paneTitle={paneTitle}
             >
               <DirectoryEntryForm {...this.props} />
