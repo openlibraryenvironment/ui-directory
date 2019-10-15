@@ -98,7 +98,7 @@ class EditDirectoryEntry extends React.Component {
               paneTitle={paneTitle}
             >
               <DirectoryEntryForm {...this.props} />
-              <FormattedMessage id="ui-rs.confirmDirtyNavigate">
+              <FormattedMessage id="ui-directory.confirmDirtyNavigate">
                 {prompt => <Prompt when={!pristine && !(submitting || submitSucceeded)} message={prompt} />}
               </FormattedMessage>
             </Pane>
