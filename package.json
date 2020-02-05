@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "@folio/stripes-erm-components": "^2.0.0",
-    "@folio/stripes-smart-components": "^2.7.3",
+    "@folio/stripes-smart-components": "^2.9.0",
     "lodash": "^4.17.4",
     "prop-types": "^15.6.0",
     "react-final-form": "^6.3.0",
