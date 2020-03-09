@@ -50,6 +50,9 @@
     "displayName": "ui-directory.meta.title",
     "route": "/directory",
     "queryResource": "query",
+    "stripesDeps": [
+      "@folio/stripes-erm-components"
+    ],
     "icons": [
       {
         "name": "app",
