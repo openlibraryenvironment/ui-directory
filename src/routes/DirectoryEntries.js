@@ -63,6 +63,16 @@ export default class DirectoryEntries extends React.Component {
       path: 'directory/tags',
       params: { perPage: '100' },
     },
+    namingAuthorities: {
+      type: 'okapi',
+      path: 'directory/namingAuthority',
+      params: { perPage: '100' },
+    },
+    symbols: {
+      type: 'okapi',
+      path: 'directory/symbol',
+      params: { perPage: '100' },
+    },
     custprops: {
       type: 'okapi',
       path: 'directory/custprops',
@@ -85,6 +95,8 @@ export default class DirectoryEntries extends React.Component {
         records: PropTypes.array,
       }),
       custprops: PropTypes.object,
+      symbols: PropTypes.object,
+      namingAuthorities: PropTypes.object,
     }),
 
     mutator: PropTypes.object,

@@ -29,6 +29,10 @@
   "information.contactName": "Contact name",
   "information.description": "Description",
   "information.symbols": "Symbols",
+  "information.symbols.authority": "Authority",
+  "information.symbols.symbol": "Symbol",
+  "information.symbols.add": "Add symbol",
+  "information.symbol.index": "Symbol {index}",
   "information.qualifiedName": "Fully qualified name",
   "information.parent": "Parent institution",
   "information.parent.warning": "It looks like this may create a loop of parent directories. Attempting to submit this form may fail.",
@@ -43,6 +47,7 @@
   "information.serviceAddress": "Address",
 
   "information.heading.directoryEntry": "Directory entry info",
+  "information.heading.symbols": "Symbols",
   "information.heading.customProps": "Custom properties",
   "information.heading.developer": "Developer info",
   "information.heading.developer.help": "(JSON dump of raw record)",

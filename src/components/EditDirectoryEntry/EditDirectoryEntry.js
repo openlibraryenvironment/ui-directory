@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import { Form } from 'react-final-form';
+import arrayMutators from 'final-form-arrays';
 import { Prompt } from 'react-router-dom';
 
 import {
@@ -89,7 +90,8 @@ class EditDirectoryEntry extends React.Component {
     const compatSubmit = values => {
       // TODO This could possibly be neatened and sorted before submittal
       values.parent = { id: values.parent };
-
+      values.symbols = values.symbols.map(obj => (obj?.authority?.id ? obj : ({ ...obj, authority: { id: obj.authority } })));
+      console.log("Submitted values: %o", values);
       onSubmit(values, null, this.props);
     };
 
@@ -100,8 +102,11 @@ class EditDirectoryEntry extends React.Component {
         onSubmit={compatSubmit}
         initialValues={initialValues}
         keepDirtyOnReinitialize
+        mutators={{
+          ...arrayMutators,
+        }}
       >
-        {({ handleSubmit, pristine, submitting, submitSucceeded, values }) => (
+        {({ form, handleSubmit, pristine, submitting, submitSucceeded, values }) => (
           <form id="form-directory-entry">
             <Pane
               defaultWidth="100%"
@@ -109,7 +114,7 @@ class EditDirectoryEntry extends React.Component {
               lastMenu={this.renderLastMenu(pristine, submitting, handleSubmit)}
               paneTitle={paneTitle}
             >
-              <DirectoryEntryForm values={values} {...this.props} />
+              <DirectoryEntryForm values={values} form={form} {...this.props} />
               <FormattedMessage id="ui-directory.confirmDirtyNavigate">
                 {prompt => <Prompt when={!pristine && !(submitting || submitSucceeded)} message={prompt} />}
               </FormattedMessage>

@@ -12,6 +12,7 @@ import {
   TextField,
 } from '@folio/stripes/components';
 
+
 import { required } from '../../../util/validators';
 
 class DirectoryEntryFormInfo extends React.Component {
@@ -119,6 +120,7 @@ class DirectoryEntryFormInfo extends React.Component {
                     label={placeholder}
                     component={TextField}
                     placeholder={placeholder}
+                    disabled={values?.id}
                     required
                     validate={required}
                   />
