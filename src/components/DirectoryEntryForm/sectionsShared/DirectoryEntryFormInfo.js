@@ -62,7 +62,6 @@ class DirectoryEntryFormInfo extends React.Component {
   render() {
     const { directoryEntryValues, selectedParent, warning } = this.state;
     const { values } = this.props;
-    console.log("DEFI Props: %o", this.props)
     return (
       <Accordion
         id={this.props.id}

@@ -5,7 +5,6 @@ import { FieldArray } from 'react-final-form-arrays';
 
 import {
   Accordion,
-  Button,
   Col,
   Row,
 } from '@folio/stripes/components';
