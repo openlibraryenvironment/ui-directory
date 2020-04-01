@@ -5,8 +5,6 @@ import { Form } from 'react-final-form';
 import arrayMutators from 'final-form-arrays';
 import { Prompt } from 'react-router-dom';
 
-import uuid from 'uuid';
-
 import {
   Button,
   IconButton,
@@ -27,6 +25,16 @@ class EditDirectoryEntry extends React.Component {
     onSubmit: PropTypes.func,
     onCancel: PropTypes.func,
     onUpdate: PropTypes.func.isRequired,
+    parentResources:PropTypes.shape({
+      query: PropTypes.shape({
+        layer: PropTypes.string,
+      }),
+    }),
+    resources: PropTypes.shape({
+      query: PropTypes.shape({
+        layer: PropTypes.string,
+      }),
+    }),
   }
 
   static defaultProps = {
@@ -100,12 +108,9 @@ class EditDirectoryEntry extends React.Component {
         values.parent = { id: values.parent };
       }
       values.symbols = values.symbols?.map(obj => (obj?.authority?.id ? obj : ({ ...obj, authority: { id: obj.authority } })));
-      console.log("Submitted values: %o", values);
       onSubmit(values, null, this.props);
     };
 
-    console.log("EDE Props: %o", this.props)
-    // Shape is slightly different for "create"
     const layer = this.getCurrentLayer();
     let paneTitle = <FormattedMessage id="ui-directory.notSet" />;
     switch (layer) {

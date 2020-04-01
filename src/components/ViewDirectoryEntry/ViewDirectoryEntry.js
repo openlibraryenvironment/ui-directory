@@ -41,7 +41,20 @@ class ViewDirectoryEntry extends React.Component {
   });
 
   static propTypes = {
-    stripes: PropTypes.object,
+    editLink: PropTypes.string,
+    mutator: PropTypes.shape({
+      query: PropTypes.shape({
+        replace: PropTypes.func,
+      }),
+    }),
+    onClose: PropTypes.func,
+    onCloseEdit: PropTypes.func,
+    onCreate: PropTypes.func,
+    onEdit: PropTypes.func,
+    paneWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    parentResources: PropTypes.shape({
+      custprops: PropTypes.array,
+    }),
     resources: PropTypes.shape({
       query: PropTypes.shape({
         layer: PropTypes.string,
@@ -50,14 +63,7 @@ class ViewDirectoryEntry extends React.Component {
         records: PropTypes.array,
       }),
     }),
-    onClose: PropTypes.func,
-    onEdit: PropTypes.func,
-    paneWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    parentResources: PropTypes.shape({
-      custprops: PropTypes.array,
-    }),
-    editLink: PropTypes.string,
-    onCloseEdit: PropTypes.func,
+    stripes: PropTypes.object,
   };
 
   state = {

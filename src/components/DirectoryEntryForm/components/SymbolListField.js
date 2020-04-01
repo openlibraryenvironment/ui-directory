@@ -5,7 +5,6 @@ import { Field } from 'react-final-form';
 
 import {
   Button,
-  IconButton,
   Select,
   TextField,
 } from '@folio/stripes/components';
@@ -14,8 +13,11 @@ import { EditCard, withKiwtFieldArray } from '@folio/stripes-erm-components';
 
 class SymbolListField extends React.Component {
   static propTypes = {
-    input: PropTypes.object,
+    items: PropTypes.shape({
+      map: PropTypes.func.isRequired,
+    }),
     namingAuthorities: PropTypes.object,
+    onAddField: PropTypes.func.isRequired,
   };
 
   renderAddSymbol = () => {
