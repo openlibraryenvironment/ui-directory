@@ -5,6 +5,8 @@ import { FormattedMessage } from 'react-intl';
 import { SearchAndSort } from '@folio/stripes/smart-components';
 import getSASParams from '@folio/stripes-erm-components/lib/getSASParams';
 
+import { stripesConnect } from '@folio/stripes/core';
+
 import ViewDirectoryEntry from '../components/ViewDirectoryEntry';
 import EditDirectoryEntry from '../components/EditDirectoryEntry';
 import packageInfo from '../../package';
@@ -33,7 +35,7 @@ function filterConfig2filterKeys(config) {
 }
 
 
-export default class DirectoryEntries extends React.Component {
+class DirectoryEntries extends React.Component {
   static manifest = Object.freeze({
     dirents: {
       type: 'okapi',
@@ -51,7 +53,7 @@ export default class DirectoryEntries extends React.Component {
       recordsRequired: '%{resultCount}',
       perRequest: 100,
       limitParam: 'perPage',
-      resultCount: { initialValue: INITIAL_RESULT_COUNT },
+      resultCount: { initialValue: INITIAL_RESULT_COUNT }
     },
     selectedRecord: {
       type: 'okapi',
@@ -186,6 +188,7 @@ export default class DirectoryEntries extends React.Component {
           newRecordPerms="module.directory.enabled"
           onCreate={this.handleCreate}
           detailProps={{
+            onCreate: this.handleCreate,
             onUpdate: this.handleUpdate
           }}
           parentResources={{
@@ -222,3 +225,5 @@ export default class DirectoryEntries extends React.Component {
     );
   }
 }
+
+export default stripesConnect(DirectoryEntries);

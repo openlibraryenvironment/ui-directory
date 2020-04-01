@@ -2,7 +2,18 @@
   "meta.title": "Directory",
 
   "edit": "Edit",
+  "createUnit": "Create unit",
   "notSet": "Not set",
+
+  "create": "Create",
+  "update": "Update",
+
+  "createDirectoryEntry": "Create root directory entry",
+  "createUnitDirectoryEntry": "Create unit directory entry",
+  "updateDirectoryEntry": "Update {dirent}",
+  "updateDirectoryEntryNoName": "Update directory entry",
+  "closeNewDirectoryEntry": "Close new directory entry",
+  "confirmDirtyNavigate": "Form has unsaved changes. Are you sure you want to leave?",
 
   "editDirectoryEntry": "Edit Directory Entry",
 
@@ -67,10 +78,5 @@
   "information.local.heading.display-text": "The information in this section is managed by your institution, and any data added or edited here will be visible to your institution only.",
   "information.local.custPropValue": "Value",
 
-  "errors.custPropsNoteWithoutValue": "A value must be set for this custom property in order to save a note",
-  
-  "createDirectoryEntry": "Create directory entry",
-  "updateDirectoryEntry": "Update directory entry",
-  "closeNewDirectoryEntry": "Close new directory entry",
-  "confirmDirtyNavigate": "Form has unsaved changes. Are you sure you want to leave?"
+  "errors.custPropsNoteWithoutValue": "A value must be set for this custom property in order to save a note"
 }

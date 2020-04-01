@@ -93,6 +93,12 @@ class ViewDirectoryEntry extends React.Component {
     return record;
   }
 
+  getParentValues = () => {
+    const record = Object.assign({}, this.getRecord());
+    const parentRecord = { parent: record };
+    return parentRecord;
+  }
+
   getSectionProps() {
     return {
       record: this.getRecord(),
@@ -133,21 +139,62 @@ class ViewDirectoryEntry extends React.Component {
     );
   }
 
+  renderUnitLayer() {
+    const { resources: { query } } = this.props;
+
+    return (
+      <FormattedMessage id="ui-directory.editDirectoryEntry">
+        {layerContentLabel => (
+          <Layer
+            isOpen={query.layer === 'unit'}
+            contentLabel={layerContentLabel}
+          >
+            <EditDirectoryEntry
+              {...this.props}
+              onCancel={this.props.onCloseEdit}
+              onSubmit={this.props.onCreate}
+              initialValues={this.getParentValues()}
+            />
+          </Layer>
+        )}
+      </FormattedMessage>
+    );
+  }
+
+  switchLayer(newLayer) {
+    const { mutator } = this.props;
+    mutator.query.replace({ layer: newLayer });
+  }
+
   getActionMenu = ({ onToggle }) => {
     return (
-      <Button
-        buttonStyle="dropdownItem"
-        href={this.props.editLink}
-        id="clickable-edit-directoryentry"
-        onClick={() => {
-          this.props.onEdit();
-          onToggle();
-        }}
-      >
-        <Icon icon="edit">
-          <FormattedMessage id="ui-directory.edit" />
-        </Icon>
-      </Button>
+      <>
+        <Button
+          buttonStyle="dropdownItem"
+          href={this.props.editLink}
+          id="clickable-edit-directoryentry"
+          onClick={() => {
+            this.props.onEdit();
+            onToggle();
+          }}
+        >
+          <Icon icon="edit">
+            <FormattedMessage id="ui-directory.edit" />
+          </Icon>
+        </Button>
+        <Button
+          buttonStyle="dropdownItem"
+          id="clickable-create-new-unit-directoryentry"
+          onClick={() => {
+            this.switchLayer('unit');
+            onToggle();
+          }}
+        >
+          <Icon icon="edit">
+            <FormattedMessage id="ui-directory.createUnit" />
+          </Icon>
+        </Button>
+      </>
     );
   }
 
@@ -225,6 +272,7 @@ class ViewDirectoryEntry extends React.Component {
           </React.Fragment>
         }
         { this.renderEditLayer() }
+        { this.renderUnitLayer() }
       </Pane>
     );
   }

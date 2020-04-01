@@ -62,6 +62,7 @@ class DirectoryEntryFormInfo extends React.Component {
   render() {
     const { directoryEntryValues, selectedParent, warning } = this.state;
     const { values } = this.props;
+    console.log("DEFI Props: %o", this.props)
     return (
       <Accordion
         id={this.props.id}
@@ -120,7 +121,7 @@ class DirectoryEntryFormInfo extends React.Component {
                     label={placeholder}
                     component={TextField}
                     placeholder={placeholder}
-                    disabled={values?.id}
+                    disabled={values?.id !== undefined}
                     required
                     validate={required}
                   />
@@ -128,6 +129,7 @@ class DirectoryEntryFormInfo extends React.Component {
               </FormattedMessage>
             </Col>
           </Row>
+          {this.props.values?.parent &&
           <Row>
             <Col xs={6}>
               <Field
@@ -154,11 +156,13 @@ class DirectoryEntryFormInfo extends React.Component {
                       this.setState({ warning: warningMessage });
                     }}
                     placeholder=" "
+                    disabled
                   />
                 )}
               </Field>
             </Col>
           </Row>
+          }
           <Row>
             <Col xs={4}>
               <Field

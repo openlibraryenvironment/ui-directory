@@ -5,6 +5,8 @@ import { Form } from 'react-final-form';
 import arrayMutators from 'final-form-arrays';
 import { Prompt } from 'react-router-dom';
 
+import uuid from 'uuid';
+
 import {
   Button,
   IconButton,
@@ -31,6 +33,11 @@ class EditDirectoryEntry extends React.Component {
     onSubmit: defaultSubmit
   }
 
+  getCurrentLayer() {
+    const layer = this.props?.resources ? this.props?.resources?.query?.layer : this.props?.parentResources?.query?.layer;
+    return layer;
+  }
+
   renderFirstMenu() {
     return (
       <PaneMenu>
@@ -49,16 +56,16 @@ class EditDirectoryEntry extends React.Component {
   }
 
   renderLastMenu(pristine, submitting, submit) {
-    const { initialValues } = this.props;
-
     let id;
     let label;
-    if (initialValues && initialValues.id) {
+    const layer = this.getCurrentLayer();
+
+    if (layer === 'edit') {
       id = 'clickable-update-directory-entry';
-      label = <FormattedMessage id="ui-directory.updateDirectoryEntry" />;
+      label = <FormattedMessage id="ui-directory.updateDirectoryEntryNoName" />;
     } else {
       id = 'clickable-create-directory-entry';
-      label = <FormattedMessage id="ui-directory.createDirectoryEntry" />;
+      label = <FormattedMessage id="ui-directory.create" />;
     }
 
     return (
@@ -89,14 +96,36 @@ class EditDirectoryEntry extends React.Component {
     // the submit handler passed in from SearchAndSort expects props as provided by redux-form
     const compatSubmit = values => {
       // TODO This could possibly be neatened and sorted before submittal
-      values.parent = { id: values.parent };
-      values.symbols = values.symbols.map(obj => (obj?.authority?.id ? obj : ({ ...obj, authority: { id: obj.authority } })));
+      if (values.parent) {
+        values.parent = { id: values.parent };
+      }
+      values.symbols = values.symbols?.map(obj => (obj?.authority?.id ? obj : ({ ...obj, authority: { id: obj.authority } })));
       console.log("Submitted values: %o", values);
       onSubmit(values, null, this.props);
     };
 
-    const paneTitle = initialValues && initialValues.id ?
-      initialValues.name : <FormattedMessage id="ui-directory.createDirectoryEntry" />;
+    console.log("EDE Props: %o", this.props)
+    // Shape is slightly different for "create"
+    const layer = this.getCurrentLayer();
+    let paneTitle = <FormattedMessage id="ui-directory.notSet" />;
+    switch (layer) {
+      case 'edit':
+        if (initialValues && initialValues.id) {
+          paneTitle = <FormattedMessage id="ui-directory.updateDirectoryEntry" values={{ dirent: initialValues.name }} />;
+        } else {
+          paneTitle = <FormattedMessage id="ui-directory.updateDirectoryEntryNoName" />;
+        }
+        break;
+      case 'unit':
+        paneTitle = <FormattedMessage id="ui-directory.createUnitDirectoryEntry" />;
+        break;
+      case 'create':
+        paneTitle = <FormattedMessage id="ui-directory.createDirectoryEntry" />;
+        break;
+      default:
+        break;
+    }
+
     return (
       <Form
         onSubmit={compatSubmit}

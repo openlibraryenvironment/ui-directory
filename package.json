@@ -26,11 +26,11 @@
     "chai": "^4.2.0",
     "eslint": "^5.6.0",
     "mocha": "^5.2.0",
-    "sinon": "^6.3.4",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
     "react-intl": "^2.9.0",
-    "react-router-dom": "^4.1.1"
+    "react-router-dom": "^4.1.1",
+    "sinon": "^6.3.4"
   },
   "dependencies": {
     "@folio/stripes-erm-components": "^2.0.0",
@@ -39,7 +39,8 @@
     "lodash": "^4.17.4",
     "prop-types": "^15.6.0",
     "react-final-form": "^6.3.0",
-    "react-final-form-arrays": "^3.1.1"
+    "react-final-form-arrays": "^3.1.1",
+    "uuid": "^7.0.3"
   },
   "peerDependencies": {
     "@folio/stripes": "^3.0.0",
