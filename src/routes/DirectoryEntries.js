@@ -2,10 +2,11 @@ import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
+import SafeHTMLMessage from '@folio/react-intl-safe-html';
 import { SearchAndSort } from '@folio/stripes/smart-components';
 import getSASParams from '@folio/stripes-erm-components/lib/getSASParams';
 
-import { stripesConnect } from '@folio/stripes/core';
+import { CalloutContext, stripesConnect } from '@folio/stripes/core';
 
 import ViewDirectoryEntry from '../components/ViewDirectoryEntry';
 import EditDirectoryEntry from '../components/EditDirectoryEntry';
@@ -88,6 +89,8 @@ class DirectoryEntries extends React.Component {
     selectedRecordId: { initialValue: '' },
   });
 
+  static contextType = CalloutContext;
+
   static propTypes = {
     resources: PropTypes.shape({
       query: PropTypes.shape({
@@ -152,10 +155,16 @@ class DirectoryEntries extends React.Component {
 
     mutator.dirents.POST(record)
       .then((newRecord) => {
+        this.context.sendCallout({ message: <SafeHTMLMessage id="ui-directory.create.callout" values={{ name: newRecord.name }} /> });
         mutator.query.update({
           _path: `/directory/entries/view/${newRecord.id}`,
           layer: '',
         });
+      })
+      .catch(response => {
+        response.json()
+          .then(error => this.context.sendCallout({ type: 'error', message: <SafeHTMLMessage id="ui-directory.create.callout.error" values={{ err: error.message }} /> }))
+          .catch(() => this.context.sendCallout({ type: 'error', message: <SafeHTMLMessage id="ui-directory.create.callout.error" values={{ err: '' }} /> }));
       });
   };
 

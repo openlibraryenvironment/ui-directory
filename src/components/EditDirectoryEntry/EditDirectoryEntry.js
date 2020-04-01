@@ -93,6 +93,7 @@ class EditDirectoryEntry extends React.Component {
   }
 
   render() {
+    console.log("EDE Props: %o", this.props)
     const { initialValues, onSubmit } = this.props;
 
     // This allows the initial values to hold the current parent value

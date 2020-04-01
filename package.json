@@ -33,6 +33,7 @@
     "sinon": "^6.3.4"
   },
   "dependencies": {
+    "@folio/react-intl-safe-html": "^1.0.300012",
     "@folio/stripes-erm-components": "^2.0.0",
     "final-form-arrays": "^3.0.2",
     "final-form-set-field-data": "^1.0.2",

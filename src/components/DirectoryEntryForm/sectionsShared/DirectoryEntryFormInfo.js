@@ -59,9 +59,15 @@ class DirectoryEntryFormInfo extends React.Component {
     return null;
   }
 
+  getCurrentLayer() {
+    const layer = this.props?.resources ? this.props?.resources?.query?.layer : this.props?.parentResources?.query?.layer;
+    return layer;
+  }
+
   render() {
     const { directoryEntryValues, selectedParent, warning } = this.state;
     const { values } = this.props;
+    const layer = this.getCurrentLayer();
     return (
       <Accordion
         id={this.props.id}
@@ -120,7 +126,7 @@ class DirectoryEntryFormInfo extends React.Component {
                     label={placeholder}
                     component={TextField}
                     placeholder={placeholder}
-                    disabled={values?.id !== undefined}
+                    disabled={layer === 'edit'}
                     required
                     validate={required}
                   />
@@ -169,8 +175,6 @@ class DirectoryEntryFormInfo extends React.Component {
                 name="phoneNumber"
                 component={TextField}
                 label={<FormattedMessage id="ui-directory.information.phoneNumber" />}
-                validate={required}
-                required
               />
             </Col>
             <Col xs={4}>
@@ -179,8 +183,6 @@ class DirectoryEntryFormInfo extends React.Component {
                 name="emailAddress"
                 component={TextField}
                 label={<FormattedMessage id="ui-directory.information.emailAddress" />}
-                validate={required}
-                required
               />
             </Col>
             <Col xs={4}>
@@ -189,8 +191,6 @@ class DirectoryEntryFormInfo extends React.Component {
                 name="contactName"
                 component={TextField}
                 label={<FormattedMessage id="ui-directory.information.contactName" />}
-                validate={required}
-                required
               />
             </Col>
           </Row>

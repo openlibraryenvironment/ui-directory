@@ -6,7 +6,10 @@
   "notSet": "Not set",
 
   "create": "Create",
+  "create.callout": "<strong>Directory entry created:</strong> {name}",
+  "create.callout.error": "Error creating <strong>Directory entry</strong> {err}",
   "update": "Update",
+  "update.callout": "<strong>Directory entry updated:</strong> {name}",
 
   "createDirectoryEntry": "Create root directory entry",
   "createUnitDirectoryEntry": "Create unit directory entry",
