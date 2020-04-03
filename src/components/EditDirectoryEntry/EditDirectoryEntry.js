@@ -100,6 +100,9 @@ class EditDirectoryEntry extends React.Component {
       if (initialValues.parent) {
         initialValues.parent = initialValues.parent.id;
       }
+      if (initialValues.type) {
+        initialValues.type = initialValues.type.id;
+      }
     }
     // the submit handler passed in from SearchAndSort expects props as provided by redux-form
     const compatSubmit = values => {
