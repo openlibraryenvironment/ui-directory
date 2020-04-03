@@ -93,7 +93,6 @@ class EditDirectoryEntry extends React.Component {
   }
 
   render() {
-    console.log("EDE Props: %o", this.props)
     const { initialValues, onSubmit } = this.props;
 
     // This allows the initial values to hold the current parent value
@@ -105,11 +104,15 @@ class EditDirectoryEntry extends React.Component {
     // the submit handler passed in from SearchAndSort expects props as provided by redux-form
     const compatSubmit = values => {
       // TODO This could possibly be neatened and sorted before submittal
+
+      // Not submitting values itself because then on failure data changes shape
+      const submitValues = { ...values };
+
       if (values.parent) {
-        values.parent = { id: values.parent };
+        submitValues.parent = { id: values.parent };
       }
-      values.symbols = values.symbols?.map(obj => (obj?.authority?.id ? obj : ({ ...obj, authority: { id: obj.authority } })));
-      onSubmit(values, null, this.props);
+      submitValues.symbols = values.symbols?.map(obj => (obj?.authority?.id ? obj : ({ ...obj, authority: { id: obj.authority } })));
+      onSubmit(submitValues, null, this.props);
     };
 
     const layer = this.getCurrentLayer();

@@ -13,10 +13,13 @@ import { EditCard, withKiwtFieldArray } from '@folio/stripes-erm-components';
 
 class SymbolListField extends React.Component {
   static propTypes = {
-    items: PropTypes.shape({
-      map: PropTypes.func.isRequired,
-    }),
-    namingAuthorities: PropTypes.object,
+    items: PropTypes.arrayOf(PropTypes.shape({
+      map: PropTypes.func,
+    })),
+    namingAuthorities: PropTypes.arrayOf(PropTypes.shape({
+      value: PropTypes.string,
+      label: PropTypes.string,
+    })),
     onAddField: PropTypes.func.isRequired,
   };
 
@@ -39,6 +42,7 @@ class SymbolListField extends React.Component {
           return (
             <EditCard
               header={<FormattedMessage id="ui-directory.information.symbol.index" values={{ index }} />}
+              key={`symbols[${index}].editCard`}
             >
               <Field
                 name={`symbols[${index}].authority`}

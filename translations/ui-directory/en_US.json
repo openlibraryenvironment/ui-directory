@@ -37,6 +37,7 @@
 
   "information.name": "Name",
   "information.status": "Status",
+  "information.type": "Type",
   "information.slug": "Slug",
   "information.phoneNumber": "Phone number",
   "information.emailAddress": "Email address",

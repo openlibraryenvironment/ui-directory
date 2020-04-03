@@ -57,19 +57,19 @@ class DirectoryEntryInfo extends React.Component {
         onToggle={this.props.onToggle}
       >
         <Row>
-          <Col xs={5}>
+          <Col xs={4}>
             <KeyValue
               label={<FormattedMessage id="ui-directory.information.name" />}
               value={record.name}
             />
           </Col>
-          <Col xs={2}>
+          <Col xs={4}>
             <KeyValue
-              label={<FormattedMessage id="ui-directory.information.status" />}
-              value={(record.status || {}).label}
+              label={<FormattedMessage id="ui-directory.information.type" />}
+              value={record.type?.label || '-'}
             />
           </Col>
-          <Col xs={5}>
+          <Col xs={4}>
             <KeyValue
               label={<FormattedMessage id="ui-directory.information.slug" />}
               value={record.slug}

@@ -15,7 +15,6 @@ import {
 
 import {
   DirectoryEntryFormInfo,
-  DirectoryEntryFormSymbols,
   DirectoryEntryFormCustProps,
 } from './sectionsShared';
 
@@ -133,7 +132,6 @@ class DirectoryEntryForm extends React.Component {
                 </Col>
               </Row>
               <DirectoryEntryFormInfo id="directoryEntryFormInfo" open={sectionsShared.directoryEntryFormInfo} {...sectionProps} />
-              <DirectoryEntryFormSymbols id="directoryEntryFormSymbols" open={sectionsShared.directoryEntryFormSymbols} {...sectionProps} />
               <DirectoryEntryFormCustProps id="directoryEntryFormCustProps" open={sectionsShared.directoryEntryFormCustProps} {...sectionProps} />
             </AccordionSet>
           </React.Fragment>

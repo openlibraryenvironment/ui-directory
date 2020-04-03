@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import { Field } from 'react-final-form';
+import { FieldArray } from 'react-final-form-arrays';
 
 import {
   Accordion,
@@ -12,6 +13,7 @@ import {
   TextField,
 } from '@folio/stripes/components';
 
+import { SymbolListField } from '../components';
 
 import { required } from '../../../util/validators';
 
@@ -68,6 +70,7 @@ class DirectoryEntryFormInfo extends React.Component {
     const { directoryEntryValues, selectedParent, warning } = this.state;
     const { values } = this.props;
     const layer = this.getCurrentLayer();
+    const namingAuthorities = this.props?.parentResources?.namingAuthorities?.records.map(obj => ({ value: obj.id, label: obj.symbol }));
     return (
       <Accordion
         id={this.props.id}
@@ -192,6 +195,16 @@ class DirectoryEntryFormInfo extends React.Component {
                 component={TextField}
                 label={<FormattedMessage id="ui-directory.information.contactName" />}
               />
+            </Col>
+          </Row>
+          <Row>
+            <Col xs={12}>
+              <FieldArray
+                name="symbols"
+                label={<FormattedMessage id="ui-directory.information.symbols" />}
+              >
+                {({ fields, input, meta }) => <SymbolListField {... { fields, input, meta, namingAuthorities }} /> }
+              </FieldArray>
             </Col>
           </Row>
           {warning ? <MessageBanner type="warning"> {warning} </MessageBanner> : null}

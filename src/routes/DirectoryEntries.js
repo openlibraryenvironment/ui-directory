@@ -54,7 +54,8 @@ class DirectoryEntries extends React.Component {
       recordsRequired: '%{resultCount}',
       perRequest: 100,
       limitParam: 'perPage',
-      resultCount: { initialValue: INITIAL_RESULT_COUNT }
+      resultCount: { initialValue: INITIAL_RESULT_COUNT },
+      throwErrors: false
     },
     selectedRecord: {
       type: 'okapi',
