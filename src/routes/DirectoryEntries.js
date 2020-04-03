@@ -67,6 +67,11 @@ class DirectoryEntries extends React.Component {
       path: 'directory/namingAuthority',
       params: { perPage: '100' },
     },
+    refdata: {
+      type: 'okapi',
+      path: 'directory/refdata',
+      params: { perPage: '100' },
+    },
     selectedRecord: {
       type: 'okapi',
       path: 'directory/entry/${selectedRecordId}', // eslint-disable-line no-template-curly-in-string

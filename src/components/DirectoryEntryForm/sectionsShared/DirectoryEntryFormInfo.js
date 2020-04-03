@@ -74,6 +74,7 @@ class DirectoryEntryFormInfo extends React.Component {
     const { values } = this.props;
     const layer = this.getCurrentLayer();
     const namingAuthorities = this.props?.parentResources?.namingAuthorities?.records.map(obj => ({ value: obj.id, label: obj.symbol }));
+    const directoryEntryTypes = this.props?.parentResources?.refdata?.records?.filter(obj => obj.desc === 'DirectoryEntry.Type')[0]?.values?.map(obj => ({ value: obj.id, label: obj.label })) || [];
     return (
       <Accordion
         id={this.props.id}
@@ -111,13 +112,14 @@ class DirectoryEntryFormInfo extends React.Component {
               </Field>
             </Col>
             <Col xs={4}>
-              <FormattedMessage id="ui-directory.information.status">
+              <FormattedMessage id="ui-directory.information.type">
                 {placeholder => (
                   <Field
-                    id="edit-directory-entry-status"
-                    name="status"
+                    id="edit-directory-entry-type"
+                    name="type"
                     label={placeholder}
-                    component={TextField}
+                    component={Select}
+                    dataOptions={directoryEntryTypes}
                     placeholder={placeholder}
                   />
                 )}
