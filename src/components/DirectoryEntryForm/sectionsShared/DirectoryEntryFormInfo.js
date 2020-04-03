@@ -83,7 +83,7 @@ class DirectoryEntryFormInfo extends React.Component {
       >
         <React.Fragment>
           <Row>
-            <Col xs={5}>
+            <Col xs={4}>
               <Field
                 id="edit-directory-entry-name"
                 name="name"
@@ -110,7 +110,7 @@ class DirectoryEntryFormInfo extends React.Component {
 
               </Field>
             </Col>
-            <Col xs={2}>
+            <Col xs={4}>
               <FormattedMessage id="ui-directory.information.status">
                 {placeholder => (
                   <Field
@@ -123,7 +123,7 @@ class DirectoryEntryFormInfo extends React.Component {
                 )}
               </FormattedMessage>
             </Col>
-            <Col xs={5}>
+            <Col xs={4}>
               <FormattedMessage id="ui-directory.information.slug">
                 {placeholder => (
                   <Field

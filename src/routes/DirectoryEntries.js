@@ -38,6 +38,11 @@ function filterConfig2filterKeys(config) {
 
 class DirectoryEntries extends React.Component {
   static manifest = Object.freeze({
+    custprops: {
+      type: 'okapi',
+      path: 'directory/custprops',
+      shouldRefresh: () => false,
+    },
     dirents: {
       type: 'okapi',
       path: 'directory/entry',
@@ -57,30 +62,25 @@ class DirectoryEntries extends React.Component {
       resultCount: { initialValue: INITIAL_RESULT_COUNT },
       throwErrors: false
     },
-    selectedRecord: {
-      type: 'okapi',
-      path: 'directory/entry/${selectedRecordId}', // eslint-disable-line no-template-curly-in-string
-      fetch: false,
-    },
-    tags: {
-      type: 'okapi',
-      path: 'directory/tags',
-      params: { perPage: '100' },
-    },
     namingAuthorities: {
       type: 'okapi',
       path: 'directory/namingAuthority',
       params: { perPage: '100' },
+    },
+    selectedRecord: {
+      type: 'okapi',
+      path: 'directory/entry/${selectedRecordId}', // eslint-disable-line no-template-curly-in-string
+      fetch: false,
     },
     symbols: {
       type: 'okapi',
       path: 'directory/symbol',
       params: { perPage: '100' },
     },
-    custprops: {
+    tags: {
       type: 'okapi',
-      path: 'directory/custprops',
-      shouldRefresh: () => false,
+      path: 'directory/tags',
+      params: { perPage: '100' },
     },
     resultCount: { initialValue: INITIAL_RESULT_COUNT },
 
