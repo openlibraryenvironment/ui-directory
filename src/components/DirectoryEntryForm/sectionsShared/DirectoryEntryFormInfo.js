@@ -24,6 +24,9 @@ class DirectoryEntryFormInfo extends React.Component {
     open: PropTypes.bool,
     parentResources: PropTypes.shape({
       typeValues: PropTypes.object,
+      query: PropTypes.shape({
+        layer: PropTypes.string,
+      }),
       records: PropTypes.object,
     }),
     values: PropTypes.object,
@@ -62,7 +65,7 @@ class DirectoryEntryFormInfo extends React.Component {
   }
 
   getCurrentLayer() {
-    const layer = this.props?.resources ? this.props?.resources?.query?.layer : this.props?.parentResources?.query?.layer;
+    const layer = this.props?.parentResources?.query?.layer;
     return layer;
   }
 
