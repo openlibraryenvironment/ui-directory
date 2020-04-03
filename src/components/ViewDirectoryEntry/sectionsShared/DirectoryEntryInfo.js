@@ -77,7 +77,7 @@ class DirectoryEntryInfo extends React.Component {
           </Col>
         </Row>
         <Row>
-          <Col xs={3}>
+          <Col xs={4}>
             <KeyValue
               label={<FormattedMessage id="ui-directory.information.phoneNumber" />}
               value={record.phoneNumber ? record.phoneNumber : '-'}
@@ -89,7 +89,7 @@ class DirectoryEntryInfo extends React.Component {
               value={record.contactName ? record.contactName : '-'}
             />
           </Col>
-          <Col xs={5}>
+          <Col xs={4}>
             <KeyValue
               label={<FormattedMessage id="ui-directory.information.emailAddress" />}
               value={record.emailAddress ? record.emailAddress : '-'}
