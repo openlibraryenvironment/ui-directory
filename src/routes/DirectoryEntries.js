@@ -3,7 +3,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import SafeHTMLMessage from '@folio/react-intl-safe-html';
-import { SearchAndSort } from '@folio/stripes/smart-components';
+import compose from 'compose-function';
+import { SearchAndSort, withTags } from '@folio/stripes/smart-components';
 import getSASParams from '@folio/stripes-erm-components/lib/getSASParams';
 
 import { CalloutContext, stripesConnect } from '@folio/stripes/core';
@@ -38,11 +39,6 @@ function filterConfig2filterKeys(config) {
 
 class DirectoryEntries extends React.Component {
   static manifest = Object.freeze({
-    custprops: {
-      type: 'okapi',
-      path: 'directory/custprops',
-      shouldRefresh: () => false,
-    },
     dirents: {
       type: 'okapi',
       path: 'directory/entry',
@@ -241,4 +237,7 @@ class DirectoryEntries extends React.Component {
   }
 }
 
-export default stripesConnect(DirectoryEntries);
+export default compose(
+  stripesConnect,
+  withTags,
+)(DirectoryEntries);

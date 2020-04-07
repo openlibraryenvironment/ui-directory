@@ -9,13 +9,18 @@ import {
   Button,
   Col,
   Icon,
+  IconButton,
   Layer,
   Layout,
   MessageBanner,
   Pane,
+  PaneMenu,
   Row,
   ButtonGroup,
 } from '@folio/stripes/components';
+
+import { Tags } from '@folio/stripes-erm-components';
+import { stripesConnect } from '@folio/stripes/core';
 
 import EditDirectoryEntry from '../EditDirectoryEntry';
 
@@ -33,6 +38,11 @@ import {
 
 class ViewDirectoryEntry extends React.Component {
   static manifest = Object.freeze({
+    custprops: {
+      type: 'okapi',
+      path: 'directory/custprops',
+      shouldRefresh: () => false,
+    },
     selectedRecord: {
       type: 'okapi',
       path: 'directory/entry/:{id}',
@@ -52,10 +62,8 @@ class ViewDirectoryEntry extends React.Component {
     onCreate: PropTypes.func,
     onEdit: PropTypes.func,
     paneWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    parentResources: PropTypes.shape({
-      custprops: PropTypes.array,
-    }),
     resources: PropTypes.shape({
+      custprops: PropTypes.array,
       query: PropTypes.shape({
         layer: PropTypes.string,
       }),
@@ -85,8 +93,37 @@ class ViewDirectoryEntry extends React.Component {
     return get(this.props.resources.selectedRecord, ['records', 0], {});
   }
 
+  getHelperApp = (match, resources, mutator) => {
+    const helper = resources?.query?.directoryHelper;
+    if (!helper) return null;
+
+    let HelperComponent = null;
+
+    if (helper === 'directoryTags') HelperComponent = Tags;
+    if (!HelperComponent) return null;
+    const extraProps = { mutator, resources };
+    return (
+      <HelperComponent
+        link={`directory/entry/${match.params.id}`}
+        onToggle={() => this.handleToggleHelper(helper, mutator, resources)}
+        {... extraProps}
+      />
+    );
+  };
+
+  handleToggleHelper = (helper, mutator, resources) => {
+    const currentHelper = resources?.query?.directoryHelper;
+    const nextHelper = currentHelper !== helper ? helper : null;
+    mutator.query.update({ directoryHelper: nextHelper });
+  };
+
+  handleToggleTags = (mutator, resources) => {
+    this.handleToggleHelper('directoryTags', mutator, resources);
+  };
+
+
   getCustProps() {
-    const custprops = this.props.parentResources.custprops;
+    const custprops = this.props.resources?.custprops?.records || [];
     const arrayToObject = (array, keyField) => array.reduce((obj, item) => {
       obj[item[keyField]] = item;
       return obj;
@@ -172,6 +209,25 @@ class ViewDirectoryEntry extends React.Component {
     mutator.query.replace({ layer: newLayer });
   }
 
+  paneButtons = (mutator, resources) => {
+    return (
+      <PaneMenu>
+        {this.handleToggleTags &&
+        <FormattedMessage id="ui-rs.view.showTags">
+          {ariaLabel => (
+            <IconButton
+              icon="tag"
+              badgeCount={resources?.selectedRecord.records[0]?.tags?.length || 0}
+              onClick={() => this.handleToggleTags(mutator, resources)}
+              ariaLabel={ariaLabel}
+            />
+          )}
+        </FormattedMessage>
+        }
+      </PaneMenu>
+    );
+  };
+
   getActionMenu = ({ onToggle }) => {
     return (
       <>
@@ -205,6 +261,9 @@ class ViewDirectoryEntry extends React.Component {
   }
 
   render() {
+    console.log("VDE Props: %o", this.props)
+    console.log("VDE: %o", this)
+    const { match, mutator, resources } = this.props;
     const record = this.getRecord();
     const sectionProps = this.getSectionProps();
     let title = record.name || 'Directory entry details';
@@ -218,6 +277,7 @@ class ViewDirectoryEntry extends React.Component {
         paneTitle={title}
         dismissible
         onClose={this.props.onClose}
+        lastMenu={this.paneButtons(mutator, resources)}
         actionMenu={this.getActionMenu}
       >
         <Layout className="textCentered">
@@ -279,9 +339,10 @@ class ViewDirectoryEntry extends React.Component {
         }
         { this.renderEditLayer() }
         { this.renderUnitLayer() }
+        {this.getHelperApp(match, resources, mutator)}
       </Pane>
     );
   }
 }
 
-export default ViewDirectoryEntry;
+export default stripesConnect(ViewDirectoryEntry);
