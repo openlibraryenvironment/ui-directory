@@ -18,8 +18,6 @@ import {
   Row,
   ButtonGroup,
 } from '@folio/stripes/components';
-
-import { Tags } from '@folio/stripes-erm-components';
 import { stripesConnect } from '@folio/stripes/core';
 
 import EditDirectoryEntry from '../EditDirectoryEntry';
@@ -93,32 +91,14 @@ class ViewDirectoryEntry extends React.Component {
     return get(this.props.resources.selectedRecord, ['records', 0], {});
   }
 
-  getHelperApp = (match, resources, mutator) => {
-    const helper = resources?.query?.directoryHelper;
-    if (!helper) return null;
-
-    let HelperComponent = null;
-
-    if (helper === 'directoryTags') HelperComponent = Tags;
-    if (!HelperComponent) return null;
-    const extraProps = { mutator, resources };
-    return (
-      <HelperComponent
-        link={`directory/entry/${match.params.id}`}
-        onToggle={() => this.handleToggleHelper(helper, mutator, resources)}
-        {... extraProps}
-      />
-    );
-  };
-
   handleToggleHelper = (helper, mutator, resources) => {
-    const currentHelper = resources?.query?.directoryHelper;
+    const currentHelper = resources?.query?.helper;
     const nextHelper = currentHelper !== helper ? helper : null;
-    mutator.query.update({ directoryHelper: nextHelper });
+    mutator.query.update({ helper: nextHelper });
   };
 
   handleToggleTags = (mutator, resources) => {
-    this.handleToggleHelper('directoryTags', mutator, resources);
+    this.handleToggleHelper('tags', mutator, resources);
   };
 
 
@@ -261,8 +241,6 @@ class ViewDirectoryEntry extends React.Component {
   }
 
   render() {
-    console.log("VDE Props: %o", this.props)
-    console.log("VDE: %o", this)
     const { match, mutator, resources } = this.props;
     const record = this.getRecord();
     const sectionProps = this.getSectionProps();
@@ -339,7 +317,6 @@ class ViewDirectoryEntry extends React.Component {
         }
         { this.renderEditLayer() }
         { this.renderUnitLayer() }
-        {this.getHelperApp(match, resources, mutator)}
       </Pane>
     );
   }

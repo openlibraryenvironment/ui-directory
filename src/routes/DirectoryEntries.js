@@ -5,6 +5,7 @@ import { FormattedMessage } from 'react-intl';
 import SafeHTMLMessage from '@folio/react-intl-safe-html';
 import compose from 'compose-function';
 import { SearchAndSort, withTags } from '@folio/stripes/smart-components';
+import { Tags as ERMTags } from '@folio/stripes-erm-components';
 import getSASParams from '@folio/stripes-erm-components/lib/getSASParams';
 
 import { CalloutContext, stripesConnect } from '@folio/stripes/core';
@@ -177,6 +178,7 @@ class DirectoryEntries extends React.Component {
 
   render() {
     const { mutator, resources } = this.props;
+    const helperApps = { tags: ERMTags };
     const path = '/directory/entries';
     packageInfo.stripes.route = path;
     packageInfo.stripes.home = path;
@@ -193,6 +195,8 @@ class DirectoryEntries extends React.Component {
           filterConfig={filterConfig}
           initialResultCount={INITIAL_RESULT_COUNT}
           resultCountIncrement={INITIAL_RESULT_COUNT}
+          getHelperComponent={(name) => helperApps[name]}
+          getHelperResourcePath={(helper, id) => `directory/entry/${id}`}
           viewRecordComponent={ViewDirectoryEntry}
           editRecordComponent={EditDirectoryEntry}
           viewRecordPerms="module.directory.enabled"
