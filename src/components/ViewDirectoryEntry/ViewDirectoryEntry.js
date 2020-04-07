@@ -241,7 +241,7 @@ class ViewDirectoryEntry extends React.Component {
   }
 
   render() {
-    const { match, mutator, resources } = this.props;
+    const { mutator, resources } = this.props;
     const record = this.getRecord();
     const sectionProps = this.getSectionProps();
     let title = record.name || 'Directory entry details';

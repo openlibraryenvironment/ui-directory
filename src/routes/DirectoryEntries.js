@@ -40,6 +40,11 @@ function filterConfig2filterKeys(config) {
 
 class DirectoryEntries extends React.Component {
   static manifest = Object.freeze({
+    custprops: {
+      type: 'okapi',
+      path: 'directory/custprops',
+      shouldRefresh: () => false,
+    },
     dirents: {
       type: 'okapi',
       path: 'directory/entry',
@@ -105,6 +110,11 @@ class DirectoryEntries extends React.Component {
       custprops: PropTypes.object,
       symbols: PropTypes.object,
       namingAuthorities: PropTypes.object,
+      refdata: PropTypes.shape({
+        records: PropTypes.arrayOf(PropTypes.shape({
+          values: PropTypes.array,
+        })),
+      }),
     }),
 
     mutator: PropTypes.object,
@@ -218,20 +228,24 @@ class DirectoryEntries extends React.Component {
           showSingleResult
           visibleColumns={[
             'fullyQualifiedName',
+            'type',
             'tagSummary',
             'symbolSummary'
           ]}
           columnMapping={{
             fullyQualifiedName: <FormattedMessage id="ui-directory.entries.name" />,
+            type: <FormattedMessage id="ui-directory.entries.type" />,
             tagSummary: <FormattedMessage id="ui-directory.entries.tagSummary" />,
             symbolSummary: <FormattedMessage id="ui-directory.entries.symbolSummary" />,
           }}
           columnWidths={{
             fullyQualifiedName: '40%',
-            tagSummary: '30%',
-            symbolSummary: '30%',
+            type: '20%',
+            tagSummary: '20%',
+            symbolSummary: '20%',
           }}
           resultsFormatter={{
+            type: a => a.type?.label || '',
             tagSummary: a => a.tagSummary || '',
             symbolSummary: a => a.symbolSummary || '',
           }}
