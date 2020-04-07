@@ -79,7 +79,7 @@ class DirectoryEntries extends React.Component {
       path: 'directory/symbol',
       params: { perPage: '100' },
     },
-    tags: {
+    directoryTags: {
       type: 'okapi',
       path: 'directory/tags',
       params: { perPage: '100' },
@@ -99,7 +99,7 @@ class DirectoryEntries extends React.Component {
       query: PropTypes.shape({
         qindex: PropTypes.string,
       }),
-      tags: PropTypes.shape({
+      directoryTags: PropTypes.shape({
         records: PropTypes.array,
       }),
       custprops: PropTypes.object,
@@ -124,7 +124,7 @@ class DirectoryEntries extends React.Component {
 
   componentDidUpdate() {
     if (!this.state.initializedFilterConfig) {
-      const tags = (this.props.resources.tags || {}).records || [];
+      const tags = (this.props.resources.directoryTags || {}).records || [];
 
       if (tags.length > 0) {
         const tagsFilterConfig = filterConfig.find(g => g.name === 't');
