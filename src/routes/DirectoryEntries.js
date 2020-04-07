@@ -27,20 +27,6 @@ const searchableIndexes = [
   { label: 'Symbols', value: 'symbols.symbol' },
 ];
 
-const filterConfig = [
-  {
-    label: 'Tag',
-    name: 't',
-    cql: 'tags.value',
-    values: [], // will be filled in by componentDidUpdate
-  },
-];
-
-// Provide the specific mapping that getSASParams wants
-function filterConfig2filterKeys(config) {
-  return config.reduce((a, e) => Object.assign({}, a, { [e.name]: e.cql }), {});
-}
-
 const appDetails = {
   directory: {
     title: 'Directory',
@@ -147,28 +133,6 @@ class DirectoryEntries extends React.Component {
   constructor(props) {
     super(props);
     this.onClose = this.onClose.bind(this);
-    this.state = { initializedFilterConfig: false };
-  }
-
-  componentDidUpdate() {
-    if (!this.state.initializedFilterConfig) {
-      const tags = (this.props.resources.directoryTags || {}).records || [];
-
-      if (tags.length > 0) {
-        const tagsFilterConfig = filterConfig.find(g => g.name === 't');
-        // WS response contains a dummy value and duplicates, and is unsorted
-        tagsFilterConfig.values = _.uniq(
-          tags
-            .map(rec => rec.value)
-            .filter(v => v !== 'system-default')
-            .sort()
-        );
-
-        // Setting state triggers re-render
-        // eslint-disable-next-line react/no-did-update-set-state
-        this.setState({ initializedFilterConfig: true });
-      }
-    }
   }
 
   onClose() {
