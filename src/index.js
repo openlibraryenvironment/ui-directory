@@ -13,11 +13,6 @@ class Directory extends React.Component {
     }),
   };
 
-  constructor(props) {
-    super(props);
-    this.connectedDirectoryEntries = props.stripes.connect(DirectoryEntries);
-  }
-
   render() {
     const {
       actAs,
@@ -38,7 +33,7 @@ class Directory extends React.Component {
         />
         <Route
           path={`${path}/entries`}
-          render={() => <this.connectedDirectoryEntries {...this.props} />}
+          render={() => <DirectoryEntries {...this.props} />}
         />
       </Switch>
     );
