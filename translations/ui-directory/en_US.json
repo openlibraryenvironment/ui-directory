@@ -36,6 +36,9 @@
   "entries.tagSummary":"Tags",
   "entries.symbolSummary":"Symbols",
 
+  "filter.tags": "Tags",
+  "filter.type": "Type",
+
   "information.name": "Name",
   "information.status": "Status",
   "information.type": "Type",

@@ -4,8 +4,10 @@ import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import SafeHTMLMessage from '@folio/react-intl-safe-html';
 import compose from 'compose-function';
-import { SearchAndSort, withTags } from '@folio/stripes/smart-components';
+
+import { MultiSelectionFilter, SearchAndSort, withTags } from '@folio/stripes/smart-components';
 import { Tags as ERMTags } from '@folio/stripes-erm-components';
+import { Accordion, FilterAccordionHeader } from '@folio/stripes/components';
 import getSASParams from '@folio/stripes-erm-components/lib/getSASParams';
 
 import { CalloutContext, stripesConnect } from '@folio/stripes/core';
@@ -13,6 +15,8 @@ import { CalloutContext, stripesConnect } from '@folio/stripes/core';
 import ViewDirectoryEntry from '../components/ViewDirectoryEntry';
 import EditDirectoryEntry from '../components/EditDirectoryEntry';
 import packageInfo from '../../package';
+
+import { parseFilters, deparseFilters } from '../util/parseFilters';
 
 const INITIAL_RESULT_COUNT = 100;
 
@@ -37,6 +41,17 @@ function filterConfig2filterKeys(config) {
   return config.reduce((a, e) => Object.assign({}, a, { [e.name]: e.cql }), {});
 }
 
+const appDetails = {
+  directory: {
+    title: 'Directory',
+    visibleColumns: [
+      'fullyQualifiedName',
+      'type',
+      'tagSummary',
+      'symbolSummary'
+    ],
+  },
+};
 
 class DirectoryEntries extends React.Component {
   static manifest = Object.freeze({
@@ -50,12 +65,15 @@ class DirectoryEntries extends React.Component {
       path: 'directory/entry',
       params: getSASParams({
         searchKey: 'name',
+        filterKeys: {
+          'tags': 'tags.value',
+          'type': 'type.value'
+        },
         columnMap: {
           'fullyQualifiedName': 'name',
           'tagSummary': 'tags.value',
           'symbolSummary': 'symbols.symbol',
         },
-        filterKeys: filterConfig2filterKeys(filterConfig),
       }),
       records: 'results',
       recordsRequired: '%{resultCount}',
@@ -186,12 +204,73 @@ class DirectoryEntries extends React.Component {
     return this.props.mutator.selectedRecord.PUT(record);
   }
 
+  renderFiltersFromData = (options) => {
+    const { resources, mutator } = this.props;
+    const byName = parseFilters(_.get(resources.query, 'filters'));
+
+    const values = {
+      tags: byName.tags || [],
+      type: byName.type || [],
+    };
+
+    const setFilterState = (group) => {
+      if (group.values === null) {
+        delete byName[group.name];
+      } else {
+        byName[group.name] = group.values;
+      }
+      mutator.query.update({ filters: deparseFilters(byName) });
+    };
+    const clearGroup = (name) => setFilterState({ name, values: [] });
+
+    const renderGenericFilterSelection = (filterName) => {
+      return (
+        <Accordion
+          label={<FormattedMessage id={`ui-directory.filter.${filterName}`} />}
+          id={filterName}
+          name={filterName}
+          separator={false}
+          header={FilterAccordionHeader}
+          displayClearButton={values[filterName].length > 0}
+          onClearFilter={() => clearGroup(filterName)}
+        >
+          <MultiSelectionFilter
+            name={filterName}
+            dataOptions={options[filterName]}
+            selectedValues={values[filterName]}
+            onChange={setFilterState}
+          />
+        </Accordion>
+      );
+    };
+
+    return (
+      <React.Fragment>
+        {renderGenericFilterSelection('type')}
+        {renderGenericFilterSelection('tags')}
+      </React.Fragment>
+    );
+  }
+
+
+  renderFilters = () => {
+    const { resources } = this.props;
+    const tags = ((resources.directoryTags || {}).records || []).map(obj => ({ value: obj.value, label: obj.normValue }));
+    const type = resources.refdata?.records?.filter(obj => obj.desc === 'DirectoryEntry.Type')[0]?.values || [];
+
+    return this.renderFiltersFromData({
+      tags,
+      type
+    });
+  };
+
   render() {
     const { mutator, resources } = this.props;
     const helperApps = { tags: ERMTags };
     const path = '/directory/entries';
     packageInfo.stripes.route = path;
     packageInfo.stripes.home = path;
+    const { visibleColumns } = appDetails.directory;
 
     return (
       <React.Fragment>
@@ -202,7 +281,6 @@ class DirectoryEntries extends React.Component {
           searchableIndexes={searchableIndexes}
           selectedIndex={_.get(this.props.resources.query, 'qindex')}
           onChangeIndex={this.onChangeIndex}
-          filterConfig={filterConfig}
           initialResultCount={INITIAL_RESULT_COUNT}
           resultCountIncrement={INITIAL_RESULT_COUNT}
           getHelperComponent={(name) => helperApps[name]}
@@ -226,12 +304,7 @@ class DirectoryEntries extends React.Component {
             resultCount: mutator.resultCount,
           }}
           showSingleResult
-          visibleColumns={[
-            'fullyQualifiedName',
-            'type',
-            'tagSummary',
-            'symbolSummary'
-          ]}
+          visibleColumns={visibleColumns}
           columnMapping={{
             fullyQualifiedName: <FormattedMessage id="ui-directory.entries.name" />,
             type: <FormattedMessage id="ui-directory.entries.type" />,
@@ -249,6 +322,7 @@ class DirectoryEntries extends React.Component {
             tagSummary: a => a.tagSummary || '',
             symbolSummary: a => a.symbolSummary || '',
           }}
+          renderFilters={this.renderFilters}
         />
       </React.Fragment>
     );
