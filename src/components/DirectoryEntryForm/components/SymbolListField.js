@@ -11,6 +11,8 @@ import {
 
 import { EditCard, withKiwtFieldArray } from '@folio/stripes-erm-components';
 
+import { required } from '../../../util/validators';
+
 class SymbolListField extends React.Component {
   static propTypes = {
     items: PropTypes.arrayOf(PropTypes.shape({
@@ -47,14 +49,18 @@ class SymbolListField extends React.Component {
               <Field
                 name={`symbols[${index}].authority`}
                 component={Select}
-                dataOptions={namingAuthorities}
+                dataOptions={[{ value:'', label: '' }, ...namingAuthorities]}
                 label={<FormattedMessage id="ui-directory.information.symbols.authority" />}
                 format={v => v?.id}
+                required
+                validate={required}
               />
               <Field
                 name={`symbols[${index}].symbol`}
                 label={<FormattedMessage id="ui-directory.information.symbols.symbol" />}
                 component={TextField}
+                required
+                validate={required}
               />
             </EditCard>
           );

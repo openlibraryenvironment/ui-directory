@@ -68,7 +68,6 @@ class DirectoryEntryFormCustProps extends React.Component {
   }
 
   render() {
-    console.log("PROPS: %o", this.props)
     const { id, onToggle, open } = this.props;
     return (
       <Accordion
