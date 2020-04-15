@@ -8,15 +8,11 @@ import {
   Accordion,
   Col,
   Label,
-  MessageBanner,
   Row,
-  Select,
   TextField,
 } from '@folio/stripes/components';
 
 import { AddressListFieldArray } from '../components';
-
-import { required } from '../../../util/validators';
 
 class DirectoryEntryFormContactInfo extends React.Component {
   static propTypes = {

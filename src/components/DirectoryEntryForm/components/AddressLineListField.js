@@ -9,7 +9,7 @@ import {
   TextField,
 } from '@folio/stripes/components';
 
-import { EditCard, withKiwtFieldArray } from '@folio/stripes-erm-components';
+import { withKiwtFieldArray } from '@folio/stripes-erm-components';
 
 import { required } from '../../../util/validators';
 
@@ -32,36 +32,46 @@ class AddressLineListField extends React.Component {
         <Col xs={3}>
           <Field
             name={`${name}[${this.findIndexBySeq(0)}].value`}
-            label="Address line 1"
+            label={<FormattedMessage id="ui-directory.information.addresses.addressLine1" />}
             component={TextField}
+            required
+            validate={required}
           />
         </Col>
         <Col xs={3}>
           <Field
             name={`${name}[${this.findIndexBySeq(1)}].value`}
-            label="Address line 2"
+            label={<FormattedMessage id="ui-directory.information.addresses.addressLine2" />}
             component={TextField}
+            required
+            validate={required}
           />
         </Col>
         <Col xs={3}>
           <Field
             name={`${name}[${this.findIndexBySeq(2)}].value`}
-            label="City"
+            label={<FormattedMessage id="ui-directory.information.addresses.city" />}
             component={TextField}
+            required
+            validate={required}
           />
         </Col>
         <Col xs={1}>
           <Field
             name={`${name}[${this.findIndexBySeq(3)}].value`}
-            label="Postal Code"
+            label={<FormattedMessage id="ui-directory.information.addresses.postalCode" />}
             component={TextField}
+            required
+            validate={required}
           />
         </Col>
         <Col xs={2}>
           <Field
             name={`${name}[${this.findIndexBySeq(4)}].value`}
-            label="State/Province"
+            label={<FormattedMessage id="ui-directory.information.addresses.stateProvince" />}
             component={TextField}
+            required
+            validate={required}
           />
         </Col>
       </Row>

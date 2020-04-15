@@ -27,7 +27,7 @@ class AddressListField extends React.Component {
           component={TextField}
           required
           validate={required}
-          placeholder="Enter a name for this contact information"
+          placeholder={<FormattedMessage id="ui-directory.information.addresses.namePlaceholder" />}
         />
       </Col>
     );
