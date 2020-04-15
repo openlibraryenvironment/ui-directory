@@ -33,7 +33,8 @@ class AddressListField extends React.Component {
           name={`addresses[${index}].addressLabel`}
           component={TextField}
           placeholder={intl.formatMessage({ id: 'ui-directory.information.addresses.namePlaceholder' })}
-          requiredvalidate={required}
+          required
+          validate={required}
         />
       </Col>
     );
