@@ -3,36 +3,52 @@ import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import { Field } from 'react-final-form';
 
+import { FieldArray } from 'react-final-form-arrays';
+
 import {
-  Button,
-  Select,
+  Col,
   TextField,
 } from '@folio/stripes/components';
 
-import { EditCard, withKiwtFieldArray } from '@folio/stripes-erm-components';
+import { EditCard } from '@folio/stripes-erm-components';
 
+import AddressLineListField from './AddressLineListField';
 import { required } from '../../../util/validators';
 
 class AddressListField extends React.Component {
   static propTypes = {
   };
 
-  renderAddSymbol = () => {
+  renderCardHeader = (index) => {
     return (
-      <Button
-        id="add-symbol-btn"
-        onClick={() => this.props.onAddField()}
-      >
-        <FormattedMessage id="ui-directory.information.addresses.add" />
-      </Button>
+      <Col xs={8} >
+        <Field
+          name={`addresses[${index}].addressLabel`}
+          component={TextField}
+          required
+          validate={required}
+          placeholder="Enter a name for this contact information"
+        />
+      </Col>
     );
   }
 
   render() {
+    const { index, input: { name }, address } = this.props;
     return (
-      <p>Hi there</p>
+      <EditCard
+        header={this.renderCardHeader(index)}
+        key={`addresses[${index}].editCard`}
+        onDelete={() => this.props.onDeleteField(index, address)}
+      >
+        <FieldArray
+          name={`${name}.lines`}
+        >
+          {({ fields, input, meta }) => <AddressLineListField {... { fields, input, meta }} /> }
+        </FieldArray>
+      </EditCard>
     );
   }
 }
 
-export default withKiwtFieldArray(AddressListField);
+export default AddressListField;
