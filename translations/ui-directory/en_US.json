@@ -62,7 +62,7 @@
   "information.units": "Units",
   "information.members": "Members",
   "information.tags": "Tags",
-  "information.heading.addresses": "Addresses",
+  "information.addresses": "Addresses",
   "information.heading.contactInformation": "Contact information",
   "information.addressNofM": "Address {index} of {count}",
   "information.heading.services": "Services",
