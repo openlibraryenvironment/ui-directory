@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'react-intl';
 import { Field } from 'react-final-form';
 
 import { FieldArray } from 'react-final-form-arrays';
@@ -21,18 +21,18 @@ class AddressListField extends React.Component {
     input: PropTypes.shape({
       name: PropTypes.string,
     }),
+    intl: PropTypes.object.isRequired,
     onDeleteField: PropTypes.func.isRequired,
   };
 
   renderCardHeader = (index) => {
+    const { intl } = this.props;
     return (
       <Col xs={8}>
         <Field
           name={`addresses[${index}].addressLabel`}
           component={TextField}
-          required
-          validate={required}
-          placeholder={<FormattedMessage id="ui-directory.information.addresses.namePlaceholder" />}
+          placeholder={intl.formatMessage({ id: 'ui-directory.information.addresses.namePlaceholder' })}
         />
       </Col>
     );
@@ -56,4 +56,4 @@ class AddressListField extends React.Component {
   }
 }
 
-export default AddressListField;
+export default injectIntl(AddressListField);

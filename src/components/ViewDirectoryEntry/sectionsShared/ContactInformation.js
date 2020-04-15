@@ -4,28 +4,11 @@ import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import { Accordion, Col, KeyValue, Headline, Row } from '@folio/stripes/components';
 
+import { Address } from '../components';
 
 function renderAddress(address, index, count) {
-  const header = address.addressLabel ||
-    <FormattedMessage id="ui-directory.information.addressNofM" values={{ index, count }} />;
-
   return (
-    <React.Fragment key={index}>
-      <Headline>{header}</Headline>
-      <ul>
-        {
-          _.sortBy(address.lines, e => e.seq).map((line, j) => (
-            <li key={j}>
-              {line.seq}. {line.value}
-            </li>
-          ))
-        }
-      </ul>
-      <KeyValue
-        label={<FormattedMessage id="ui-directory.information.tags" />}
-        value={address.tags.map(t => t.value).sort().join(', ')}
-      />
-    </React.Fragment>
+    <Address {...{ address, index, count }} />
   );
 }
 
