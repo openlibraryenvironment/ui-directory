@@ -32,53 +32,57 @@ class AddressLineListField extends React.Component {
     const { name } = this.props;
     // ToDo -- figure out a way to do this a bit more dynamically in future
     return (
-      <Row>
-        <Col xs={3}>
-          <Field
-            name={`${name}[${this.findIndexBySeq(0)}].value`}
-            label={<FormattedMessage id="ui-directory.information.addresses.addressLine1" />}
-            component={TextField}
-            required
-            validate={required}
-          />
-        </Col>
-        <Col xs={3}>
-          <Field
-            name={`${name}[${this.findIndexBySeq(1)}].value`}
-            label={<FormattedMessage id="ui-directory.information.addresses.addressLine2" />}
-            component={TextField}
-            required
-            validate={required}
-          />
-        </Col>
-        <Col xs={3}>
-          <Field
-            name={`${name}[${this.findIndexBySeq(2)}].value`}
-            label={<FormattedMessage id="ui-directory.information.addresses.city" />}
-            component={TextField}
-            required
-            validate={required}
-          />
-        </Col>
-        <Col xs={1}>
-          <Field
-            name={`${name}[${this.findIndexBySeq(3)}].value`}
-            label={<FormattedMessage id="ui-directory.information.addresses.postalCode" />}
-            component={TextField}
-            required
-            validate={required}
-          />
-        </Col>
-        <Col xs={2}>
-          <Field
-            name={`${name}[${this.findIndexBySeq(4)}].value`}
-            label={<FormattedMessage id="ui-directory.information.addresses.stateProvince" />}
-            component={TextField}
-            required
-            validate={required}
-          />
-        </Col>
-      </Row>
+      <>
+        <Row>
+          <Col xs={4}>
+            <Field
+              name={`${name}[${this.findIndexBySeq(0)}].value`}
+              label={<FormattedMessage id="ui-directory.information.addresses.addressLine1" />}
+              component={TextField}
+              required
+              validate={required}
+            />
+          </Col>
+          <Col xs={4}>
+            <Field
+              name={`${name}[${this.findIndexBySeq(1)}].value`}
+              label={<FormattedMessage id="ui-directory.information.addresses.addressLine2" />}
+              component={TextField}
+              required
+              validate={required}
+            />
+          </Col>
+          <Col xs={4}>
+            <Field
+              name={`${name}[${this.findIndexBySeq(2)}].value`}
+              label={<FormattedMessage id="ui-directory.information.addresses.city" />}
+              component={TextField}
+              required
+              validate={required}
+            />
+          </Col>
+        </Row>
+        <Row>
+          <Col xs={4}>
+            <Field
+              name={`${name}[${this.findIndexBySeq(3)}].value`}
+              label={<FormattedMessage id="ui-directory.information.addresses.postalCode" />}
+              component={TextField}
+              required
+              validate={required}
+            />
+          </Col>
+          <Col xs={4}>
+            <Field
+              name={`${name}[${this.findIndexBySeq(4)}].value`}
+              label={<FormattedMessage id="ui-directory.information.addresses.stateProvince" />}
+              component={TextField}
+              required
+              validate={required}
+            />
+          </Col>
+        </Row>
+      </>
     );
   }
 }
