@@ -12,6 +12,7 @@ import {
 import { EditCard } from '@folio/stripes-erm-components';
 
 import AddressLineListField from './AddressLineListField';
+import { required } from '../../../util/validators';
 
 class AddressListField extends React.Component {
   static propTypes = {
@@ -32,6 +33,7 @@ class AddressListField extends React.Component {
           name={`addresses[${index}].addressLabel`}
           component={TextField}
           placeholder={intl.formatMessage({ id: 'ui-directory.information.addresses.namePlaceholder' })}
+          requiredvalidate={required}
         />
       </Col>
     );
