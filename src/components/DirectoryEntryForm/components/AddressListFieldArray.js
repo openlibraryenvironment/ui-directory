@@ -13,6 +13,12 @@ import AddressListField from './AddressListField';
 
 class AddressListFieldArray extends React.Component {
   static propTypes = {
+    items: PropTypes.arrayOf(PropTypes.shape({
+      map: PropTypes.func,
+    })),
+    name: PropTypes.string,
+    onAddField: PropTypes.func.isRequired,
+    onDeleteField: PropTypes.func.isRequired,
   };
 
   renderAddAddress = () => {

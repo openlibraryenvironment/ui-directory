@@ -15,6 +15,10 @@ import { required } from '../../../util/validators';
 
 class AddressLineListField extends React.Component {
   static propTypes = {
+    items: PropTypes.arrayOf(PropTypes.shape({
+      seq: PropTypes.number.isRequired,
+    })),
+    name: PropTypes.shape,
   };
 
   findIndexBySeq(seq) {

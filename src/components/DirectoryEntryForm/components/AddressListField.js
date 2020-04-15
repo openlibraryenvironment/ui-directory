@@ -9,7 +9,6 @@ import {
   Col,
   TextField,
 } from '@folio/stripes/components';
-
 import { EditCard } from '@folio/stripes-erm-components';
 
 import AddressLineListField from './AddressLineListField';
@@ -17,6 +16,12 @@ import { required } from '../../../util/validators';
 
 class AddressListField extends React.Component {
   static propTypes = {
+    address: PropTypes.object,
+    index: PropTypes.number,
+    input: PropTypes.shape({
+      name: PropTypes.string,
+    }),
+    onDeleteField: PropTypes.func.isRequired,
   };
 
   renderCardHeader = (index) => {
@@ -34,7 +39,7 @@ class AddressListField extends React.Component {
   }
 
   render() {
-    const { index, input: { name }, address } = this.props;
+    const { address, index, input: { name } } = this.props;
     return (
       <EditCard
         header={this.renderCardHeader(index)}
