@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage, injectIntl } from 'react-intl';
+import { injectIntl } from 'react-intl';
 import { Field } from 'react-final-form';
 
 import { FieldArray } from 'react-final-form-arrays';
@@ -12,7 +12,6 @@ import {
 import { EditCard } from '@folio/stripes-erm-components';
 
 import AddressLineListField from './AddressLineListField';
-import { required } from '../../../util/validators';
 
 class AddressListField extends React.Component {
   static propTypes = {
