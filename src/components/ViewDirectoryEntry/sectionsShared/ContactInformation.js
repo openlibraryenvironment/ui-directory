@@ -2,7 +2,7 @@ import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
-import { Accordion, KeyValue, Headline } from '@folio/stripes/components';
+import { Accordion, Col, KeyValue, Headline, Row } from '@folio/stripes/components';
 
 
 function renderAddress(address, index, count) {
@@ -30,7 +30,7 @@ function renderAddress(address, index, count) {
 }
 
 
-class Addresses extends React.Component {
+class ContactInformation extends React.Component {
   static propTypes = {
     record: PropTypes.object,
     id: PropTypes.string,
@@ -39,19 +39,40 @@ class Addresses extends React.Component {
   };
 
   render() {
-    const addresses = this.props.record.addresses || [];
+    const { record } = this.props;
+    const addresses = record.addresses || [];
 
     return (
       <Accordion
         id={this.props.id}
-        label={<FormattedMessage id="ui-directory.information.heading.addresses" />}
+        label={<FormattedMessage id="ui-directory.information.heading.contactInformation" />}
         open={this.props.open}
         onToggle={this.props.onToggle}
       >
+        <Row>
+          <Col xs={4}>
+            <KeyValue
+              label={<FormattedMessage id="ui-directory.information.mainPhoneNumber" />}
+              value={record.phoneNumber ? record.phoneNumber : '-'}
+            />
+          </Col>
+          <Col xs={4}>
+            <KeyValue
+              label={<FormattedMessage id="ui-directory.information.mainContactName" />}
+              value={record.contactName ? record.contactName : '-'}
+            />
+          </Col>
+          <Col xs={4}>
+            <KeyValue
+              label={<FormattedMessage id="ui-directory.information.mainEmailAddress" />}
+              value={record.emailAddress ? record.emailAddress : '-'}
+            />
+          </Col>
+        </Row>
         {addresses.map((address, i) => renderAddress(address, i + 1, addresses.length))}
       </Accordion>
     );
   }
 }
 
-export default Addresses;
+export default ContactInformation;
