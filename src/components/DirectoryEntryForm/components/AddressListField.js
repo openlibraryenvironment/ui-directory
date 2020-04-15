@@ -26,7 +26,7 @@ class AddressListField extends React.Component {
 
   renderCardHeader = (index) => {
     return (
-      <Col xs={8} >
+      <Col xs={8}>
         <Field
           name={`addresses[${index}].addressLabel`}
           component={TextField}
