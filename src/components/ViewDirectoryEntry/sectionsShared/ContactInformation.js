@@ -58,14 +58,14 @@ class ContactInformation extends React.Component {
           </Col>
           <Col xs={4}>
             <KeyValue
-              label={<FormattedMessage id="ui-directory.information.mainContactName" />}
-              value={record.contactName ? record.contactName : '-'}
+              label={<FormattedMessage id="ui-directory.information.mainEmailAddress" />}
+              value={record.emailAddress ? record.emailAddress : '-'}
             />
           </Col>
           <Col xs={4}>
             <KeyValue
-              label={<FormattedMessage id="ui-directory.information.mainEmailAddress" />}
-              value={record.emailAddress ? record.emailAddress : '-'}
+              label={<FormattedMessage id="ui-directory.information.mainContactName" />}
+              value={record.contactName ? record.contactName : '-'}
             />
           </Col>
         </Row>
