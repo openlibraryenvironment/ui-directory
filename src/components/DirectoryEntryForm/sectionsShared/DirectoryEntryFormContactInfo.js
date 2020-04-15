@@ -14,7 +14,7 @@ import {
   TextField,
 } from '@folio/stripes/components';
 
-import { SymbolListField } from '../components';
+import { AddressListField } from '../components';
 
 import { required } from '../../../util/validators';
 
@@ -82,7 +82,7 @@ class DirectoryEntryFormContactInfo extends React.Component {
               <FieldArray
                 name="addresses"
               >
-                {({ fields, input, meta }) => <SymbolListField {... { fields, input, meta }} /> }
+                {({ fields, input, meta }) => <AddressListField {... { fields, input, meta }} /> }
               </FieldArray>
             </Col>
           </Row>

@@ -63,6 +63,7 @@
   "information.members": "Members",
   "information.tags": "Tags",
   "information.addresses": "Addresses",
+  "information.addresses.add": "Add contact information",
   "information.heading.contactInformation": "Contact information",
   "information.addressNofM": "Address {index} of {count}",
   "information.heading.services": "Services",
