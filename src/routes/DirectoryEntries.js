@@ -66,7 +66,8 @@ class DirectoryEntries extends React.Component {
       perRequest: 100,
       limitParam: 'perPage',
       resultCount: { initialValue: INITIAL_RESULT_COUNT },
-      throwErrors: false
+      throwErrors: false,
+      accumulate: true,
     },
     namingAuthorities: {
       type: 'okapi',
@@ -116,7 +117,21 @@ class DirectoryEntries extends React.Component {
       }),
     }),
 
-    mutator: PropTypes.object,
+    mutator: PropTypes.shape({
+      query: PropTypes.shape({
+        update: PropTypes.func.isRequired,
+      }).isRequired,
+      dirents: PropTypes.shape({
+        reset: PropTypes.func.isRequired,
+        GET: PropTypes.func.isRequired,
+      }).isRequired,
+      selectedRecordId: PropTypes.shape({
+        replace: PropTypes.func.isRequired,
+      }).isRequired,
+      selectedRecord: PropTypes.shape({
+        PUT: PropTypes.func.isRequired,
+      }).isRequired,
+    }).isRequired,
 
     stripes: PropTypes.shape({
       logger: PropTypes.shape({
@@ -128,6 +143,17 @@ class DirectoryEntries extends React.Component {
   constructor(props) {
     super(props);
     this.onClose = this.onClose.bind(this);
+  }
+
+  componentDidMount() {
+    this.intervalId = setInterval(() => {
+      this.props.mutator.dirents.reset();
+      this.props.mutator.dirents.GET();
+    }, 5000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.intervalId);
   }
 
   onClose() {
