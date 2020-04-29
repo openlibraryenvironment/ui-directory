@@ -35,6 +35,7 @@
   "dependencies": {
     "@folio/react-intl-safe-html": "^1.0.3",
     "@folio/stripes-erm-components": "^2.0.0",
+    "@vtex/address-form": "^3.8.1",
     "compose-function": "^3.0.3",
     "final-form-arrays": "^3.0.2",
     "final-form-set-field-data": "^1.0.2",
