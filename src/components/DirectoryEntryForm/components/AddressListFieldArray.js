@@ -25,22 +25,30 @@ class AddressListFieldArray extends React.Component {
     const defaultLines = [
       {
         seq: 0,
-        type: { value: 'Premise' },
+        type: { value: 'Department' },
       },
       {
         seq: 1,
-        type: { value: 'Thoroughfare' },
+        type: { value: 'Premise' },
       },
       {
         seq: 2,
-        type: { value: 'Locality' },
+        type: { value: 'Thoroughfare' },
       },
       {
         seq: 3,
-        type: { value: 'AdministrativeArea' },
+        type: { value: 'PostBox' },
       },
       {
         seq: 4,
+        type: { value: 'Locality' },
+      },
+      {
+        seq: 5,
+        type: { value: 'AdministrativeArea' },
+      },
+      {
+        seq: 6,
         type: { value: 'PostalCode' },
       },
     ];

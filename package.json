@@ -43,7 +43,8 @@
     "prop-types": "^15.6.0",
     "react-final-form": "^6.3.0",
     "react-final-form-arrays": "^3.1.1",
-    "uuid": "^7.0.3"
+    "uuid": "^7.0.3",
+    "@folio/address-plugin-usa": "^1.0.0"
   },
   "peerDependencies": {
     "@folio/stripes": "^3.0.0",

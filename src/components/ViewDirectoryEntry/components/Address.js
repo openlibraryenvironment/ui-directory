@@ -15,10 +15,11 @@ class Address extends React.Component {
     index: PropTypes.number,
   };
 
-  findIndexBySeq(seq) {
+  // TODO possibly just render line by line instead...
+  findIndexByType(type) {
     // This function is in place to ensure that the array getting jumbled up doesn't break the edit order
     const { address: { lines } } = this.props;
-    return lines.findIndex(item => item.seq === seq);
+    return lines.findIndex(item => item.type?.value === type.toLowerCase());
   }
 
   render() {
@@ -35,19 +36,19 @@ class Address extends React.Component {
             <Col xs={4}>
               <KeyValue
                 label={<FormattedMessage id="ui-directory.information.addresses.houseName" />}
-                value={address ? address.lines[this.findIndexBySeq(0)]?.value : '-'}
+                value={address ? address.lines[this.findIndexByType('premise')]?.value : '-'}
               />
             </Col>
             <Col xs={4}>
               <KeyValue
                 label={<FormattedMessage id="ui-directory.information.addresses.street" />}
-                value={address ? address.lines[this.findIndexBySeq(1)]?.value : '-'}
+                value={address ? address.lines[this.findIndexByType('thoroughfare')]?.value : '-'}
               />
             </Col>
             <Col xs={4}>
               <KeyValue
                 label={<FormattedMessage id="ui-directory.information.addresses.city" />}
-                value={address ? address.lines[this.findIndexBySeq(2)]?.value : '-'}
+                value={address ? address.lines[this.findIndexByType('locality')]?.value : '-'}
               />
             </Col>
           </Row>
@@ -55,13 +56,13 @@ class Address extends React.Component {
             <Col xs={4}>
               <KeyValue
                 label={<FormattedMessage id="ui-directory.information.addresses.administrativeArea" />}
-                value={address ? address.lines[this.findIndexBySeq(3)]?.value : '-'}
+                value={address ? address.lines[this.findIndexByType('administrativeArea')]?.value : '-'}
               />
             </Col>
             <Col xs={4}>
               <KeyValue
                 label={<FormattedMessage id="ui-directory.information.addresses.postalCode" />}
-                value={address ? address.lines[this.findIndexBySeq(4)]?.value : '-'}
+                value={address ? address.lines[this.findIndexByType('postalCode')]?.value : '-'}
               />
             </Col>
             {address.tags.length > 0 &&

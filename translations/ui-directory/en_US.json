@@ -65,7 +65,27 @@
   "information.tags": "Tags",
   "information.addresses": "Addresses",
   "information.addresses.add": "Add contact information",
-  "information.addresses.namePlaceholder": "Enter a name for this contact information",
+  "information.addresses.namePlaceholder": "Enter a label for this contact information",
+
+  "information.addresses.US.premise": "Building name",
+  "information.addresses.US.thoroughfare": "Street address",
+  "information.addresses.US.locality": "City",
+  "information.addresses.US.administrativeArea": "State",
+  "information.addresses.US.postalCode": "Zip code",
+
+  "information.addresses.UK.premise": "Flat/Apartment number or building name",
+  "information.addresses.UK.thoroughfare": "Street address",
+  "information.addresses.UK.locality": "City",
+  "information.addresses.UK.administrativeArea": "County",
+  "information.addresses.UK.postalCode": "Postcode",
+
+  "information.addresses.CAN.premise": "Building name",
+  "information.addresses.CAN.thoroughfare": "Street address",
+  "information.addresses.CAN.locality": "City",
+  "information.addresses.CAN.administrativeArea": "Province",
+  "information.addresses.CAN.postalCode": "Postal Code",
+
+
   "information.addresses.houseName": "House name/number",
   "information.addresses.street": "Street",
   "information.addresses.city": "City",
