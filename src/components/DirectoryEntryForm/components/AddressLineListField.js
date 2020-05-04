@@ -16,7 +16,7 @@ class AddressLineListField extends React.Component {
     items: PropTypes.arrayOf(PropTypes.shape({
       seq: PropTypes.number.isRequired,
     })),
-    name: PropTypes.shape,
+    name: PropTypes.string.isRequired,
   };
 
   findIndexByType(type) {
