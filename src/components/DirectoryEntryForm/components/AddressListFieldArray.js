@@ -6,7 +6,6 @@ import { Field } from 'react-final-form';
 import {
   Button,
   Col,
-  Row,
   TextField,
 } from '@folio/stripes/components';
 
@@ -17,7 +16,6 @@ import pluginUSA from '@folio/address-plugin-usa';
 // import pluginFrance from '@folio/address-plugin-france';
 // ... etc ...
 
-import AddressListField from './AddressListField';
 import { required } from '../../../util/validators';
 
 const addressPlugins = {
