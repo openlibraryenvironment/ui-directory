@@ -6,6 +6,8 @@ import { Field } from 'react-final-form';
 import {
   Button,
   Col,
+  MessageBanner,
+  Select,
   TextField,
 } from '@folio/stripes/components';
 
@@ -36,6 +38,11 @@ class AddressListFieldArray extends React.Component {
     onDeleteField: PropTypes.func.isRequired,
   };
 
+  state = {
+    selectedAddressFormat: {},
+    warning: {}
+  };
+
   renderAddAddress = () => {
     return (
       <Button
@@ -62,34 +69,84 @@ class AddressListFieldArray extends React.Component {
     );
   }
 
-  render() {
-    const locality = 'usa'; // We might get this from the user via a <select>
-    const plugin = addressPlugins[locality];
-    if (!plugin) return <div>No such address plugin!</div>;
+  selectPlugin(index) {
+    const locality = this.state.selectedAddressFormat[index];
+    const warning = this.state.warning[index];
+    const { intl } = this.props;
 
+    const plugin = locality ? addressPlugins[locality] : undefined;
+    if ((plugin || !locality) && warning) {
+      this.setState((prevState) => {
+        const newWarning = prevState.warning;
+        newWarning[index] = '';
+        return { 'warning': newWarning };
+      });
+    }
+    if (locality && !plugin && !warning) {
+      this.setState((prevState) => {
+        const newWarning = prevState.warning;
+        newWarning[index] = intl.formatMessage({ id: 'ui-directory.information.addresses.missingPlugin' });
+        return { 'warning': newWarning };
+      });
+    }
+    return plugin;
+  }
+
+  render() {
     const { items } = this.props;
+    const supportedAddressFormats = [
+      { value: '', label: '', disabled: true },
+      { value: 'usa', label: 'USA' },
+      { value: 'gbr', label: 'Great Britain' },
+      { value: 'can', label: 'Canada' },
+    ];
+
     return (
       <>
         {items?.map((address, index) => {
+          const plugin = this.selectPlugin(index);
           return (
             <EditCard
               header={this.renderCardHeader(index)}
               key={`addresses[${index}].editCard`}
               onDelete={() => this.props.onDeleteField(index, address)}
             >
+              {plugin &&
+                <Field
+                  name={`${this.props.name}[${index}]`}
+                >
+                  {props => (
+                    <plugin.addressForm
+                      {...props}
+                      textFieldComponent={TextField}
+                      requiredValidator={required}
+                      name={`${this.props.name}[${index}]`}
+                    />
+                  )}
+                </Field>
+              }
               <Field
-                name={`${this.props.name}[${index}]`}
+                name={`${this.props.name}[${index}].country`}
+                parse={v => v}
               >
                 {props => (
-                  <plugin.addressForm
+                  <Select
                     {...props}
-                    textFieldComponent={TextField}
-                    name={`${this.props.name}[${index}]`}
+                    dataOptions={supportedAddressFormats}
+                    onChange={(e) => {
+                      props.input.onChange(e);
+                      const selectedFormat = e.target.value;
+                      this.setState((prevState) => {
+                        const newSelectedAddress = prevState.selectedAddressFormat;
+                        newSelectedAddress[index] = selectedFormat;
+                        return { 'selectedAddressFormat': newSelectedAddress };
+                      });
+                    }}
                   />
                 )}
               </Field>
+              {this.state.warning?.[index] ? <MessageBanner type="warning"> {this.state.warning?.[index]} </MessageBanner> : null}
             </EditCard>
-
           );
         })}
         {this.renderAddAddress()}
