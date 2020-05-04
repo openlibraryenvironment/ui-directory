@@ -39,41 +39,9 @@ class AddressListFieldArray extends React.Component {
   };
 
   renderAddAddress = () => {
-    const defaultLines = [
-      {
-        seq: 0,
-        type: { value: 'Department' },
-      },
-      {
-        seq: 1,
-        type: { value: 'Premise' },
-      },
-      {
-        seq: 2,
-        type: { value: 'Thoroughfare' },
-      },
-      {
-        seq: 3,
-        type: { value: 'PostBox' },
-      },
-      {
-        seq: 4,
-        type: { value: 'Locality' },
-      },
-      {
-        seq: 5,
-        type: { value: 'AdministrativeArea' },
-      },
-      {
-        seq: 6,
-        type: { value: 'PostalCode' },
-      },
-    ];
-
     return (
       <Button
         id="add-address-btn"
-        //onClick={() => this.props.onAddField({ lines: defaultLines })}
         onClick={() => this.props.onAddField()}
       >
         <FormattedMessage id="ui-directory.information.addresses.add" />
@@ -106,14 +74,6 @@ class AddressListFieldArray extends React.Component {
       <>
         {items?.map((address, index) => {
           return (
-          /* <Field
-            name={`${this.props.name}[${index}]`}
-            component={AddressListField}
-            key={index}
-            index={index}
-            address={address}
-            onDeleteField={() => this.props.onDeleteField(index, address)}
-          /> */
             <EditCard
               header={this.renderCardHeader(index)}
               key={`addresses[${index}].editCard`}
