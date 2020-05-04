@@ -12,19 +12,7 @@ import {
   TextField,
 } from '@folio/stripes/components';
 
-import pluginUSA from '@folio/address-plugin-usa';
-// import pluginUK from '@folio/address-plugin-uk';
-// import pluginFrance from '@folio/address-plugin-france';
-// ... etc ...
-
 import { AddressListFieldArray } from '../components';
-
-const addressPlugins = {
-  usa: pluginUSA,
-  // uk: pluginUK,
-  // france: pluginFrance,
-  // ... etc ...
-};
 
 
 class DirectoryEntryFormContactInfo extends React.Component {
@@ -42,17 +30,12 @@ class DirectoryEntryFormContactInfo extends React.Component {
     values: PropTypes.object,
   };
 
-
   getCurrentLayer() {
     const layer = this.props?.parentResources?.query?.layer;
     return layer;
   }
 
   render() {
-    const locality = 'usa'; // We might get this from the user via a <select>
-    const plugin = addressPlugins[locality];
-    if (!plugin) return <div>No such address plugin!</div>;
-
     return (
       <>
         <Accordion
@@ -93,8 +76,6 @@ class DirectoryEntryFormContactInfo extends React.Component {
                 <Label>
                   <FormattedMessage id="ui-directory.information.addresses" />
                 </Label>
-
-                <plugin.addressForm textFieldComponent={TextField} />
 
                 <FieldArray
                   name="addresses"

@@ -123,6 +123,7 @@ class EditDirectoryEntry extends React.Component {
         submitValues.parent = { id: values.parent };
       }
       submitValues.symbols = values.symbols?.map(obj => (obj?.authority?.id ? obj : ({ ...obj, authority: { id: obj.authority } })));
+      console.log("Submitted Values: %o", submitValues);
       onSubmit(submitValues, null, this.props);
     };
 

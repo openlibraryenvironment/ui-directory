@@ -61,7 +61,8 @@
     "route": "/directory",
     "queryResource": "query",
     "stripesDeps": [
-      "@folio/stripes-erm-components"
+      "@folio/stripes-erm-components",
+      "@folio/address-plugin-usa"
     ],
     "icons": [
       {
