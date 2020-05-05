@@ -67,7 +67,7 @@
   "information.addresses.add": "Add contact information",
   "information.addresses.namePlaceholder": "Enter a label for this contact information",
 
-  "information.addresses.addressFormat.usa": "USA",
+  "information.addresses.country": "Country",
   "information.addresses.missingPlugin": "The required plugin for this address format is missing.",
 
   "information.addresses.houseName": "House name/number",

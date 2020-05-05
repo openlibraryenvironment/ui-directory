@@ -34,6 +34,7 @@
   },
   "dependencies": {
     "@folio/address-plugin-usa": "^1.0.0",
+    "@folio/address-utils": "^1.0.0",
     "@folio/react-intl-safe-html": "^1.0.3",
     "@folio/stripes-erm-components": "^2.0.0",
     "compose-function": "^3.0.3",
@@ -61,7 +62,8 @@
     "queryResource": "query",
     "stripesDeps": [
       "@folio/stripes-erm-components",
-      "@folio/address-plugin-usa"
+      "@folio/address-plugin-usa",
+      "@folio/address-utils"
     ],
     "icons": [
       {

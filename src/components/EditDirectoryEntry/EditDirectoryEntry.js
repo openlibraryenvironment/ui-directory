@@ -13,6 +13,8 @@ import {
   PaneMenu,
 } from '@folio/stripes/components';
 
+import { fieldsToBackend } from '@folio/address-plugin-usa';
+
 import permissionToEdit from '../../util/permissionToEdit';
 import DirectoryEntryForm from '../DirectoryEntryForm';
 
@@ -123,7 +125,15 @@ class EditDirectoryEntry extends React.Component {
         submitValues.parent = { id: values.parent };
       }
       submitValues.symbols = values.symbols?.map(obj => (obj?.authority?.id ? obj : ({ ...obj, authority: { id: obj.authority } })));
-      console.log("Submitted Values: %o", submitValues);
+
+      if (submitValues.addresses) {
+        const newAddresses = [];
+        submitValues.addresses.forEach((address) => {
+          const newAddress = fieldsToBackend(address);
+          newAddresses.push(newAddress);
+        });
+        submitValues.addresses = newAddresses;
+      }
       onSubmit(submitValues, null, this.props);
     };
 

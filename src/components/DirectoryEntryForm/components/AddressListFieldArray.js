@@ -18,6 +18,8 @@ import pluginUSA from '@folio/address-plugin-usa';
 // import pluginFrance from '@folio/address-plugin-france';
 // ... etc ...
 
+import { getExistingLineField } from '@folio/address-utils';
+
 import { required } from '../../../util/validators';
 
 const addressPlugins = {
@@ -69,8 +71,8 @@ class AddressListFieldArray extends React.Component {
     );
   }
 
-  selectPlugin(index) {
-    const locality = this.state.selectedAddressFormat[index];
+  selectPlugin(index, initialLocality) {
+    const locality = this.state.selectedAddressFormat[index] || initialLocality;
     const warning = this.state.warning[index];
     const { intl } = this.props;
 
@@ -104,7 +106,8 @@ class AddressListFieldArray extends React.Component {
     return (
       <>
         {items?.map((address, index) => {
-          const plugin = this.selectPlugin(index);
+          const existingCountry = getExistingLineField(address.lines, 'country')?.value;
+          const plugin = this.selectPlugin(index, existingCountry);
           return (
             <EditCard
               header={this.renderCardHeader(index)}
@@ -116,23 +119,26 @@ class AddressListFieldArray extends React.Component {
                   name={`${this.props.name}[${index}]`}
                 >
                   {props => (
-                    <plugin.addressForm
+                    <plugin.addressFields
                       {...props}
                       textFieldComponent={TextField}
                       requiredValidator={required}
                       name={`${this.props.name}[${index}]`}
+                      savedAddress={address}
                     />
                   )}
                 </Field>
               }
               <Field
                 name={`${this.props.name}[${index}].country`}
+                label={<FormattedMessage id="ui-directory.information.addresses.country" />}
                 parse={v => v}
               >
                 {props => (
                   <Select
                     {...props}
                     dataOptions={supportedAddressFormats}
+                    initialValue={existingCountry}
                     onChange={(e) => {
                       props.input.onChange(e);
                       const selectedFormat = e.target.value;
