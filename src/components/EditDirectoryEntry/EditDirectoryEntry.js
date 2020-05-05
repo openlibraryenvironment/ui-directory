@@ -14,6 +14,7 @@ import {
 } from '@folio/stripes/components';
 
 import pluginUSA from '@folio/address-plugin-usa';
+import pluginGeneric from '@folio/address-plugin-generic';
 // import pluginGBR from '@folio/address-plugin-gbr';
 // import pluginCAN from '@folio/address-plugin-can';
 // ... etc ...
@@ -28,6 +29,7 @@ const defaultSubmit = (directory, dispatch, props) => {
 
 const addressPlugins = {
   usa: pluginUSA,
+  generic: pluginGeneric,
   // gbr: pluginGBR,
   // can: pluginCAN,
   // ... etc ...
@@ -111,7 +113,8 @@ class EditDirectoryEntry extends React.Component {
 
   selectPlugin(locality) {
     const { intl } = this.props;
-    const plugin = locality ? addressPlugins[locality] : undefined;
+    let plugin = locality ? (addressPlugins[locality] ? addressPlugins[locality] : addressPlugins.generic) : undefined;
+
     if (!plugin) {
       throw new Error(intl.formatMessage({ id: 'ui-directory.information.addresses.missingPlugin' }));
     }
@@ -159,6 +162,7 @@ class EditDirectoryEntry extends React.Component {
         });
         submitValues.addresses = newAddresses;
       }
+      console.log("Submitted values: %o", submitValues)
       onSubmit(submitValues, null, this.props);
     };
 
