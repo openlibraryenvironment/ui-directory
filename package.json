@@ -33,6 +33,7 @@
     "sinon": "^6.3.4"
   },
   "dependencies": {
+    "@folio/address-plugin-generic": "^1.0.0",
     "@folio/address-plugin-usa": "^1.0.0",
     "@folio/address-utils": "^1.0.0",
     "@folio/react-intl-safe-html": "^1.0.3",
@@ -62,6 +63,7 @@
     "queryResource": "query",
     "stripesDeps": [
       "@folio/stripes-erm-components",
+      "@folio/address-plugin-generic",
       "@folio/address-plugin-usa",
       "@folio/address-utils"
     ],

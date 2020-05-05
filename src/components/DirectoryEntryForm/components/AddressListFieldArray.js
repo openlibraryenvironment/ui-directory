@@ -13,9 +13,10 @@ import {
 
 import { EditCard, withKiwtFieldArray } from '@folio/stripes-erm-components';
 
+import pluginGeneric from '@folio/address-plugin-generic';
 import pluginUSA from '@folio/address-plugin-usa';
-// import pluginUK from '@folio/address-plugin-uk';
-// import pluginFrance from '@folio/address-plugin-france';
+// import pluginGBR from '@folio/address-plugin-gbr';
+// import pluginCAN from '@folio/address-plugin-can';
 // ... etc ...
 
 import { getExistingLineField } from '@folio/address-utils';
@@ -23,9 +24,10 @@ import { getExistingLineField } from '@folio/address-utils';
 import { required } from '../../../util/validators';
 
 const addressPlugins = {
+  generic: pluginGeneric,
   usa: pluginUSA,
-  // uk: pluginUK,
-  // france: pluginFrance,
+  // gbr: pluginGBR,
+  // can: pluginCAN,
   // ... etc ...
 };
 
@@ -76,21 +78,24 @@ class AddressListFieldArray extends React.Component {
     const warning = this.state.warning[index];
     const { intl } = this.props;
 
-    const plugin = locality ? addressPlugins[locality] : undefined;
-    if ((plugin || !locality) && warning) {
+    const plugin = addressPlugins[locality] ? addressPlugins[locality] :  addressPlugins.generic;
+
+    if (((plugin !== addressPlugins.generic && plugin) || !locality) && warning) {
       this.setState((prevState) => {
         const newWarning = prevState.warning;
         newWarning[index] = '';
         return { 'warning': newWarning };
       });
     }
-    if (locality && !plugin && !warning) {
+
+    if (locality && (!plugin || plugin === addressPlugins.generic) && !warning) {
       this.setState((prevState) => {
         const newWarning = prevState.warning;
         newWarning[index] = intl.formatMessage({ id: 'ui-directory.information.addresses.missingPlugin' });
         return { 'warning': newWarning };
       });
     }
+
     return plugin;
   }
 
@@ -108,13 +113,14 @@ class AddressListFieldArray extends React.Component {
         {items?.map((address, index) => {
           const existingCountry = getExistingLineField(address.lines, 'country')?.value;
           const plugin = this.selectPlugin(index, existingCountry);
+          const locality = this.state.selectedAddressFormat[index] || existingCountry;
           return (
             <EditCard
               header={this.renderCardHeader(index)}
               key={`addresses[${index}].editCard`}
               onDelete={() => this.props.onDeleteField(index, address)}
             >
-              {plugin &&
+              {plugin && locality &&
                 <Field
                   name={`${this.props.name}[${index}]`}
                 >
@@ -134,6 +140,8 @@ class AddressListFieldArray extends React.Component {
                 initialValue={existingCountry}
                 label={<FormattedMessage id="ui-directory.information.addresses.country" />}
                 parse={v => v}
+                required
+                validate={required}
               >
                 {props => (
                   <Select

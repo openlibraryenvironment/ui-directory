@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'react-intl';
 import { Form } from 'react-final-form';
 import arrayMutators from 'final-form-arrays';
 import { Prompt } from 'react-router-dom';
@@ -13,7 +13,10 @@ import {
   PaneMenu,
 } from '@folio/stripes/components';
 
-import { fieldsToBackend } from '@folio/address-plugin-usa';
+import pluginUSA from '@folio/address-plugin-usa';
+// import pluginGBR from '@folio/address-plugin-gbr';
+// import pluginCAN from '@folio/address-plugin-can';
+// ... etc ...
 
 import permissionToEdit from '../../util/permissionToEdit';
 import DirectoryEntryForm from '../DirectoryEntryForm';
@@ -21,6 +24,13 @@ import DirectoryEntryForm from '../DirectoryEntryForm';
 const defaultSubmit = (directory, dispatch, props) => {
   return props.onUpdate(directory)
     .then(() => props.onCancel());
+};
+
+const addressPlugins = {
+  usa: pluginUSA,
+  // gbr: pluginGBR,
+  // can: pluginCAN,
+  // ... etc ...
 };
 
 class EditDirectoryEntry extends React.Component {
@@ -99,6 +109,15 @@ class EditDirectoryEntry extends React.Component {
     );
   }
 
+  selectPlugin(locality) {
+    const { intl } = this.props;
+    const plugin = locality ? addressPlugins[locality] : undefined;
+    if (!plugin) {
+      throw new Error(intl.formatMessage({ id: 'ui-directory.information.addresses.missingPlugin' }));
+    }
+    return plugin;
+  }
+
   render() {
     const { initialValues, onSubmit, stripes } = this.props;
 
@@ -129,14 +148,12 @@ class EditDirectoryEntry extends React.Component {
       if (submitValues.addresses) {
         const newAddresses = [];
         submitValues.addresses.forEach((address) => {
-          // TODO this fieldsToBackend needs to come from the correct plugin
-
           if (address._delete === true) {
             // If we're deleting the address we can just leave it as is
             newAddresses.push(address);
           } else {
-            // TODO we need to get this function from the right plugin
-            const newAddress = fieldsToBackend(address);
+            const plugin = this.selectPlugin(address.country);
+            const newAddress = plugin.fieldsToBackend(address);
             newAddresses.push(newAddress);
           }
         });
@@ -196,4 +213,4 @@ class EditDirectoryEntry extends React.Component {
   }
 }
 
-export default EditDirectoryEntry;
+export default injectIntl(EditDirectoryEntry);
