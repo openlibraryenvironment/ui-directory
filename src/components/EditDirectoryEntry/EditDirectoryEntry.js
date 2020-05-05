@@ -129,8 +129,16 @@ class EditDirectoryEntry extends React.Component {
       if (submitValues.addresses) {
         const newAddresses = [];
         submitValues.addresses.forEach((address) => {
-          const newAddress = fieldsToBackend(address);
-          newAddresses.push(newAddress);
+          // TODO this fieldsToBackend needs to come from the correct plugin
+
+          if (address._delete === true) {
+            // If we're deleting the address we can just leave it as is
+            newAddresses.push(address);
+          } else {
+            // TODO we need to get this function from the right plugin
+            const newAddress = fieldsToBackend(address);
+            newAddresses.push(newAddress);
+          }
         });
         submitValues.addresses = newAddresses;
       }

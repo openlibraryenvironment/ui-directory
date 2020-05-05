@@ -131,6 +131,7 @@ class AddressListFieldArray extends React.Component {
               }
               <Field
                 name={`${this.props.name}[${index}].country`}
+                initialValue={existingCountry}
                 label={<FormattedMessage id="ui-directory.information.addresses.country" />}
                 parse={v => v}
               >
@@ -138,7 +139,6 @@ class AddressListFieldArray extends React.Component {
                   <Select
                     {...props}
                     dataOptions={supportedAddressFormats}
-                    initialValue={existingCountry}
                     onChange={(e) => {
                       props.input.onChange(e);
                       const selectedFormat = e.target.value;
