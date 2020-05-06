@@ -54,6 +54,9 @@ class EditDirectoryEntry extends React.Component {
     stripes: PropTypes.shape({
       hasPerm: PropTypes.func.isRequired,
     }).isRequired,
+    intl: PropTypes.shape({
+      formatMessage: PropTypes.func.isRequired,
+    }).isRequired,
   }
 
   static defaultProps = {
@@ -113,7 +116,7 @@ class EditDirectoryEntry extends React.Component {
 
   selectPlugin(locality) {
     const { intl } = this.props;
-    let plugin = locality ? (addressPlugins[locality] ? addressPlugins[locality] : addressPlugins.generic) : undefined;
+    const plugin = locality ? (addressPlugins[locality] ? addressPlugins[locality] : addressPlugins.generic) : undefined;
 
     if (!plugin) {
       throw new Error(intl.formatMessage({ id: 'ui-directory.information.addresses.missingPlugin' }));
@@ -162,7 +165,7 @@ class EditDirectoryEntry extends React.Component {
         });
         submitValues.addresses = newAddresses;
       }
-      console.log("Submitted values: %o", submitValues)
+      // console.log('Submitted values: %o', submitValues);
       onSubmit(submitValues, null, this.props);
     };
 
