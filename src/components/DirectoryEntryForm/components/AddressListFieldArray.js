@@ -40,6 +40,9 @@ class AddressListFieldArray extends React.Component {
     name: PropTypes.string,
     onAddField: PropTypes.func.isRequired,
     onDeleteField: PropTypes.func.isRequired,
+    intl: PropTypes.shape({
+      formatMessage: PropTypes.func.isRequired,
+    }).isRequired,
   };
 
   state = {
@@ -78,7 +81,7 @@ class AddressListFieldArray extends React.Component {
     const warning = this.state.warning[index];
     const { intl } = this.props;
 
-    const plugin = addressPlugins[locality] ? addressPlugins[locality] :  addressPlugins.generic;
+    const plugin = addressPlugins[locality] ? addressPlugins[locality] : addressPlugins.generic;
 
     if (((plugin !== addressPlugins.generic && plugin) || !locality) && warning) {
       this.setState((prevState) => {
