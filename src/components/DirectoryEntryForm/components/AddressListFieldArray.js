@@ -14,8 +14,8 @@ import {
 import { EditCard, withKiwtFieldArray } from '@folio/stripes-erm-components';
 
 import pluginGeneric from '@folio/address-plugin-generic';
-import pluginUSA from '@folio/address-plugin-usa';
-import pluginGBR from '@folio/address-plugin-gbr';
+import pluginNA from '@folio/address-plugin-north-america';
+import pluginGBR from '@folio/address-plugin-british-isles';
 // import pluginCAN from '@folio/address-plugin-can';
 // ... etc ...
 
@@ -25,7 +25,7 @@ import { required } from '../../../util/validators';
 
 const addressPlugins = {
   generic: pluginGeneric,
-  usa: pluginUSA,
+  usa: pluginNA,
   gbr: pluginGBR,
   // can: pluginCAN,
   // ... etc ...
@@ -76,14 +76,14 @@ class AddressListFieldArray extends React.Component {
     );
   }
 
-  selectPlugin(index, initialLocality) {
-    const locality = this.state.selectedAddressFormat[index] || initialLocality;
+  selectPlugin(index, initialDomain) {
+    const domain = this.state.selectedAddressFormat[index] || initialDomain;
     const warning = this.state.warning[index];
     const { intl } = this.props;
 
-    const plugin = addressPlugins[locality] ? addressPlugins[locality] : addressPlugins.generic;
+    const plugin = addressPlugins[domain] ? addressPlugins[domain] : addressPlugins.generic;
 
-    if (((plugin !== addressPlugins.generic && plugin) || !locality) && warning) {
+    if ((((plugin !== addressPlugins.generic || domain === 'generic') && plugin) || !domain) && warning) {
       this.setState((prevState) => {
         const newWarning = prevState.warning;
         newWarning[index] = '';
@@ -91,7 +91,7 @@ class AddressListFieldArray extends React.Component {
       });
     }
 
-    if (locality && (!plugin || plugin === addressPlugins.generic) && !warning) {
+    if (domain && (!plugin || (plugin === addressPlugins.generic && domain !== 'generic')) && !warning) {
       this.setState((prevState) => {
         const newWarning = prevState.warning;
         newWarning[index] = intl.formatMessage({ id: 'ui-directory.information.addresses.missingPlugin' });

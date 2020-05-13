@@ -34,8 +34,8 @@
   },
   "dependencies": {
     "@folio/address-plugin-generic": "^1.0.0",
-    "@folio/address-plugin-usa": "^1.0.0",
-    "@folio/address-plugin-gbr": "^1.0.0",
+    "@folio/address-plugin-north-america": "^1.0.0",
+    "@folio/address-plugin-british-isles": "^1.0.0",
     "@folio/address-utils": "^1.0.0",
     "@folio/react-intl-safe-html": "^1.0.3",
     "@folio/stripes-erm-components": "^2.0.0",
@@ -65,8 +65,8 @@
     "stripesDeps": [
       "@folio/stripes-erm-components",
       "@folio/address-plugin-generic",
-      "@folio/address-plugin-usa",
-      "@folio/address-plugin-gbr",
+      "@folio/address-plugin-north-america",
+      "@folio/address-plugin-british-isles",
       "@folio/address-utils"
     ],
     "icons": [

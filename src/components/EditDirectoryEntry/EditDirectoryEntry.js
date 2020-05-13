@@ -13,9 +13,9 @@ import {
   PaneMenu,
 } from '@folio/stripes/components';
 
-import pluginUSA from '@folio/address-plugin-usa';
+import pluginNA from '@folio/address-plugin-north-america';
 import pluginGeneric from '@folio/address-plugin-generic';
-import pluginGBR from '@folio/address-plugin-gbr';
+import pluginGBR from '@folio/address-plugin-british-isles';
 // import pluginCAN from '@folio/address-plugin-can';
 // ... etc ...
 
@@ -28,7 +28,7 @@ const defaultSubmit = (directory, dispatch, props) => {
 };
 
 const addressPlugins = {
-  usa: pluginUSA,
+  usa: pluginNA,
   generic: pluginGeneric,
   gbr: pluginGBR,
   // can: pluginCAN,
