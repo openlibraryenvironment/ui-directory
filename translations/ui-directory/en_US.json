@@ -68,6 +68,10 @@
   "information.addresses.namePlaceholder": "Enter a label for this contact information",
 
   "information.addresses.country": "Country",
+  "information.addresses.country.generic": "Generic",
+  "information.addresses.country.usa": "USA",
+  "information.addresses.country.gbr": "Great Britain",
+  "information.addresses.country.can": "Canada",
   "information.addresses.missingPlugin": "The required plugin for this address format is missing.",
 
   "information.addresses.houseName": "House name/number",

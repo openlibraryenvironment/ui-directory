@@ -15,7 +15,7 @@ import {
 
 import pluginUSA from '@folio/address-plugin-usa';
 import pluginGeneric from '@folio/address-plugin-generic';
-// import pluginGBR from '@folio/address-plugin-gbr';
+import pluginGBR from '@folio/address-plugin-gbr';
 // import pluginCAN from '@folio/address-plugin-can';
 // ... etc ...
 
@@ -30,7 +30,7 @@ const defaultSubmit = (directory, dispatch, props) => {
 const addressPlugins = {
   usa: pluginUSA,
   generic: pluginGeneric,
-  // gbr: pluginGBR,
+  gbr: pluginGBR,
   // can: pluginCAN,
   // ... etc ...
 };

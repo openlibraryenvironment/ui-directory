@@ -15,7 +15,7 @@ import { EditCard, withKiwtFieldArray } from '@folio/stripes-erm-components';
 
 import pluginGeneric from '@folio/address-plugin-generic';
 import pluginUSA from '@folio/address-plugin-usa';
-// import pluginGBR from '@folio/address-plugin-gbr';
+import pluginGBR from '@folio/address-plugin-gbr';
 // import pluginCAN from '@folio/address-plugin-can';
 // ... etc ...
 
@@ -26,7 +26,7 @@ import { required } from '../../../util/validators';
 const addressPlugins = {
   generic: pluginGeneric,
   usa: pluginUSA,
-  // gbr: pluginGBR,
+  gbr: pluginGBR,
   // can: pluginCAN,
   // ... etc ...
 };
@@ -103,12 +103,13 @@ class AddressListFieldArray extends React.Component {
   }
 
   render() {
-    const { items } = this.props;
+    const { intl, items } = this.props;
     const supportedAddressFormats = [
       { value: '', label: '', disabled: true },
-      { value: 'usa', label: 'USA' },
-      { value: 'gbr', label: 'Great Britain' },
-      { value: 'can', label: 'Canada' },
+      { value: 'usa', label: intl.formatMessage({ id: 'ui-directory.information.addresses.country.usa' }) },
+      { value: 'gbr', label: intl.formatMessage({ id: 'ui-directory.information.addresses.country.gbr' }) },
+      { value: 'can', label: intl.formatMessage({ id: 'ui-directory.information.addresses.country.can' }) },
+      { value: 'generic', label: intl.formatMessage({ id: 'ui-directory.information.addresses.country.generic' }) }
     ];
 
     return (
