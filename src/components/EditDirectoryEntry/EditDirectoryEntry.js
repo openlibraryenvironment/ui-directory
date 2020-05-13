@@ -16,8 +16,6 @@ import {
 import pluginNA from '@folio/address-plugin-north-america';
 import pluginGeneric from '@folio/address-plugin-generic';
 import pluginGBR from '@folio/address-plugin-british-isles';
-// import pluginCAN from '@folio/address-plugin-can';
-// ... etc ...
 
 import permissionToEdit from '../../util/permissionToEdit';
 import DirectoryEntryForm from '../DirectoryEntryForm';
@@ -27,13 +25,14 @@ const defaultSubmit = (directory, dispatch, props) => {
     .then(() => props.onCancel());
 };
 
-const addressPlugins = {
-  usa: pluginNA,
-  generic: pluginGeneric,
-  gbr: pluginGBR,
-  // can: pluginCAN,
-  // ... etc ...
-};
+const plugins = [pluginGeneric, pluginNA, pluginGBR];
+const pluginMap = {};
+plugins.forEach(plugin => {
+  plugin.listOfSupportedCountries.forEach(country => {
+    pluginMap[country] = plugin;
+  });
+});
+
 
 class EditDirectoryEntry extends React.Component {
   static propTypes = {
@@ -114,9 +113,9 @@ class EditDirectoryEntry extends React.Component {
     );
   }
 
-  selectPlugin(locality) {
+  selectPlugin(domain) {
     const { intl } = this.props;
-    const plugin = locality ? (addressPlugins[locality] ? addressPlugins[locality] : addressPlugins.generic) : undefined;
+    const plugin = domain ? (pluginMap[domain] ? pluginMap[domain] : pluginMap.Generic) : undefined;
 
     if (!plugin) {
       throw new Error(intl.formatMessage({ id: 'ui-directory.information.addresses.missingPlugin' }));

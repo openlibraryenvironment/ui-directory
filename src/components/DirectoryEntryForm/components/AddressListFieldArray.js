@@ -16,21 +16,18 @@ import { EditCard, withKiwtFieldArray } from '@folio/stripes-erm-components';
 import pluginGeneric from '@folio/address-plugin-generic';
 import pluginNA from '@folio/address-plugin-north-america';
 import pluginGBR from '@folio/address-plugin-british-isles';
-// import pluginCAN from '@folio/address-plugin-can';
-// ... etc ...
 
 import { getExistingLineField } from '@folio/address-utils';
 
 import { required } from '../../../util/validators';
 
-const addressPlugins = {
-  generic: pluginGeneric,
-  usa: pluginNA,
-  gbr: pluginGBR,
-  // can: pluginCAN,
-  // ... etc ...
-};
-
+const plugins = [pluginGeneric, pluginNA, pluginGBR];
+const pluginMap = {};
+plugins.forEach(plugin => {
+  plugin.listOfSupportedCountries.forEach(country => {
+    pluginMap[country] = plugin;
+  });
+});
 
 class AddressListFieldArray extends React.Component {
   static propTypes = {
@@ -80,10 +77,9 @@ class AddressListFieldArray extends React.Component {
     const domain = this.state.selectedAddressFormat[index] || initialDomain;
     const warning = this.state.warning[index];
     const { intl } = this.props;
+    const plugin = pluginMap[domain] ? pluginMap[domain] : pluginMap.generic;
 
-    const plugin = addressPlugins[domain] ? addressPlugins[domain] : addressPlugins.generic;
-
-    if ((((plugin !== addressPlugins.generic || domain === 'generic') && plugin) || !domain) && warning) {
+    if ((((plugin !== pluginMap.generic || domain === 'generic') && plugin) || !domain) && warning) {
       this.setState((prevState) => {
         const newWarning = prevState.warning;
         newWarning[index] = '';
@@ -91,7 +87,7 @@ class AddressListFieldArray extends React.Component {
       });
     }
 
-    if (domain && (!plugin || (plugin === addressPlugins.generic && domain !== 'generic')) && !warning) {
+    if (domain && (!plugin || (plugin === pluginMap.generic && domain !== 'generic')) && !warning) {
       this.setState((prevState) => {
         const newWarning = prevState.warning;
         newWarning[index] = intl.formatMessage({ id: 'ui-directory.information.addresses.missingPlugin' });
@@ -106,10 +102,13 @@ class AddressListFieldArray extends React.Component {
     const { intl, items } = this.props;
     const supportedAddressFormats = [
       { value: '', label: '', disabled: true },
-      { value: 'usa', label: intl.formatMessage({ id: 'ui-directory.information.addresses.country.usa' }) },
-      { value: 'gbr', label: intl.formatMessage({ id: 'ui-directory.information.addresses.country.gbr' }) },
-      { value: 'can', label: intl.formatMessage({ id: 'ui-directory.information.addresses.country.can' }) },
-      { value: 'generic', label: intl.formatMessage({ id: 'ui-directory.information.addresses.country.generic' }) }
+      { value: 'USA', label: intl.formatMessage({ id: 'ui-directory.information.addresses.country.usa' }) },
+      { value: 'Canada', label: intl.formatMessage({ id: 'ui-directory.information.addresses.country.can' }) },
+      { value: 'England', label: intl.formatMessage({ id: 'ui-directory.information.addresses.country.england' }) },
+      { value: 'Scotland', label: intl.formatMessage({ id: 'ui-directory.information.addresses.country.scotland' }) },
+      { value: 'Wales', label: intl.formatMessage({ id: 'ui-directory.information.addresses.country.wales' }) },
+      { value: 'Northern Ireland', label: intl.formatMessage({ id: 'ui-directory.information.addresses.country.northernIreland' }) },
+      { value: 'Generic', label: intl.formatMessage({ id: 'ui-directory.information.addresses.country.generic' }) }
     ];
 
     return (

@@ -70,7 +70,10 @@
   "information.addresses.country": "Country",
   "information.addresses.country.generic": "Generic",
   "information.addresses.country.usa": "USA",
-  "information.addresses.country.gbr": "Great Britain",
+  "information.addresses.country.england": "England",
+  "information.addresses.country.scotland": "Scotland",
+  "information.addresses.country.wales": "Wales",
+  "information.addresses.country.northernIreland": "Northern Ireland",
   "information.addresses.country.can": "Canada",
   "information.addresses.missingPlugin": "The required plugin for this address format is missing.",
 
