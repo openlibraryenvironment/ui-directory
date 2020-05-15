@@ -48,7 +48,7 @@ class DirectoryEntryForm extends React.Component {
   }
 
   getSectionProps() {
-    const { form, values = {} } = this.props;
+    const { form } = this.props;
     return {
       form,
       onToggle: this.handleSectionToggle,
