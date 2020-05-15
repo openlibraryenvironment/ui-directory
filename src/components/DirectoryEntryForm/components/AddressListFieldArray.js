@@ -63,7 +63,7 @@ class AddressListFieldArray extends React.Component {
     return (
       <Col xs={8}>
         <Field
-          name={`addresses[${index}].addressLabel`}
+          name={`${this.props.name}[${index}].addressLabel`}
           component={TextField}
           placeholder={intl.formatMessage({ id: 'ui-directory.information.addresses.namePlaceholder' })}
           required
@@ -77,9 +77,9 @@ class AddressListFieldArray extends React.Component {
     const domain = this.state.selectedAddressFormat[index] || initialDomain;
     const warning = this.state.warning[index];
     const { intl } = this.props;
-    const plugin = pluginMap[domain] ? pluginMap[domain] : pluginMap.generic;
+    const plugin = pluginMap[domain] ? pluginMap[domain] : pluginMap.Generic;
 
-    if ((((plugin !== pluginMap.generic || domain === 'generic') && plugin) || !domain) && warning) {
+    if ((((plugin !== pluginMap.Generic || domain === 'Generic') && plugin) || !domain) && warning) {
       this.setState((prevState) => {
         const newWarning = prevState.warning;
         newWarning[index] = '';
@@ -87,7 +87,7 @@ class AddressListFieldArray extends React.Component {
       });
     }
 
-    if (domain && (!plugin || (plugin === pluginMap.generic && domain !== 'generic')) && !warning) {
+    if (domain && (!plugin || (plugin === pluginMap.Generic && domain !== 'Generic')) && !warning) {
       this.setState((prevState) => {
         const newWarning = prevState.warning;
         newWarning[index] = intl.formatMessage({ id: 'ui-directory.information.addresses.missingPlugin' });
@@ -100,58 +100,38 @@ class AddressListFieldArray extends React.Component {
 
   render() {
     const { intl, items } = this.props;
-    const supportedAddressFormats = [
-      { value: '', label: '', disabled: true },
-      { value: 'USA', label: intl.formatMessage({ id: 'ui-directory.information.addresses.country.usa' }) },
-      { value: 'Canada', label: intl.formatMessage({ id: 'ui-directory.information.addresses.country.can' }) },
-      { value: 'England', label: intl.formatMessage({ id: 'ui-directory.information.addresses.country.england' }) },
-      { value: 'Scotland', label: intl.formatMessage({ id: 'ui-directory.information.addresses.country.scotland' }) },
-      { value: 'Wales', label: intl.formatMessage({ id: 'ui-directory.information.addresses.country.wales' }) },
-      { value: 'Northern Ireland', label: intl.formatMessage({ id: 'ui-directory.information.addresses.country.northernIreland' }) },
-      { value: 'Generic', label: intl.formatMessage({ id: 'ui-directory.information.addresses.country.generic' }) }
-    ];
+    const supportedAddressFormats = [{ value: '', label: '', disabled: true }];
+    plugins.forEach(plugin => {
+      plugin.listOfSupportedCountries.forEach(country => {
+        supportedAddressFormats.push({ value: country, label: intl.formatMessage({ id: `ui-${plugin.pluginName}.countryCode.${country}` }) });
+      });
+    });
 
     return (
       <>
         {items?.map((address, index) => {
-          const existingCountry = getExistingLineField(address.lines, 'country')?.value;
+          const existingCountry = address.countryCode;
           const plugin = this.selectPlugin(index, existingCountry);
-          const locality = this.state.selectedAddressFormat[index] || existingCountry;
+          const domain = this.state.selectedAddressFormat[index] || existingCountry;
           return (
             <EditCard
               header={this.renderCardHeader(index)}
-              key={`addresses[${index}].editCard`}
+              key={`${this.props.name}[${index}].editCard`}
               onDelete={() => this.props.onDeleteField(index, address)}
             >
-              {plugin && locality &&
-                <Field
-                  name={`${this.props.name}[${index}]`}
-                >
-                  {props => (
-                    <plugin.addressFields
-                      {...props}
-                      textFieldComponent={TextField}
-                      requiredValidator={required}
-                      name={`${this.props.name}[${index}]`}
-                      savedAddress={address}
-                    />
-                  )}
-                </Field>
-              }
               <Field
-                name={`${this.props.name}[${index}].country`}
-                initialValue={existingCountry}
-                label={<FormattedMessage id="ui-directory.information.addresses.country" />}
+                name={`${this.props.name}[${index}].countryCode`}
+                label={<FormattedMessage id="ui-directory.information.addresses.format" />}
                 parse={v => v}
                 required
                 validate={required}
               >
-                {props => (
+                {({ input, meta }) => (
                   <Select
-                    {...props}
+                    {...input}
                     dataOptions={supportedAddressFormats}
                     onChange={(e) => {
-                      props.input.onChange(e);
+                      input.onChange(e);
                       const selectedFormat = e.target.value;
                       this.setState((prevState) => {
                         const newSelectedAddress = prevState.selectedAddressFormat;
@@ -162,6 +142,24 @@ class AddressListFieldArray extends React.Component {
                   />
                 )}
               </Field>
+              {plugin && domain &&
+                <Field
+                  name={`${this.props.name}[${index}]`}
+                >
+                  {props => {
+                    return (
+                      <plugin.addressFields
+                        {...props}
+                        country={domain}
+                        textFieldComponent={TextField}
+                        requiredValidator={required}
+                        name={`${this.props.name}[${index}]`}
+                        savedAddress={address}
+                      />
+                    );
+                  }}
+                </Field>
+              }
               {this.state.warning?.[index] ? <MessageBanner type="warning"> {this.state.warning?.[index]} </MessageBanner> : null}
             </EditCard>
           );

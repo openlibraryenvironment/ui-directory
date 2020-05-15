@@ -53,7 +53,6 @@ class DirectoryEntryForm extends React.Component {
       form,
       onToggle: this.handleSectionToggle,
       parentResources: this.props.parentResources,
-      values,
     };
   }
 
@@ -93,7 +92,6 @@ class DirectoryEntryForm extends React.Component {
     } else {
       name = 'this institution';
     }
-
     return (
       <div>
         <Layout className="textCentered">

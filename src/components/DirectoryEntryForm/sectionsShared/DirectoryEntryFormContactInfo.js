@@ -27,7 +27,6 @@ class DirectoryEntryFormContactInfo extends React.Component {
       }),
       records: PropTypes.object,
     }),
-    values: PropTypes.object,
   };
 
   getCurrentLayer() {
@@ -79,9 +78,8 @@ class DirectoryEntryFormContactInfo extends React.Component {
 
                 <FieldArray
                   name="addresses"
-                >
-                  {({ fields, input, meta }) => <AddressListFieldArray {... { fields, input, meta }} /> }
-                </FieldArray>
+                  component={AddressListFieldArray}
+                />
               </Col>
             </Row>
           </React.Fragment>

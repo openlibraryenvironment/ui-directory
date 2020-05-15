@@ -67,7 +67,7 @@
   "information.addresses.add": "Add contact information",
   "information.addresses.namePlaceholder": "Enter a label for this contact information",
 
-  "information.addresses.country": "Country",
+  "information.addresses.format": "Format",
   "information.addresses.country.generic": "Generic",
   "information.addresses.country.usa": "USA",
   "information.addresses.country.england": "England",

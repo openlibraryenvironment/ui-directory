@@ -157,14 +157,13 @@ class EditDirectoryEntry extends React.Component {
             // If we're deleting the address we can just leave it as is
             newAddresses.push(address);
           } else {
-            const plugin = this.selectPlugin(address.country);
+            const plugin = this.selectPlugin(address.countryCode);
             const newAddress = plugin.fieldsToBackend(address);
             newAddresses.push(newAddress);
           }
         });
         submitValues.addresses = newAddresses;
       }
-      // console.log('Submitted values: %o', submitValues);
       onSubmit(submitValues, null, this.props);
     };
 
