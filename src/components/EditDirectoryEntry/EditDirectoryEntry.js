@@ -163,7 +163,7 @@ class EditDirectoryEntry extends React.Component {
             // so we obtain their fieldOrder and add that manually
             const fieldOrder = plugin.fieldOrder;
             newAddress.lines.forEach(line => {
-              const lineType = line.type.value;
+              const lineType = line.type?.value;
               line.seq = fieldOrder[lineType];
             });
             newAddresses.push(newAddress);
