@@ -159,6 +159,13 @@ class EditDirectoryEntry extends React.Component {
           } else {
             const plugin = this.selectPlugin(address.countryCode);
             const newAddress = plugin.fieldsToBackend(address);
+            // The plugins do not have the notion of seq
+            // so we obtain their fieldOrder and add that manually
+            const fieldOrder = plugin.fieldOrder;
+            newAddress.lines.forEach(line => {
+              const lineType = line.type.value;
+              line.seq = fieldOrder[lineType];
+            });
             newAddresses.push(newAddress);
           }
         });

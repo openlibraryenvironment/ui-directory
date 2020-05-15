@@ -17,8 +17,6 @@ import pluginGeneric from '@folio/address-plugin-generic';
 import pluginNA from '@folio/address-plugin-north-america';
 import pluginGBR from '@folio/address-plugin-british-isles';
 
-import { getExistingLineField } from '@folio/address-utils';
-
 import { required } from '../../../util/validators';
 
 const plugins = [pluginGeneric, pluginNA, pluginGBR];
@@ -40,11 +38,6 @@ class AddressListFieldArray extends React.Component {
     intl: PropTypes.shape({
       formatMessage: PropTypes.func.isRequired,
     }).isRequired,
-  };
-
-  state = {
-    selectedAddressFormat: {},
-    warning: {}
   };
 
   renderAddAddress = () => {
@@ -73,29 +66,15 @@ class AddressListFieldArray extends React.Component {
     );
   }
 
-  selectPlugin(index, initialDomain) {
-    const domain = this.state.selectedAddressFormat[index] || initialDomain;
-    const warning = this.state.warning[index];
+  renderWarning(domain, plugin) {
     const { intl } = this.props;
-    const plugin = pluginMap[domain] ? pluginMap[domain] : pluginMap.Generic;
-
-    if ((((plugin !== pluginMap.Generic || domain === 'Generic') && plugin) || !domain) && warning) {
-      this.setState((prevState) => {
-        const newWarning = prevState.warning;
-        newWarning[index] = '';
-        return { 'warning': newWarning };
-      });
-    }
-
+    let warning = '';
     if (domain && (!plugin || (plugin === pluginMap.Generic && domain !== 'Generic')) && !warning) {
-      this.setState((prevState) => {
-        const newWarning = prevState.warning;
-        newWarning[index] = intl.formatMessage({ id: 'ui-directory.information.addresses.missingPlugin' });
-        return { 'warning': newWarning };
-      });
+      warning = intl.formatMessage({ id: 'ui-directory.information.addresses.missingPlugin' });
     }
-
-    return plugin;
+    return (
+      warning ? <MessageBanner type="warning"> {warning} </MessageBanner> : null
+    );
   }
 
   render() {
@@ -103,16 +82,15 @@ class AddressListFieldArray extends React.Component {
     const supportedAddressFormats = [{ value: '', label: '', disabled: true }];
     plugins.forEach(plugin => {
       plugin.listOfSupportedCountries.forEach(country => {
-        supportedAddressFormats.push({ value: country, label: intl.formatMessage({ id: `ui-${plugin.pluginName}.countryCode.${country}` }) });
+        supportedAddressFormats.push({ value: country, label: intl.formatMessage({ id: `ui-${plugin.pluginName}.${country}.countryCode` }) });
       });
     });
 
     return (
       <>
         {items?.map((address, index) => {
-          const existingCountry = address.countryCode;
-          const plugin = this.selectPlugin(index, existingCountry);
-          const domain = this.state.selectedAddressFormat[index] || existingCountry;
+          const domain = address.countryCode;
+          const plugin = pluginMap[domain] ? pluginMap[domain] : pluginMap.Generic;
           return (
             <EditCard
               header={this.renderCardHeader(index)}
@@ -126,19 +104,10 @@ class AddressListFieldArray extends React.Component {
                 required
                 validate={required}
               >
-                {({ input, meta }) => (
+                {({ input }) => (
                   <Select
                     {...input}
                     dataOptions={supportedAddressFormats}
-                    onChange={(e) => {
-                      input.onChange(e);
-                      const selectedFormat = e.target.value;
-                      this.setState((prevState) => {
-                        const newSelectedAddress = prevState.selectedAddressFormat;
-                        newSelectedAddress[index] = selectedFormat;
-                        return { 'selectedAddressFormat': newSelectedAddress };
-                      });
-                    }}
                   />
                 )}
               </Field>
@@ -160,7 +129,7 @@ class AddressListFieldArray extends React.Component {
                   }}
                 </Field>
               }
-              {this.state.warning?.[index] ? <MessageBanner type="warning"> {this.state.warning?.[index]} </MessageBanner> : null}
+              {this.renderWarning(domain, plugin)}
             </EditCard>
           );
         })}
