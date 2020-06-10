@@ -1,12 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { injectIntl } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'react-intl';
 import { Form } from 'react-final-form';
 import { FieldArray } from 'react-final-form-arrays';
 import arrayMutators from 'final-form-arrays';
 import {
   Pane,
-  PaneHeader
 } from '@folio/stripes/components';
 import { withStripes } from '@folio/stripes/core';
 
@@ -32,38 +31,64 @@ class ServiceSettings extends React.Component {
     stripes: PropTypes.shape({
       connect: PropTypes.func.isRequired,
     }).isRequired,
-    intl: PropTypes.object,
     resources: PropTypes.shape({
       services: PropTypes.object,
     }),
   };
 
+  handleSubmit = (service) => {
+    const mutator = this.props.mutator.service;
+    const promise = mutator.PUT(service);
+    return promise;
+  }
+
 
   render() {
-    const { stripes, intl } = this.props;
+    const { resources: { services, type, businessFunction } } = this.props;
+    const { records: serviceRecords } = services || {};
+    const { records: typeRecords } = type || {};
+    const { records: businessFunctionRecords } = businessFunction || {};
+    const initialValues = { 'services': serviceRecords }
+
     return (
-      <Pane
-        renderHeader={renderProps => <PaneHeader {...renderProps} paneTitle={intl.formatMessage({ id: 'ui-directory.settings.services', defaultMessage: 'Services' })} />}
+      <Form
+        onSubmit={this.handleSubmit}
+        initialValues={initialValues}
+        enableReinitialize
+        keepDirtyOnReinitialize
+        mutators={{
+          setServiceValue: (args, state, tools) => {
+            tools.changeValue(state, args[0], () => args[1]);
+          },
+          ...arrayMutators
+        }}
+        subscription={{ value: true }}
+        navigationCheck
       >
-        <Form
-          onSubmit={() => window.alert("Hi")}
-          mutators={{ ...arrayMutators }}
-          render={({ handleSubmit }) => (
-            <form
-              onSubmit={handleSubmit}
-              autoComplete="off"
-            >
+        {({ handleSubmit, mutators }) => (
+          <Pane
+            defaultWidth="fill"
+            id="services"
+            paneTitle={<FormattedMessage id="ui-directory.settings.services" />}
+          >
+            <form onSubmit={handleSubmit}>
               <FieldArray
-                name="services"
                 component={ServiceListFieldArray}
-                parentProps={({ ...this.props })}
+                name="services"
+                onSave={this.handleSubmit}
+                mutators={mutators}
+                data={{
+                  types: typeRecords,
+                  functions: businessFunctionRecords
+                }}
+                initialValues={initialValues}
               />
             </form>
-          )}
-        />
-      </Pane>
+          </Pane>
+        )}
+      </Form>
     );
   }
 }
 
-export default injectIntl(withStripes(ServiceSettings));
+export default withStripes(ServiceSettings);
