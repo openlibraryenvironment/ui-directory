@@ -90,6 +90,9 @@
   "information.serviceType": "Type",
   "information.serviceAddress": "Address",
 
+  "information.services.add": "Add service information",
+  "information.services.namePlaceholder": "Name of service",
+
   "information.heading.directoryEntry": "Directory entry info",
   "information.heading.symbols": "Symbols",
   "information.heading.customProps": "Custom properties",

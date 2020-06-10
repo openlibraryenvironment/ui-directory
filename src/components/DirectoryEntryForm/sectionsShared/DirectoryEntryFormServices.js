@@ -1,12 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
-import { Field } from 'react-final-form';
+import { FieldArray } from 'react-final-form-arrays';
 
 import {
   Accordion,
+  Label
 } from '@folio/stripes/components';
 
+import { ServiceListFieldArray } from '../components';
 
 class DirectoryEntryFormServices extends React.Component {
   static propTypes = {
@@ -14,7 +16,7 @@ class DirectoryEntryFormServices extends React.Component {
     onToggle: PropTypes.func,
     open: PropTypes.bool,
     parentResources: PropTypes.shape({
-      typeValues: PropTypes.object,
+      refdata: PropTypes.object,
       selectedRecord: PropTypes.shape({
         records: PropTypes.array
       }),
@@ -23,7 +25,7 @@ class DirectoryEntryFormServices extends React.Component {
   };
 
   render() {
-    const { id, onToggle, open } = this.props;
+    const { id, onToggle, open, parentResources } = this.props;
     return (
       <Accordion
         id={id}
@@ -31,7 +33,14 @@ class DirectoryEntryFormServices extends React.Component {
         open={open}
         onToggle={onToggle}
       >
-        <p> Hi there </p>
+        <Label>
+          <FormattedMessage id="ui-directory.information.addresses" />
+        </Label>
+        <FieldArray
+          name="services"
+          component={ServiceListFieldArray}
+          parentResources={parentResources}
+        />
       </Accordion>
     );
   }
