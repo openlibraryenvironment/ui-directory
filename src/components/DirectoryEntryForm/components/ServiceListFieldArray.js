@@ -6,6 +6,7 @@ import { Field } from 'react-final-form';
 import {
   Button,
   Col,
+  Row,
   Select,
   TextField,
 } from '@folio/stripes/components';
@@ -37,7 +38,7 @@ class ServiceListFieldArray extends React.Component {
         id="add-service-btn"
         onClick={() => this.props.onAddField()}
       >
-        <FormattedMessage id="ui-directory.information.service.add" />
+        <FormattedMessage id="ui-directory.information.services.add" />
       </Button>
     );
   }
@@ -47,7 +48,7 @@ class ServiceListFieldArray extends React.Component {
     return (
       <Col xs={8}>
         <Field
-          name={`${this.props.name}[${index}].name`}
+          name={`${this.props.name}[${index}].service.name`}
           component={TextField}
           placeholder={intl.formatMessage({ id: 'ui-directory.information.services.namePlaceholder' })}
           required
@@ -58,13 +59,9 @@ class ServiceListFieldArray extends React.Component {
   }
 
   render() {
-    const { intl, items, parentResources } = this.props;
+    const { items, parentResources } = this.props;
     const serviceTypes = getRefdataValuesFromParentResources(parentResources, 'Service.Type');
     const serviceFunctions = getRefdataValuesFromParentResources(parentResources, 'Service.BusinessFunction');
-    console.log("Types: %o", serviceTypes)
-    console.log("Functions: %o", serviceFunctions)
-    console.log("SLFA PROPS: %o", this.props)
-
     return (
       <>
         {items?.map((service, index) => {
@@ -74,7 +71,40 @@ class ServiceListFieldArray extends React.Component {
               key={`${this.props.name}[${index}].editCard`}
               onDelete={() => this.props.onDeleteField(index, service)}
             >
-              <p> Hi There </p>
+              <Row>
+                <Col xs={6}>
+                  <Field
+                    component={Select}
+                    dataOptions={serviceTypes}
+                    name={`${this.props.name}[${index}].service.type`}
+                    label={<FormattedMessage id="ui-directory.information.serviceType" />}
+                    parse={v => v}
+                    required
+                    validate={required}
+                  />
+                </Col>
+                <Col xs={6}>
+                  <Field
+                    component={Select}
+                    dataOptions={serviceFunctions}
+                    name={`${this.props.name}[${index}].service.businessFunction`}
+                    label={<FormattedMessage id="ui-directory.information.serviceFunction" />}
+                    parse={v => v}
+                    required
+                    validate={required}
+                  />
+                </Col>
+                <Col xs={12}>
+                  <Field
+                    component={TextField}
+                    name={`${this.props.name}[${index}].service.address`}
+                    label={<FormattedMessage id="ui-directory.information.serviceAddress" />}
+                    parse={v => v}
+                    required
+                    validate={required}
+                  />
+                </Col>
+              </Row>
             </EditCard>
           );
         })}
