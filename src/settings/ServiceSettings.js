@@ -44,6 +44,12 @@ class ServiceSettings extends React.Component {
     return promise;
   }
 
+  handleDelete = (service) => {
+    const mutator = this.props.mutator.services;
+    const promise = mutator.DELETE(service);
+    return promise;
+  }
+
   render() {
     const { resources: { services, type, businessFunction } } = this.props;
     const { records: serviceRecords } = services || [];
@@ -64,7 +70,7 @@ class ServiceSettings extends React.Component {
           },
           ...arrayMutators
         }}
-        subscription={{ value: true }}
+        subscription={{ meta: true, value: true }}
         navigationCheck
       >
         {({ form, handleSubmit }) => {
@@ -79,10 +85,11 @@ class ServiceSettings extends React.Component {
                   component={ServiceListFieldArray}
                   name="services"
                   onSave={this.handleSubmit}
+                  onDelete={this.handleDelete}
                   mutators={form.mutators}
                   data={{
-                    types: typeRecords,
-                    functions: businessFunctionRecords
+                    functions: businessFunctionRecords,
+                    types: typeRecords
                   }}
                   initialValues={initialValues}
                 />

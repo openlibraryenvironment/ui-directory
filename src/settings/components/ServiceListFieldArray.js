@@ -8,6 +8,7 @@ class ServiceListFieldArray extends React.Component {
   static propTypes = {
     fields: PropTypes.object,
     onSave: PropTypes.func,
+    onDelete: PropTypes.func,
     data: PropTypes.shape({
       functions: PropTypes.arrayOf(PropTypes.object),
       types: PropTypes.arrayOf(PropTypes.object)
@@ -19,6 +20,11 @@ class ServiceListFieldArray extends React.Component {
   handleSave = (index) => {
     const service = this.props.fields.value[index];
     return this.props.onSave(service);
+  }
+
+  handleDelete = (index) => {
+    const service = this.props.fields.value[index];
+    return this.props.onDelete(service);
   }
 
   render() {
@@ -35,10 +41,11 @@ class ServiceListFieldArray extends React.Component {
             name={fieldName}
             mutators={mutators}
             onSave={() => this.handleSave(i)}
+            onDelete={() => this.handleDelete(i)}
             serviceData={{
               currentService: service,
-              types: (data?.types || [])[0]?.values?.map(obj => ({ value: obj.id, label: obj.label })) || [],
-              functions: (data?.functions || [])[0]?.values?.map(obj => ({ value: obj.id, label: obj.label })) || []
+              functions: (data?.functions || [])[0]?.values?.map(obj => ({ value: obj.id, label: obj.label })) || [],
+              types: (data?.types || [])[0]?.values?.map(obj => ({ value: obj.id, label: obj.label })) || []
             }}
             initialValues={this.props.initialValues}
           />

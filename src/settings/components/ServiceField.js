@@ -16,16 +16,9 @@ import { Field } from 'react-final-form';
 import { FormattedMessage } from 'react-intl';
 
 class ServiceField extends React.Component {
-  constructor(props) {
-    super(props);
-
-    const { value } = props.input;
-
-    this.state = {
-      editing: false,
-      initialValue: value
-    };
-  }
+  state = {
+    editing: false,
+  };
 
   handleSave = () => {
     this.props.onSave()
@@ -34,15 +27,14 @@ class ServiceField extends React.Component {
 
   handleEdit = () => {
     this.setState({
-      initialValue: this.props.input.value,
       editing: true,
     });
   }
 
   handleCancel = () => {
-    const { mutators, input: { name } } = this.props;
+    const { input: { name }, meta, mutators } = this.props;
 
-    mutators.setServiceValue(name, this.state.initialValue);
+    mutators.setServiceValue(name, meta.initial);
     this.setState({ editing: false });
   }
 
@@ -53,13 +45,14 @@ class ServiceField extends React.Component {
 
     return (
       <Button
-        type={editing ? 'submit' : undefined}
+        bottomMargin0
         onClick={(e) => {
           e.preventDefault();
           return (
             editing ? this.handleSave() : this.handleEdit()
           );
         }}
+        type={editing ? 'submit' : undefined}
       >
         {EditText}
       </Button>
@@ -68,16 +61,18 @@ class ServiceField extends React.Component {
 
   renderDeleteCancelButton() {
     const { editing } = this.state;
+    const { onDelete } = this.props;
     const ButtonText = editing ? <FormattedMessage id="ui-directory.settings.services.cancel" /> :
     <FormattedMessage id="ui-directory.settings.services.delete" />;
 
     return (
       <Button
+        bottomMargin0
         buttonStyle={editing ? undefined : 'danger'}
         onClick={(e) => {
           e.preventDefault();
           return (
-            editing ? this.handleCancel() : this.handleDelete()
+            editing ? this.handleCancel() : onDelete()
           );
         }}
       >
@@ -91,11 +86,13 @@ class ServiceField extends React.Component {
     const { currentService } = this.props.serviceData;
     return (
       editing ?
-        <Field
-          name={`${this.props.input.name}.name`}
-          component={TextField}
-          parse={v => v}
-        /> : <strong> {currentService?.name} </strong>
+        <Col xs={10}>
+          <Field
+            name={`${this.props.input.name}.name`}
+            component={TextField}
+            parse={v => v}
+          />
+        </Col> : <strong> {currentService?.name} </strong>
     );
   }
 
