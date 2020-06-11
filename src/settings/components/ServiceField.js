@@ -16,13 +16,34 @@ import { Field } from 'react-final-form';
 import { FormattedMessage } from 'react-intl';
 
 class ServiceField extends React.Component {
-  state = {
-    editing: false
-  };
+  constructor(props) {
+    super(props);
+
+    const { value } = props.input;
+
+    this.state = {
+      editing: false,
+      initialValue: value
+    };
+  }
 
   handleSave = () => {
     this.props.onSave()
       .then(() => this.setState({ editing: false }));
+  }
+
+  handleEdit = () => {
+    this.setState({
+      initialValue: this.props.input.value,
+      editing: true,
+    });
+  }
+
+  handleCancel = () => {
+    const { mutators, input: { name } } = this.props;
+
+    mutators.setServiceValue(name, this.state.initialValue);
+    this.setState({ editing: false });
   }
 
   renderEditButton() {
@@ -36,7 +57,7 @@ class ServiceField extends React.Component {
         onClick={(e) => {
           e.preventDefault();
           return (
-            editing ? this.handleSave() : this.setState({ editing: true })
+            editing ? this.handleSave() : this.handleEdit()
           );
         }}
       >

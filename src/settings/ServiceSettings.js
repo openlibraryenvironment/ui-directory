@@ -44,7 +44,6 @@ class ServiceSettings extends React.Component {
     return promise;
   }
 
-
   render() {
     const { resources: { services, type, businessFunction } } = this.props;
     const { records: serviceRecords } = services || [];
@@ -68,27 +67,29 @@ class ServiceSettings extends React.Component {
         subscription={{ value: true }}
         navigationCheck
       >
-        {({ handleSubmit, mutators }) => (
-          <Pane
-            defaultWidth="fill"
-            id="services"
-            paneTitle={<FormattedMessage id="ui-directory.settings.services" />}
-          >
-            <form onSubmit={handleSubmit}>
-              <FieldArray
-                component={ServiceListFieldArray}
-                name="services"
-                onSave={this.handleSubmit}
-                mutators={mutators}
-                data={{
-                  types: typeRecords,
-                  functions: businessFunctionRecords
-                }}
-                initialValues={initialValues}
-              />
-            </form>
-          </Pane>
-        )}
+        {({ form, handleSubmit }) => {
+          return (
+            <Pane
+              defaultWidth="fill"
+              id="services"
+              paneTitle={<FormattedMessage id="ui-directory.settings.services" />}
+            >
+              <form onSubmit={handleSubmit}>
+                <FieldArray
+                  component={ServiceListFieldArray}
+                  name="services"
+                  onSave={this.handleSubmit}
+                  mutators={form.mutators}
+                  data={{
+                    types: typeRecords,
+                    functions: businessFunctionRecords
+                  }}
+                  initialValues={initialValues}
+                />
+              </form>
+            </Pane>
+          );
+        }}
       </Form>
     );
   }

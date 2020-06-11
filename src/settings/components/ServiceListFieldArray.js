@@ -17,8 +17,8 @@ class ServiceListFieldArray extends React.Component {
   };
 
   handleSave = (index) => {
-    const setting = this.props.fields.value[index];
-    return this.props.onSave(setting);
+    const service = this.props.fields.value[index];
+    return this.props.onSave(service);
   }
 
   render() {
@@ -26,21 +26,24 @@ class ServiceListFieldArray extends React.Component {
 
     return (
       // Returns the services
-      (fields.value || []).map((service, i) => (
-        <Field
-          component={ServiceField}
-          key={`${fields.name}[${i}]`}
-          name={`${fields.name}[${i}]`}
-          mutators={mutators}
-          onSave={() => this.handleSave(i)}
-          serviceData={{
-            currentService: service,
-            types: (data?.types || [])[0]?.values?.map(obj => ({ value: obj.id, label: obj.label })) || [],
-            functions: (data?.functions || [])[0]?.values?.map(obj => ({ value: obj.id, label: obj.label })) || []
-          }}
-          initialValues={this.props.initialValues}
-        />
-      ))
+      (fields.value || []).map((service, i) => {
+        const fieldName = `${fields.name}[${i}]`;
+        return (
+          <Field
+            component={ServiceField}
+            key={fieldName}
+            name={fieldName}
+            mutators={mutators}
+            onSave={() => this.handleSave(i)}
+            serviceData={{
+              currentService: service,
+              types: (data?.types || [])[0]?.values?.map(obj => ({ value: obj.id, label: obj.label })) || [],
+              functions: (data?.functions || [])[0]?.values?.map(obj => ({ value: obj.id, label: obj.label })) || []
+            }}
+            initialValues={this.props.initialValues}
+          />
+        );
+      })
     );
   }
 }
