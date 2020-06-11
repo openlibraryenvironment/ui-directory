@@ -24,6 +24,11 @@
   "settings.status": "Statuses",
   "settings.services": "Services",
 
+  "settings.services.finish-editing": "Save",
+  "settings.services.edit": "Edit",
+  "settings.services.cancel": "Cancel",
+  "settings.services.delete": "Delete",
+
   "objectName.tag": "Tag",
   "objectName.tags": "Tags",
   "objectName.statuses": "Statuses",

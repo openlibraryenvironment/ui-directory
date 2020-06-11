@@ -16,6 +16,7 @@ class ServiceSettings extends React.Component {
     services: {
       type: 'okapi',
       path: 'directory/service',
+      params: { perPage: '100' },
     },
     type: {
       type: 'okapi',
@@ -37,7 +38,8 @@ class ServiceSettings extends React.Component {
   };
 
   handleSubmit = (service) => {
-    const mutator = this.props.mutator.service;
+    console.log("SUBMITTING: %o", service)
+    const mutator = this.props.mutator.services;
     const promise = mutator.PUT(service);
     return promise;
   }
@@ -45,11 +47,12 @@ class ServiceSettings extends React.Component {
 
   render() {
     const { resources: { services, type, businessFunction } } = this.props;
-    const { records: serviceRecords } = services || {};
-    const { records: typeRecords } = type || {};
-    const { records: businessFunctionRecords } = businessFunction || {};
-    const initialValues = { 'services': serviceRecords }
+    const { records: serviceRecords } = services || [];
+    const { records: typeRecords } = type || [];
+    const { records: businessFunctionRecords } = businessFunction || [];
 
+    // We need to store the IDs of the refdata values rather than objects
+    const initialValues = { 'services': serviceRecords?.map(obj => ({ ...obj, type: obj.type?.id, businessFunction: obj.businessFunction?.id })) };
     return (
       <Form
         onSubmit={this.handleSubmit}
