@@ -1,10 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage, injectIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
+import SafeHTMLMessage from '@folio/react-intl-safe-html';
 import { Form } from 'react-final-form';
 import { FieldArray } from 'react-final-form-arrays';
 import arrayMutators from 'final-form-arrays';
 import {
+  Callout,
   Pane,
 } from '@folio/stripes/components';
 import { withStripes } from '@folio/stripes/core';
@@ -17,6 +19,7 @@ class ServiceSettings extends React.Component {
       type: 'okapi',
       path: 'directory/service',
       params: { perPage: '100' },
+      throwErrors: false,
     },
     type: {
       type: 'okapi',
@@ -37,17 +40,72 @@ class ServiceSettings extends React.Component {
     }),
   };
 
+  sendCallout = (operation, outcome, error = '', custPropName = '') => {
+    this.callout.sendCallout({
+      type: outcome,
+      message: (
+        <SafeHTMLMessage
+          id={`ui-directory.settings.services.callout.${operation}.${outcome}`}
+          values={{ error, name: custPropName }}
+        />
+      ),
+      timeout: error ? 0 : undefined, // Don't autohide callouts with a specified error message.
+    });
+  };
+
+  sendCalloutInUse = (serviceName) => {
+    return this.callout.sendCallout({
+      type: 'error',
+      message: (
+        <SafeHTMLMessage id="ui-directory.settings.services.callout.delete.serviceInUse" values={{ name: serviceName }} />
+      ),
+      timeout: 0,
+    });
+  };
+
   handleSubmit = (service) => {
     console.log("SUBMITTING: %o", service)
     const mutator = this.props.mutator.services;
-    const promise = mutator.PUT(service);
-    return promise;
+    return mutator.PUT(service)
+      .then(() => this.sendCallout('save', 'success', '', service?.name))
+      .catch(response => {
+        // Attempt to show an error message if we got JSON back with a message.
+        // If json()ification fails, show the generic error callout.
+        response
+          .json()
+          .then(error => this.sendCallout('save', 'error', error.message, service?.name))
+          .catch(() => this.sendCallout('save', 'error', '', service?.name));
+
+        // Return a rejected promise to break any downstream Promise chains.
+        return Promise.reject();
+      });
   }
 
   handleDelete = (service) => {
     const mutator = this.props.mutator.services;
-    const promise = mutator.DELETE(service);
-    return promise;
+    return mutator.DELETE(service)
+      .then(() => this.sendCallout('delete', 'success', '', service?.name))
+      .catch(response => {
+        // Attempt to show an error message if we got JSON back with a message.
+        // If json()ification fails, show the generic error callout.
+        response
+          .json()
+          .then(error => {
+            const pattern = new RegExp(
+              'violates foreign key constraint.*is still referenced from table',
+              's'
+            );
+            if (pattern.test(error.message)) {
+              this.sendCalloutInUse(service?.name);
+            } else {
+              this.sendCallout('delete', 'error', error.message, service?.name);
+            }
+          })
+          .catch(() => this.sendCallout('delete', 'error', '', service?.name));
+
+        // Return a rejected promise to break any downstream Promise chains.
+        return Promise.reject();
+      });
   }
 
   render() {
@@ -94,6 +152,11 @@ class ServiceSettings extends React.Component {
                   initialValues={initialValues}
                 />
               </form>
+              <Callout
+                ref={ref => {
+                  this.callout = ref;
+                }}
+              />
             </Pane>
           );
         }}

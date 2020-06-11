@@ -5,6 +5,7 @@ import {
   Button,
   Card,
   Col,
+  ConfirmationModal,
   KeyValue,
   Row,
   Select,
@@ -14,10 +15,12 @@ import {
 import { Field } from 'react-final-form';
 
 import { FormattedMessage } from 'react-intl';
+import SafeHTMLMessage from '@folio/react-intl-safe-html';
 
 class ServiceField extends React.Component {
   state = {
     editing: false,
+    showConfirmDelete: false
   };
 
   handleSave = () => {
@@ -61,7 +64,6 @@ class ServiceField extends React.Component {
 
   renderDeleteCancelButton() {
     const { editing } = this.state;
-    const { onDelete } = this.props;
     const ButtonText = editing ? <FormattedMessage id="ui-directory.settings.services.cancel" /> :
     <FormattedMessage id="ui-directory.settings.services.delete" />;
 
@@ -72,7 +74,7 @@ class ServiceField extends React.Component {
         onClick={(e) => {
           e.preventDefault();
           return (
-            editing ? this.handleCancel() : onDelete()
+            editing ? this.handleCancel() : this.showDeleteConfirmationModal()
           );
         }}
       >
@@ -155,20 +157,42 @@ class ServiceField extends React.Component {
     );
   }
 
+  showDeleteConfirmationModal = () => this.setState({ showConfirmDelete: true });
+  hideDeleteConfirmationModal = () => this.setState({ showConfirmDelete: false });
+
   render() {
+    const { currentService } = this.props.serviceData;
     return (
-      <Card
-        headerEnd={
-          <span>
-            {this.renderDeleteCancelButton()}
-            {this.renderEditButton()}
-          </span>
-        }
-        headerStart={this.renderCardHeader()}
-        roundedBorder
-      >
-        {this.renderCardContents()}
-      </Card>
+      <>
+        <Card
+          headerEnd={
+            <span>
+              {this.renderDeleteCancelButton()}
+              {this.renderEditButton()}
+            </span>
+          }
+          headerStart={this.renderCardHeader()}
+          roundedBorder
+        >
+          {this.renderCardContents()}
+        </Card>
+        {this.state.showConfirmDelete && (
+          <ConfirmationModal
+            buttonStyle="danger"
+            confirmLabel={<FormattedMessage id="ui-directory.settings.services.delete" />}
+            data-test-confirmationModal
+            heading={<FormattedMessage id="ui-directory.settings.services.delete.heading" />}
+            id="delete-job-confirmation"
+            message={<SafeHTMLMessage id="ui-directory.settings.services.delete.confirmMessage" values={{ name: currentService.name }} />}
+            onCancel={this.hideDeleteConfirmationModal}
+            onConfirm={() => {
+              this.props.onDelete();
+              this.hideDeleteConfirmationModal();
+            }}
+            open
+          />
+        )}
+      </>
     );
   }
 }

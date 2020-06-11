@@ -28,6 +28,14 @@
   "settings.services.edit": "Edit",
   "settings.services.cancel": "Cancel",
   "settings.services.delete": "Delete",
+  "settings.services.delete.heading": "Delete Service",
+  "settings.services.delete.confirmMessage": "Service <strong>{name}</strong> will be <strong>deleted</strong>.",
+
+  "settings.services.callout.delete.error": "There was an error deleting service {name}: {error}",
+  "settings.services.callout.delete.success": "<strong>Service deleted:</strong> {name}",
+  "settings.services.callout.delete.serviceInUse": "Service <strong>{name}</strong> was not deleted because it is in use on one or more directory entries.",
+  "settings.services.callout.save.error": "There was an error saving service {name}: {error}",
+  "settings.services.callout.save.success": "<strong>Service saved:</strong> {name}",
 
   "objectName.tag": "Tag",
   "objectName.tags": "Tags",
