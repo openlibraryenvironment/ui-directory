@@ -18,6 +18,31 @@ import { FormattedMessage } from 'react-intl';
 import SafeHTMLMessage from '@folio/react-intl-safe-html';
 
 class ServiceField extends React.Component {
+  static propTypes = {
+    input: PropTypes.shape({
+      name: PropTypes.string.isRequired
+    }).isRequired,
+    meta: PropTypes.shape({
+      initial: PropTypes.shape({
+        id: PropTypes.string
+      }).isRequired,
+    }).isRequired,
+    mutators: PropTypes.shape({
+      setServiceValue: PropTypes.func.isRequired
+    }).isRequired,
+    onDelete: PropTypes.func.isRequired,
+    onSave: PropTypes.func.isRequired,
+    serviceData: PropTypes.shape({
+      functions: PropTypes.arrayOf(PropTypes.shape({
+        label: PropTypes.string,
+        value: PropTypes.string
+      })).isRequired,
+      types: PropTypes.arrayOf(PropTypes.shape({
+        label: PropTypes.string,
+        value: PropTypes.string
+      })).isRequired,
+    })
+  };
 
   constructor(props) {
     super(props);
@@ -31,7 +56,7 @@ class ServiceField extends React.Component {
   }
 
   handleSave = () => {
-    const { input, meta, mutators, onSave } = this.props;
+    const { onSave } = this.props;
     onSave()
       .then(() => this.setState({ editing: false }));
   }
@@ -124,8 +149,8 @@ class ServiceField extends React.Component {
     const { editing } = this.state;
     const { input: { value: currentService }, serviceData: { functions, types } } = this.props;
     const addressLabel = <FormattedMessage id="ui-directory.information.serviceAddress" />;
-    const typeLabel = <FormattedMessage id="ui-directory.information.serviceType" />
-    const functionlabel = <FormattedMessage id="ui-directory.information.serviceFunction" />
+    const typeLabel = <FormattedMessage id="ui-directory.information.serviceType" />;
+    const functionlabel = <FormattedMessage id="ui-directory.information.serviceFunction" />;
 
     return (
       <>
