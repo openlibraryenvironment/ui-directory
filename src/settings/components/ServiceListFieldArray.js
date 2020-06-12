@@ -56,7 +56,6 @@ class ServiceListFieldArray extends React.Component {
 
   render() {
     const { data, fields, mutators } = this.props;
-    console.log("Props: %o", this.props)
 
     return (
       <>
