@@ -36,12 +36,19 @@ class ServiceSettings extends React.Component {
   });
 
   static propTypes = {
-    stripes: PropTypes.shape({
-      connect: PropTypes.func.isRequired,
+    mutator: PropTypes.shape({
+      services: PropTypes.shape({
+        DELETE: PropTypes.func.isRequired,
+        POST: PropTypes.func.isRequired,
+        PUT: PropTypes.func.isRequired
+      }).isRequired
     }).isRequired,
     resources: PropTypes.shape({
       services: PropTypes.object,
     }),
+    stripes: PropTypes.shape({
+      connect: PropTypes.func.isRequired,
+    }).isRequired,
   };
 
   sendCallout = (operation, outcome, error = '', custPropName = '') => {
