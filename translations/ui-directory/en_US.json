@@ -107,7 +107,9 @@
   "information.services.add": "Add service account",
   "information.services.header": "Service account [{index}]",
   "information.services.slug": "Slug",
-  "information.services.namePlaceholder": "Name of service",
+  "information.services.accountDetails": "Account details",
+  "information.services.service": "Service",
+  "information.services.deleteText": "Delete service account: \"{slug}\"",
 
   "information.heading.directoryEntry": "Directory entry info",
   "information.heading.symbols": "Symbols",

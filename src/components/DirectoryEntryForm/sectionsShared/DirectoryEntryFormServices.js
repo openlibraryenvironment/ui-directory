@@ -5,10 +5,9 @@ import { FieldArray } from 'react-final-form-arrays';
 
 import {
   Accordion,
-  Label
 } from '@folio/stripes/components';
 
-import { ServiceListFieldArray } from '../components';
+import { ServiceAccountListFieldArray } from '../components';
 
 class DirectoryEntryFormServices extends React.Component {
   static propTypes = {
@@ -35,7 +34,7 @@ class DirectoryEntryFormServices extends React.Component {
       >
         <FieldArray
           name="services"
-          component={ServiceListFieldArray}
+          component={ServiceAccountListFieldArray}
           parentResources={parentResources}
         />
       </Accordion>

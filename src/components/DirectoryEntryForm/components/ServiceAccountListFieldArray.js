@@ -9,6 +9,7 @@ import {
   Row,
   Select,
   TextField,
+  TextArea,
 } from '@folio/stripes/components';
 
 import { EditCard, withKiwtFieldArray } from '@folio/stripes-erm-components';
@@ -42,7 +43,8 @@ class ServiceAccountListFieldArray extends React.Component {
   }
 
   render() {
-    const { items } = this.props;
+    const { items, parentResources } = this.props;
+    const servicesList = parentResources?.services?.records?.map(service => ({ value: service.id, label: `${service.name} : ${service.address}` }));
     return (
       <>
         {items?.map((service, index) => {
@@ -51,16 +53,17 @@ class ServiceAccountListFieldArray extends React.Component {
               header={<FormattedMessage id="ui-directory.information.services.header" values={{ index }} />}
               key={`${this.props.name}[${index}].editCard`}
               onDelete={() => this.props.onDeleteField(index, service)}
+              deleteButtonTooltipText={<FormattedMessage id="ui-directory.information.services.deleteText" values={{ slug: "test1234" }} />}
             >
               <Row>
                 <Col xs={6}>
                   <FormattedMessage id="ui-directory.information.services.slug">
                     {placeholder => (
                       <Field
-                        id="edit-directory-entry-slug"
-                        name="slug"
-                        label={placeholder}
                         component={TextField}
+                        id={`edit-directory-entry-service-[${index}]-slug`}
+                        label={placeholder}
+                        name="slug"
                         placeholder={placeholder}
                         required
                         validate={required}
@@ -69,13 +72,14 @@ class ServiceAccountListFieldArray extends React.Component {
                   </FormattedMessage>
                 </Col>
                 <Col xs={6}>
-                  <FormattedMessage id="ui-directory.information.services.slug">
+                  <FormattedMessage id="ui-directory.information.services.service">
                     {placeholder => (
                       <Field
-                        id="edit-directory-entry-slug"
-                        name="slug"
-                        label={placeholder}
                         component={Select}
+                        dataOptions={servicesList}
+                        id={`edit-directory-entry-service-[${index}]-service`}
+                        label={placeholder}
+                        name="service"
                         placeholder={placeholder}
                         required
                         validate={required}
@@ -83,6 +87,19 @@ class ServiceAccountListFieldArray extends React.Component {
                     )}
                   </FormattedMessage>
                 </Col>
+              </Row>
+              <Row>
+                <FormattedMessage id="ui-directory.information.services.accountDetails">
+                  {placeholder => (
+                    <Field
+                      component={TextArea}
+                      id={`edit-directory-entry-service-[${index}]-account-details`}
+                      label={placeholder}
+                      name="accountDetails"
+                      placeholder={placeholder}
+                    />
+                  )}
+                </FormattedMessage>
               </Row>
             </EditCard>
           );

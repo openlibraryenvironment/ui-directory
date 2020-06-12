@@ -85,8 +85,13 @@ class DirectoryEntries extends React.Component {
       fetch: false,
     },
     services: {
-      
-    }
+      type: 'okapi',
+      path: 'directory/service',
+      params: {
+        perPage: '100',
+      },
+      throwErrors: false,
+    },
     directoryTags: {
       type: 'okapi',
       path: 'directory/tags',
@@ -260,6 +265,7 @@ class DirectoryEntries extends React.Component {
           parentResources={{
             ...resources,
             records: resources.dirents,
+            services: resources.services,
             custprops: _.get(resources, 'custprops.records', []),
           }}
           parentMutator={{
