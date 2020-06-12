@@ -63,7 +63,7 @@ class ServiceAccountListFieldArray extends React.Component {
                         component={TextField}
                         id={`edit-directory-entry-service-[${index}]-slug`}
                         label={placeholder}
-                        name="slug"
+                        name={`${this.props.name}[${index}].slug`}
                         placeholder={placeholder}
                         required
                         validate={required}
@@ -79,7 +79,7 @@ class ServiceAccountListFieldArray extends React.Component {
                         dataOptions={servicesList}
                         id={`edit-directory-entry-service-[${index}]-service`}
                         label={placeholder}
-                        name="service"
+                        name={`${this.props.name}[${index}].service`}
                         placeholder={placeholder}
                         required
                         validate={required}
@@ -89,17 +89,19 @@ class ServiceAccountListFieldArray extends React.Component {
                 </Col>
               </Row>
               <Row>
-                <FormattedMessage id="ui-directory.information.services.accountDetails">
-                  {placeholder => (
-                    <Field
-                      component={TextArea}
-                      id={`edit-directory-entry-service-[${index}]-account-details`}
-                      label={placeholder}
-                      name="accountDetails"
-                      placeholder={placeholder}
-                    />
-                  )}
-                </FormattedMessage>
+                <Col xs={6}>
+                  <FormattedMessage id="ui-directory.information.services.accountDetails">
+                    {placeholder => (
+                      <Field
+                        component={TextArea}
+                        id={`edit-directory-entry-service-[${index}]-account-details`}
+                        label={placeholder}
+                        name={`${this.props.name}[${index}].accountDetails`}
+                        placeholder={placeholder}
+                      />
+                    )}
+                  </FormattedMessage>
+                </Col>
               </Row>
             </EditCard>
           );

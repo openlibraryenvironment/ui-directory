@@ -162,6 +162,13 @@ class EditDirectoryEntry extends React.Component {
       if (initialValues.type) {
         initialValues.type = initialValues.type.id;
       }
+      if (initialValues.services) {
+        const newServices = [];
+        initialValues.services.forEach(serviceacct => {
+          newServices.push({ ...serviceacct, service: serviceacct.service.id });
+        });
+        initialValues.services = newServices;
+      }
     }
     // the submit handler passed in from SearchAndSort expects props as provided by redux-form
     const compatSubmit = values => {
@@ -179,6 +186,15 @@ class EditDirectoryEntry extends React.Component {
       if (values.parent) {
         submitValues.parent = { id: values.parent };
       }
+
+      if (values.services) {
+        const newServices = [];
+        values.services.forEach(serviceacct => {
+          newServices.push({ ...serviceacct, service: { id: serviceacct.service } });
+        });
+        submitValues.services = newServices;
+      }
+
       submitValues.symbols = values.symbols?.map(obj => (obj?.authority?.id ? obj : ({ ...obj, authority: { id: obj.authority } })));
 
       if (submitValues.addresses) {
@@ -213,6 +229,7 @@ class EditDirectoryEntry extends React.Component {
         mutators={{
           ...arrayMutators,
         }}
+        subscription={{ value: true }}
       >
         {({ form, handleSubmit, pristine, submitting, submitSucceeded, values }) => (
           <form id="form-directory-entry">
