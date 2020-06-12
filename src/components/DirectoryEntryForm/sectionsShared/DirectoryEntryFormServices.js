@@ -33,9 +33,6 @@ class DirectoryEntryFormServices extends React.Component {
         open={open}
         onToggle={onToggle}
       >
-        <Label>
-          <FormattedMessage id="ui-directory.information.addresses" />
-        </Label>
         <FieldArray
           name="services"
           component={ServiceListFieldArray}

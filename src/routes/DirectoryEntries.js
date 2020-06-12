@@ -84,6 +84,9 @@ class DirectoryEntries extends React.Component {
       path: 'directory/entry/${selectedRecordId}', // eslint-disable-line no-template-curly-in-string
       fetch: false,
     },
+    services: {
+      
+    }
     directoryTags: {
       type: 'okapi',
       path: 'directory/tags',

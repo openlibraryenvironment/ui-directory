@@ -24,7 +24,6 @@
   "settings.status": "Statuses",
   "settings.services": "Services",
 
-  "settings.services.finish-editing": "Save",
   "settings.services.edit": "Edit",
   "settings.services.cancel": "Cancel",
   "settings.services.delete": "Delete", 
@@ -99,13 +98,15 @@
   "information.addresses.postalCode": "Postal code",
   "information.heading.contactInformation": "Contact information",
   "information.addressNofM": "Address {index} of {count}",
-  "information.heading.services": "Services",
+  "information.heading.services": "Service accounts",
   "information.serviceNofM": "Service {index} of {count}",
   "information.serviceFunction": "Function",
   "information.serviceType": "Type",
   "information.serviceAddress": "Address",
 
-  "information.services.add": "Add service information",
+  "information.services.add": "Add service account",
+  "information.services.header": "Service account [{index}]",
+  "information.services.slug": "Slug",
   "information.services.namePlaceholder": "Name of service",
 
   "information.heading.directoryEntry": "Directory entry info",
