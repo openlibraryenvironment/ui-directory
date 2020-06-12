@@ -53,7 +53,7 @@ class ServiceAccountListFieldArray extends React.Component {
               header={<FormattedMessage id="ui-directory.information.services.header" values={{ index }} />}
               key={`${this.props.name}[${index}].editCard`}
               onDelete={() => this.props.onDeleteField(index, service)}
-              deleteButtonTooltipText={<FormattedMessage id="ui-directory.information.services.deleteText" values={{ slug: "test1234" }} />}
+              deleteButtonTooltipText={<FormattedMessage id="ui-directory.information.services.deleteText" values={{ slug: service.slug ? service.slug : `[${index}]` }} />}
             >
               <Row>
                 <Col xs={6}>
