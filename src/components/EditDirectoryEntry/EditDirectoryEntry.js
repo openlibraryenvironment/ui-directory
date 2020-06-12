@@ -229,7 +229,6 @@ class EditDirectoryEntry extends React.Component {
         mutators={{
           ...arrayMutators,
         }}
-        subscription={{ value: true }}
       >
         {({ form, handleSubmit, pristine, submitting, submitSucceeded, values }) => (
           <form id="form-directory-entry">
