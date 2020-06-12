@@ -25,6 +25,7 @@
   "settings.services": "Services",
 
   "settings.services.edit": "Edit",
+  "settings.services.finish-editing": "Save",
   "settings.services.cancel": "Cancel",
   "settings.services.delete": "Delete", 
   "settings.services.new": "New",
