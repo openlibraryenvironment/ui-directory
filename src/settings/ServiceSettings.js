@@ -9,7 +9,7 @@ import {
   Callout,
   Pane,
 } from '@folio/stripes/components';
-import { withStripes } from '@folio/stripes/core';
+import { stripesConnect } from '@folio/stripes/core';
 
 import ServiceListFieldArray from './components/ServiceListFieldArray';
 
@@ -18,8 +18,12 @@ class ServiceSettings extends React.Component {
     services: {
       type: 'okapi',
       path: 'directory/service',
-      params: { perPage: '100' },
+      params: {
+        perPage: '100',
+        sort: 'id'
+      },
       throwErrors: false,
+      resourceShouldRefresh: true,
     },
     type: {
       type: 'okapi',
@@ -63,10 +67,17 @@ class ServiceSettings extends React.Component {
     });
   };
 
-  handleSubmit = (service) => {
-    console.log("SUBMITTING: %o", service)
+  submitPromise = (service, reinitialize) => {
     const mutator = this.props.mutator.services;
-    return mutator.PUT(service)
+    const promise = service.id ?
+      mutator.PUT(service) :
+      mutator.POST(service)
+        .then(reinitialize());
+    return promise;
+  }
+
+  handleSubmit = (service, reinitialize) => {
+    return this.submitPromise(service, reinitialize)
       .then(() => this.sendCallout('save', 'success', '', service?.name))
       .catch(response => {
         // Attempt to show an error message if we got JSON back with a message.
@@ -81,9 +92,10 @@ class ServiceSettings extends React.Component {
       });
   }
 
-  handleDelete = (service) => {
+  handleDelete = (service, reinitialize) => {
     const mutator = this.props.mutator.services;
     return mutator.DELETE(service)
+      .then(reinitialize())
       .then(() => this.sendCallout('delete', 'success', '', service?.name))
       .catch(response => {
         // Attempt to show an error message if we got JSON back with a message.
@@ -120,7 +132,6 @@ class ServiceSettings extends React.Component {
       <Form
         onSubmit={this.handleSubmit}
         initialValues={initialValues}
-        enableReinitialize
         keepDirtyOnReinitialize
         mutators={{
           setServiceValue: (args, state, tools) => {
@@ -131,33 +142,35 @@ class ServiceSettings extends React.Component {
         subscription={{ meta: true, value: true }}
         navigationCheck
       >
-        {({ form, handleSubmit }) => {
+        {({ form }) => {
           return (
-            <Pane
-              defaultWidth="fill"
-              id="services"
-              paneTitle={<FormattedMessage id="ui-directory.settings.services" />}
-            >
-              <form onSubmit={handleSubmit}>
-                <FieldArray
-                  component={ServiceListFieldArray}
-                  name="services"
-                  onSave={this.handleSubmit}
-                  onDelete={this.handleDelete}
-                  mutators={form.mutators}
-                  data={{
-                    functions: businessFunctionRecords,
-                    types: typeRecords
+            <>
+              <Pane
+                defaultWidth="fill"
+                id="services"
+                paneTitle={<FormattedMessage id="ui-directory.settings.services" />}
+              >
+                <form>
+                  <FieldArray
+                    component={ServiceListFieldArray}
+                    name="services"
+                    onSave={service => this.handleSubmit(service, form.initialize)}
+                    onDelete={service => this.handleDelete(service, form.initialize)}
+                    mutators={form.mutators}
+                    data={{
+                      functions: businessFunctionRecords,
+                      types: typeRecords
+                    }}
+                    initialValues={initialValues}
+                  />
+                </form>
+                <Callout
+                  ref={ref => {
+                    this.callout = ref;
                   }}
-                  initialValues={initialValues}
                 />
-              </form>
-              <Callout
-                ref={ref => {
-                  this.callout = ref;
-                }}
-              />
-            </Pane>
+              </Pane>
+            </>
           );
         }}
       </Form>
@@ -165,4 +178,4 @@ class ServiceSettings extends React.Component {
   }
 }
 
-export default withStripes(ServiceSettings);
+export default stripesConnect(ServiceSettings);

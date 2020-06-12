@@ -27,7 +27,8 @@
   "settings.services.finish-editing": "Save",
   "settings.services.edit": "Edit",
   "settings.services.cancel": "Cancel",
-  "settings.services.delete": "Delete",
+  "settings.services.delete": "Delete", 
+  "settings.services.new": "New",
   "settings.services.delete.heading": "Delete Service",
   "settings.services.delete.confirmMessage": "Service <strong>{name}</strong> will be <strong>deleted</strong>.",
 

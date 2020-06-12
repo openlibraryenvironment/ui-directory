@@ -18,13 +18,21 @@ import { FormattedMessage } from 'react-intl';
 import SafeHTMLMessage from '@folio/react-intl-safe-html';
 
 class ServiceField extends React.Component {
-  state = {
-    editing: false,
-    showConfirmDelete: false
-  };
+
+  constructor(props) {
+    super(props);
+
+    const { value } = props.input;
+
+    this.state = {
+      editing: !(value.id),
+      showConfirmDelete: false,
+    };
+  }
 
   handleSave = () => {
-    this.props.onSave()
+    const { input, meta, mutators, onSave } = this.props;
+    onSave()
       .then(() => this.setState({ editing: false }));
   }
 
@@ -35,10 +43,13 @@ class ServiceField extends React.Component {
   }
 
   handleCancel = () => {
-    const { input: { name }, meta, mutators } = this.props;
-
-    mutators.setServiceValue(name, meta.initial);
-    this.setState({ editing: false });
+    const { input, meta, mutators, onDelete } = this.props;
+    if (meta.initial?.id) {
+      mutators.setServiceValue(input.name, meta.initial);
+      this.setState({ editing: false });
+    } else {
+      onDelete();
+    }
   }
 
   renderEditButton() {
@@ -85,11 +96,12 @@ class ServiceField extends React.Component {
 
   renderCardHeader() {
     const { editing } = this.state;
-    const { currentService } = this.props.serviceData;
+    const { input: { value: currentService } } = this.props;
     return (
       editing ?
         <Col xs={10}>
           <Field
+            autoFocus
             name={`${this.props.input.name}.name`}
             component={TextField}
             parse={v => v}
@@ -110,7 +122,7 @@ class ServiceField extends React.Component {
 
   renderCardContents() {
     const { editing } = this.state;
-    const { serviceData: { currentService, functions, types } } = this.props;
+    const { input: { value: currentService }, serviceData: { functions, types } } = this.props;
     const addressLabel = <FormattedMessage id="ui-directory.information.serviceAddress" />;
     const typeLabel = <FormattedMessage id="ui-directory.information.serviceType" />
     const functionlabel = <FormattedMessage id="ui-directory.information.serviceFunction" />
@@ -161,7 +173,7 @@ class ServiceField extends React.Component {
   hideDeleteConfirmationModal = () => this.setState({ showConfirmDelete: false });
 
   render() {
-    const { currentService } = this.props.serviceData;
+    const { input: { value: currentService } } = this.props;
     return (
       <>
         <Card
