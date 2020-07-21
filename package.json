@@ -20,7 +20,7 @@
     "@bigtest/mirage": "^0.0.1",
     "@bigtest/mocha": "^0.5.1",
     "@folio/eslint-config-stripes": "^4.1.1",
-    "@folio/stripes": "^4.0.0",
+    "@folio/stripes": "^5.0.0",
     "@folio/stripes-cli": "^1.10.0",
     "babel-eslint": "^9.0.0",
     "chai": "^4.2.0",
@@ -29,7 +29,7 @@
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
     "react-intl": "^4.0.0",
-    "react-router-dom": "^4.1.1",
+    "react-router-dom": "^5.2.0",
     "sinon": "^6.3.4"
   },
   "dependencies": {
@@ -49,10 +49,10 @@
     "uuid": "^7.0.3"
   },
   "peerDependencies": {
-    "@folio/stripes": "^3.0.0 || ^4.0.0",
+    "@folio/stripes": "^4.0.0 || ^5.0.0",
     "react": "*",
     "react-intl": "^2.9.0 || ^4.0.0",
-    "react-router-dom": "^4.1.1 || ^5.0.0"
+    "react-router-dom": "^4.1.1 || ^5.2.0"
   },
   "stripes": {
     "actsAs": [
