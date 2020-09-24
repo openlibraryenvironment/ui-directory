@@ -2,7 +2,6 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Settings } from '@folio/stripes/smart-components';
 import TagSettings from './TagSettings';
-import StatusSettings from './StatusSettings';
 import ServiceSettings from './ServiceSettings';
 
 export default class DirectorySettings extends React.Component {
@@ -16,12 +15,7 @@ export default class DirectorySettings extends React.Component {
       route: 'services',
       label: <FormattedMessage id="ui-directory.settings.services" />,
       component: ServiceSettings,
-    },
-    {
-      route: 'status',
-      label: <FormattedMessage id="ui-directory.settings.status" />,
-      component: StatusSettings,
-    },
+    }
   ];
 
   render() {
