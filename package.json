@@ -85,7 +85,8 @@
         "permissionName": "module.directory.enabled",
         "displayName": "UI: Directory module is enabled",
         "subPermissions": [
-          "configuration.entries.collection.get"
+          "configuration.entries.collection.get",
+          "directory.all.read"
         ],
         "visible": true
       },
@@ -93,7 +94,8 @@
         "permissionName": "settings.directory.enabled",
         "displayName": "Settings (directory): display list of settings pages",
         "subPermissions": [
-          "settings.enabled"
+          "settings.enabled",
+          "directory.all.read"
         ],
         "visible": true
       },
@@ -101,7 +103,17 @@
         "permissionName": "directory.edit-self",
         "displayName": "Directory: edit the directory entry of the present institution",
         "subPermissions": [
-          "module.directory.enabled"
+          "module.directory.enabled",
+          "directory.entry.managed-item.put"
+        ],
+        "visible": true
+      },
+      {
+        "permissionName": "directory.edit-local",
+        "displayName": "Directory: edit the local fields of directory entries",
+        "subPermissions": [
+          "module.directory.enabled",
+          "directory.entry.item-local.put"
         ],
         "visible": true
       },
@@ -109,7 +121,17 @@
         "permissionName": "directory.edit-all",
         "displayName": "Directory: edit all directory entries",
         "subPermissions": [
-          "module.directory.enabled"
+          "module.directory.enabled",
+          "directory.entry.item.put"
+        ],
+        "visible": true
+      },
+      {
+        "permissionName": "directory.create",
+        "displayName": "Directory: create new directory entries",
+        "subPermissions": [
+          "module.directory.enabled",
+          "directory.entry.item.post"
         ],
         "visible": true
       }
