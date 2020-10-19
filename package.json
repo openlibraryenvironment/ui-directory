@@ -37,7 +37,7 @@
     "@folio/address-plugin-north-america": "^1.0.0",
     "@folio/address-plugin-british-isles": "^1.0.0",
     "@folio/address-utils": "^1.0.0",
-    "@folio/react-intl-safe-html": "^2.0.0",
+    "@folio/react-intl-safe-html": "^3.0.0",
     "@folio/stripes-erm-components": "^4.0.0",
     "compose-function": "^3.0.3",
     "final-form-arrays": "^3.0.2",
