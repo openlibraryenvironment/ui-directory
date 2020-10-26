@@ -100,8 +100,8 @@
         "visible": true
       },
       {
-        "permissionName": "directory.edit-self",
-        "displayName": "Directory: edit the directory entry of the present institution (DO NOT USE)",
+        "permissionName": "ui-directory.edit-self",
+        "displayName": "Directory: edit the directory entry of the present institution",
         "subPermissions": [
           "module.directory.enabled",
           "directory.entry.managed-item.put"
@@ -109,8 +109,8 @@
         "visible": true
       },
       {
-        "permissionName": "directory.edit-local",
-        "displayName": "Directory: edit the local fields of directory entries (DO NOT USE)",
+        "permissionName": "ui-directory.edit-local",
+        "displayName": "Directory: edit the local fields of directory entries",
         "subPermissions": [
           "module.directory.enabled",
           "directory.entry.item-local.put"
@@ -118,8 +118,8 @@
         "visible": true
       },
       {
-        "permissionName": "directory.edit-all",
-        "displayName": "Directory: edit all directory entries (DO NOT USE)",
+        "permissionName": "ui-directory.edit-all",
+        "displayName": "Directory: edit all directory entries",
         "subPermissions": [
           "module.directory.enabled",
           "directory.entry.item.put"
@@ -127,8 +127,8 @@
         "visible": true
       },
       {
-        "permissionName": "directory.create",
-        "displayName": "Directory: create new directory entries (DO NOT USE)",
+        "permissionName": "ui-directory.create",
+        "displayName": "Directory: create new directory entries",
         "subPermissions": [
           "module.directory.enabled",
           "directory.entry.item.post"
