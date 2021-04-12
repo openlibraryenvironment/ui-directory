@@ -1,5 +1,5 @@
 {
-  "name": "@folio/directory",
+  "name": "@reshare/directory",
   "version": "1.1.0",
   "description": "Interact with the library services directory",
   "main": "src/index.js",
