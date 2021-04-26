@@ -77,7 +77,7 @@
       }
     ],
     "okapiInterfaces": {
-      "directory": "1.0",
+      "directory": "2.1",
       "tags": "1.0"
     },
     "permissionSets": [
