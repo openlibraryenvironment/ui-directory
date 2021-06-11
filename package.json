@@ -17,16 +17,11 @@
     "@bigtest/mirage": "^0.0.1",
     "@bigtest/mocha": "^0.5.1",
     "@folio/eslint-config-stripes": "^5.0.0",
-    "@folio/stripes": "^6.1.0",
     "@folio/stripes-cli": "~2.1.0",
     "babel-eslint": "^10.0.0",
     "chai": "^4.2.0",
     "eslint": "^6.0.0",
     "mocha": "^5.2.0",
-    "react": "^16.7.0",
-    "react-dom": "^16.7.0",
-    "react-intl": "^5.0.0",
-    "react-router-dom": "^5.2.0",
     "sinon": "^6.3.4"
   },
   "dependencies": {
