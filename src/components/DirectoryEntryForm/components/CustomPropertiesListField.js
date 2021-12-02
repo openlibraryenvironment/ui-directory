@@ -1,15 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { isEmpty } from 'lodash';
+
 import { FormattedMessage } from 'react-intl';
 import {
-  Col,
-  Row,
+  KeyValue,
   Select,
   TextArea,
   TextField,
 } from '@folio/stripes/components';
 import { EditCard } from '@folio/stripes-erm-components';
-import { isEmpty } from 'lodash';
+
+import css from './CustomPropertiesListField.css'
 
 const TERM_TYPE_TEXT = 'com.k_int.web.toolkit.custprops.types.CustomPropertyText'; // eslint-disable-line no-unused-vars
 const TERM_TYPE_NUMBER = 'com.k_int.web.toolkit.custprops.types.CustomPropertyInteger';
@@ -102,25 +104,20 @@ const CustomPropertiesListField = ({
   };
 
   const renderCustProps = () => {
-    return custProps.map((cp, i) => {
-      const header = cp.label;
-      return (
-        <EditCard
-          header={header}
-          key={cp.value}
-        >
-          <Row>
-            <Col xs={12} md={6}>
-              {renderCustPropValue(cp, i)}
-            </Col>
-          </Row>
-        </EditCard>
-      );
-    });
+    return (
+      custProps.map((cp, i) => {
+        return (
+          <KeyValue
+            label={cp.label}
+            value={renderCustPropValue(cp, i)}
+          />
+        );
+      })
+    );
   };
 
   return (
-    <div>
+    <div className={css.container}>
       {renderCustProps()}
     </div>
   );
