@@ -31,6 +31,7 @@
     "@folio/address-utils": "^1.2.0",
     "@folio/react-intl-safe-html": "^3.0.0",
     "@folio/stripes-erm-components": "^5.0.0",
+    "@k-int/stripes-kint-components": "^1.6.0",
     "compose-function": "^3.0.3",
     "final-form-arrays": "^3.0.2",
     "final-form-set-field-data": "^1.0.2",
@@ -59,7 +60,8 @@
       "@folio/address-plugin-generic",
       "@folio/address-plugin-north-america",
       "@folio/address-plugin-british-isles",
-      "@folio/address-utils"
+      "@folio/address-utils",
+      "@k-int/stripes-kint-components"
     ],
     "icons": [
       {
