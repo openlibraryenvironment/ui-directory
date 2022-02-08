@@ -13,14 +13,10 @@
     "lint": "eslint ."
   },
   "devDependencies": {
-    "@bigtest/interactor": "^0.8.1",
-    "@bigtest/mirage": "^0.0.1",
-    "@bigtest/mocha": "^0.5.1",
-    "@folio/eslint-config-stripes": "^5.0.0",
-    "@folio/stripes-cli": "~2.1.0",
-    "babel-eslint": "^10.0.0",
+    "@folio/eslint-config-stripes": "^6.0.0",
+    "@folio/stripes-cli": "~2.4.0",
     "chai": "^4.2.0",
-    "eslint": "^6.0.0",
+    "eslint": "^7.0.0",
     "mocha": "^5.2.0",
     "sinon": "^6.3.4"
   },
@@ -42,7 +38,7 @@
     "uuid": "^7.0.3"
   },
   "peerDependencies": {
-    "@folio/stripes": "^5.0.0 || ^6.1.0",
+    "@folio/stripes": "^6.1.0 || ^7.0.0",
     "react": "*",
     "react-intl": "^5.0.0",
     "react-router-dom": "^5.2.0"
