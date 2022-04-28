@@ -13,9 +13,9 @@ import {
   PaneMenu,
 } from '@folio/stripes/components';
 
-import pluginNA from '@folio/address-plugin-north-america';
-import pluginGeneric from '@folio/address-plugin-generic';
-import pluginGBR from '@folio/address-plugin-british-isles';
+import pluginNA from '@k-int/address-plugin-north-america';
+import pluginGeneric from '@k-int/address-plugin-generic';
+import pluginGBR from '@k-int/address-plugin-british-isles';
 
 import permissionToEdit from '../../util/permissionToEdit';
 import getRefdataValuesFromParentResources from '../../util/getRefdataValuesFromParentResources';

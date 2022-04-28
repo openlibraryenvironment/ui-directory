@@ -13,9 +13,9 @@ import {
 
 import { EditCard, withKiwtFieldArray } from '@folio/stripes-erm-components';
 
-import pluginGeneric from '@folio/address-plugin-generic';
-import pluginNA from '@folio/address-plugin-north-america';
-import pluginGBR from '@folio/address-plugin-british-isles';
+import pluginGeneric from '@k-int/address-plugin-generic';
+import pluginNA from '@k-int/address-plugin-north-america';
+import pluginGBR from '@k-int/address-plugin-british-isles';
 
 import { required } from '../../../util/validators';
 
@@ -95,6 +95,7 @@ class AddressListFieldArray extends React.Component {
         {items?.map((address, index) => {
           const domain = address.countryCode;
           const plugin = pluginMap[domain] ? pluginMap[domain] : pluginMap.Generic;
+
           return (
             <EditCard
               header={this.renderCardHeader(index)}
@@ -125,7 +126,6 @@ class AddressListFieldArray extends React.Component {
                         {...props}
                         country={domain}
                         textFieldComponent={TextField}
-                        requiredValidator={required}
                         name={`${this.props.name}[${index}]`}
                         savedAddress={address}
                       />
