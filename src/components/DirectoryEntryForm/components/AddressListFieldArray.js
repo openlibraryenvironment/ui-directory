@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage, injectIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { Field } from 'react-final-form';
+
+import { useKiwtFieldArray } from '@k-int/stripes-kint-components';
 
 import {
   Button,
@@ -11,7 +13,7 @@ import {
   TextField,
 } from '@folio/stripes/components';
 
-import { EditCard, withKiwtFieldArray } from '@folio/stripes-erm-components';
+import { EditCard } from '@folio/stripes-erm-components';
 
 import pluginGeneric from '@k-int/address-plugin-generic';
 import pluginNA from '@k-int/address-plugin-north-america';
@@ -27,36 +29,35 @@ plugins.forEach(plugin => {
   });
 });
 
-class AddressListFieldArray extends React.Component {
-  static propTypes = {
-    intl: PropTypes.shape({
-      formatMessage: PropTypes.func.isRequired,
-    }).isRequired,
-    items: PropTypes.arrayOf(PropTypes.shape({
-      map: PropTypes.func,
-    })),
-    name: PropTypes.string,
-    onAddField: PropTypes.func.isRequired,
-    onDeleteField: PropTypes.func.isRequired
-  };
+const AddressListFieldArray = ({
+  fields: {
+    name
+  }
+}) => {
+  const intl = useIntl();
 
-  renderAddAddress = () => {
+  const {
+    items,
+    onAddField,
+    onDeleteField
+  } = useKiwtFieldArray(name);
+
+  const renderAddAddress = () => {
     return (
       <Button
         id="add-address-btn"
-        onClick={() => this.props.onAddField()}
+        onClick={() => onAddField()}
       >
         <FormattedMessage id="ui-directory.information.addresses.add" />
       </Button>
     );
-  }
+  };
 
-  renderCardHeader = (index) => {
-    const { intl } = this.props;
+  const renderCardHeader = (index) => {
     return (
       <Col xs={8}>
         <Field
-          name={`${this.props.name}[${index}].addressLabel`}
+          name={`${name}[${index}].addressLabel`}
           component={TextField}
           placeholder={intl.formatMessage({ id: 'ui-directory.information.addresses.namePlaceholder' })}
           required
@@ -64,10 +65,9 @@ class AddressListFieldArray extends React.Component {
         />
       </Col>
     );
-  }
+  };
 
-  renderWarning(domain, plugin) {
-    const { intl } = this.props;
+  const renderWarning = (domain, plugin) => {
     let warning = '';
     if (domain && (!plugin || (plugin === pluginMap.Generic && domain !== 'Generic')) && !warning) {
       warning = intl.formatMessage({ id: 'ui-directory.information.addresses.missingPlugin' });
@@ -81,66 +81,67 @@ class AddressListFieldArray extends React.Component {
     );
   }
 
-  render() {
-    const { intl, items } = this.props;
-    const supportedAddressFormats = [{ value: '', label: '', disabled: true }];
-    plugins.forEach(plugin => {
-      plugin.listOfSupportedCountries.forEach(country => {
-        supportedAddressFormats.push({ value: country, label: intl.formatMessage({ id: `ui-${plugin.pluginName}.${country}.countryCode` }) });
-      });
+  const supportedAddressFormats = [{ value: '', label: '', disabled: true }];
+  plugins.forEach(plugin => {
+    plugin.listOfSupportedCountries.forEach(country => {
+      supportedAddressFormats.push({ value: country, label: intl.formatMessage({ id: `ui-${plugin.pluginName}.${country}.countryCode` }) });
     });
+  });
 
-    return (
-      <>
-        {items?.map((address, index) => {
-          const domain = address.countryCode;
-          const plugin = pluginMap[domain] ? pluginMap[domain] : pluginMap.Generic;
+  return (
+    <>
+      {items?.map((address, index) => {
+        const domain = address.countryCode;
+        const plugin = pluginMap[domain] ? pluginMap[domain] : pluginMap.Generic;
 
-          return (
-            <EditCard
-              header={this.renderCardHeader(index)}
-              key={`${this.props.name}[${index}].editCard`}
-              onDelete={() => this.props.onDeleteField(index, address)}
+        return (
+          <EditCard
+            header={renderCardHeader(index)}
+            key={`${name}[${index}].editCard`}
+            onDelete={() => onDeleteField(index, address)}
+          >
+            <Field
+              name={`${name}[${index}].countryCode`}
+              label={<FormattedMessage id="ui-directory.information.addresses.format" />}
+              parse={v => v}
+              required
+              validate={required}
             >
+              {({ input }) => (
+                <Select
+                  {...input}
+                  dataOptions={supportedAddressFormats}
+                />
+              )}
+            </Field>
+            {plugin && domain &&
               <Field
-                name={`${this.props.name}[${index}].countryCode`}
-                label={<FormattedMessage id="ui-directory.information.addresses.format" />}
-                parse={v => v}
-                required
-                validate={required}
+                name={`${name}[${index}]`}
               >
-                {({ input }) => (
-                  <Select
-                    {...input}
-                    dataOptions={supportedAddressFormats}
-                  />
-                )}
+                {props => {
+                  return (
+                    <plugin.addressFields
+                      {...props}
+                      country={domain}
+                      textFieldComponent={TextField}
+                      name={`${name}[${index}]`}
+                      savedAddress={address}
+                    />
+                  );
+                }}
               </Field>
-              {plugin && domain &&
-                <Field
-                  name={`${this.props.name}[${index}]`}
-                >
-                  {props => {
-                    return (
-                      <plugin.addressFields
-                        {...props}
-                        country={domain}
-                        textFieldComponent={TextField}
-                        name={`${this.props.name}[${index}]`}
-                        savedAddress={address}
-                      />
-                    );
-                  }}
-                </Field>
-              }
-              {this.renderWarning(domain, plugin)}
-            </EditCard>
-          );
-        })}
-        {this.renderAddAddress()}
-      </>
-    );
-  }
+            }
+            {renderWarning(domain, plugin)}
+          </EditCard>
+        );
+      })}
+      {renderAddAddress()}
+    </>
+  );
 }
 
-export default injectIntl(withKiwtFieldArray(AddressListFieldArray));
+AddressListFieldArray.propTypes = {
+  name: PropTypes.string,
+};
+
+export default AddressListFieldArray;
