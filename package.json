@@ -23,9 +23,9 @@
   "dependencies": {
     "@folio/react-intl-safe-html": "^3.0.0",
     "@folio/stripes-erm-components": "^5.0.0",
-    "@k-int/address-plugin-british-isles": "^1.0.1",
-    "@k-int/address-plugin-generic": "^1.0.0",
-    "@k-int/address-plugin-north-america": "^1.0.0",
+    "@k-int/address-plugin-british-isles": "^1.1.0",
+    "@k-int/address-plugin-generic": "^1.1.0",
+    "@k-int/address-plugin-north-america": "^1.1.0",
     "@k-int/stripes-kint-components": "^2.1.2",
     "compose-function": "^3.0.3",
     "final-form-arrays": "^3.0.2",
