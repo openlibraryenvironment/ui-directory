@@ -1,6 +1,7 @@
+import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Field, useForm, useFormState } from 'react-final-form';
+import { Field, useForm } from 'react-final-form';
 
 import {
   Col,
@@ -14,7 +15,6 @@ import { EditCard } from '@folio/stripes-erm-components';
 import { required } from '../../../util/validators';
 
 import { pluginMap, useSupportedAddressFormats } from "../../../util/pluginMap";
-import { useEffect } from 'react';
 
 const AddressField = ({
   address = {},
@@ -24,27 +24,33 @@ const AddressField = ({
 }) => {
   const intl = useIntl();
   const supportedAddressFormats = useSupportedAddressFormats();
-  const domain = address.countryCode;
-  const plugin = pluginMap[domain] ? pluginMap[domain] : pluginMap.Generic;
+  const [domain, setDomain] = useState(address.countryCode);
+  const [plugin, setPlugin] = useState(pluginMap[domain] ?? pluginMap.Generic);
 
   const { change } = useForm();
-  const { values } = useFormState();
 
   useEffect(() => {
-    const { addressLabel, countryCode, lines, ..._restOfAddress } = address;
-    
-    // When changing country code, automatically change country field with it
-    const newCountry = intl.formatMessage({ id: `ui-${plugin.pluginName}.${countryCode}.countryCode` })
-
-    const newAddress = {
-      addressLabel,
-      countryCode,
-      lines,
-      ...plugin.backendToFields(address),
-      country: newCountry
-    };
-
-    change(`${name}[${index}]`, newAddress);
+    // Don't bother with this change if we're deleting the thing or there is no countryCode;
+    if (!address?._delete && address.countryCode) {
+      const { addressLabel, countryCode, id, lines, ..._restOfAddress } = address;
+      setDomain(address.countryCode);
+      const newPlugin = pluginMap[address.countryCode] ?? pluginMap.Generic;
+      setPlugin(newPlugin);
+      
+      // When changing country code, automatically change country field with it
+      const newCountry = intl.formatMessage({ id: `ui-${newPlugin.pluginName}.${countryCode}.countryCode` })
+  
+      const newAddress = {
+        addressLabel,
+        countryCode,
+        id,
+        lines,
+        ...newPlugin.backendToFields(address),
+        country: newCountry
+      };
+  
+      change(`${name}[${index}]`, newAddress);
+    }
   }, [address.countryCode]);
 
   const renderWarning = () => {
