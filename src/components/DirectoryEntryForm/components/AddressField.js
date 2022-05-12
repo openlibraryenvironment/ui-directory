@@ -65,8 +65,9 @@ const AddressField = ({
     return (
       <Col xs={8}>
         <Field
-          name={`${name}[${index}].addressLabel`}
           component={TextField}
+          marginBottom0
+          name={`${name}[${index}].addressLabel`}
           placeholder={intl.formatMessage({ id: 'ui-directory.information.addresses.namePlaceholder' })}
           required
           validate={required}
