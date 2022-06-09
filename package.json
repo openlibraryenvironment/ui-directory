@@ -45,6 +45,7 @@
     "route": "/directory",
     "queryResource": "query",
     "stripesDeps": [
+      "@folio/stripes-erm-components",
       "@k-int/stripes-kint-components",
       "@k-int/address-plugin-generic",
       "@k-int/address-plugin-north-america",
