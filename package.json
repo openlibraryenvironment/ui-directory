@@ -8,25 +8,19 @@
   "scripts": {
     "start": "stripes serve",
     "build": "stripes build --output ./output",
-    "test-int": "stripes test nightmare --run demo --show",
-    "test": "stripes test karma",
     "lint": "eslint ."
   },
   "devDependencies": {
-    "@folio/eslint-config-stripes": "^6.0.0",
-    "@folio/stripes-cli": "~2.4.0",
-    "chai": "^4.2.0",
-    "eslint": "^7.0.0",
-    "mocha": "^5.2.0",
-    "sinon": "^6.3.4"
+    "@folio/eslint-config-stripes": "^6.1.0",
+    "@folio/stripes-cli": "~2.5.0",
+    "eslint": "^7.0.0"
   },
   "dependencies": {
-    "@folio/react-intl-safe-html": "^3.0.0",
-    "@folio/stripes-erm-components": "^5.0.0",
     "@k-int/address-plugin-british-isles": "^1.1.0",
     "@k-int/address-plugin-generic": "^1.1.0",
     "@k-int/address-plugin-north-america": "^1.1.0",
-    "@k-int/stripes-kint-components": "^2.1.2",
+    "@folio/stripes-erm-components": "^6.1.0",
+    "@k-int/stripes-kint-components": "^2.5.1",
     "compose-function": "^3.0.3",
     "final-form-arrays": "^3.0.2",
     "final-form-set-field-data": "^1.0.2",
