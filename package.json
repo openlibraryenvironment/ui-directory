@@ -16,10 +16,9 @@
     "eslint": "^7.0.0"
   },
   "dependencies": {
-    "@folio/address-plugin-generic": "^1.4.0",
-    "@folio/address-plugin-north-america": "^1.3.0",
-    "@folio/address-plugin-british-isles": "^1.3.0",
-    "@folio/address-utils": "^1.2.0",
+    "@k-int/address-plugin-british-isles": "^1.1.0",
+    "@k-int/address-plugin-generic": "^1.1.0",
+    "@k-int/address-plugin-north-america": "^1.1.0",
     "@folio/stripes-erm-components": "^6.1.0",
     "@k-int/stripes-kint-components": "^2.5.1",
     "compose-function": "^3.0.3",
@@ -47,11 +46,10 @@
     "queryResource": "query",
     "stripesDeps": [
       "@folio/stripes-erm-components",
-      "@folio/address-plugin-generic",
-      "@folio/address-plugin-north-america",
-      "@folio/address-plugin-british-isles",
-      "@folio/address-utils",
-      "@k-int/stripes-kint-components"
+      "@k-int/stripes-kint-components",
+      "@k-int/address-plugin-generic",
+      "@k-int/address-plugin-north-america",
+      "@k-int/address-plugin-british-isles"
     ],
     "icons": [
       {
