@@ -48,8 +48,9 @@ jobs:
           always-auth: true
 
       - name: Set yarn config
-        run: yarn config set @folio:registry $FOLIO_NPM_REGISTRY
-        run: yarn config set @reshare:registry $RESHARE_NPM_REGISTRY
+        run: |
+          yarn config set @folio:registry $FOLIO_NPM_REGISTRY
+          yarn config set @reshare:registry $RESHARE_NPM_REGISTRY
 
       - name: Set FOLIO NPM snapshot version
         run: |
