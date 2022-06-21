@@ -48,8 +48,9 @@ jobs:
           always-auth: true
 
       - name: Set yarn config
-        run: yarn config set @folio:registry $FOLIO_NPM_REGISTRY
-        run: yarn config set @reshare:registry $RESHARE_NPM_REGISTRY
+        run: |
+          yarn config set @folio:registry $FOLIO_NPM_REGISTRY
+          yarn config set @reshare:registry $RESHARE_NPM_REGISTRY
 
       - name: Set FOLIO NPM snapshot version
         run: |
@@ -62,68 +63,64 @@ jobs:
       - name: Run yarn install
         run: yarn install --ignore-scripts
 
-      - name: Run yarn lint
-        run: yarn lint
-        continue-on-error: true
+      # - name: Run yarn lint
+      #   run: yarn lint
+      #   continue-on-error: true
 
-      - name: Run yarn formatjs-compile
-        if : ${{ env.COMPILE_TRANSLATION_FILES == 'true' }}
-        run: yarn formatjs-compile
+      # - name: Run yarn test
+      #   run: xvfb-run --server-args="-screen 0 1024x768x24" yarn test $YARN_TEST_OPTIONS
 
-      - name: Run yarn test
-        run: xvfb-run --server-args="-screen 0 1024x768x24" yarn test $YARN_TEST_OPTIONS
+      # - name: Generate FOLIO module descriptor
+      #   if: ${{ env.PUBLISH_MOD_DESCRIPTOR == 'true' }}
+      #   run: yarn build-mod-descriptor
 
-      - name: Generate FOLIO module descriptor
-        if: ${{ env.PUBLISH_MOD_DESCRIPTOR == 'true' }}
-        run: yarn build-mod-descriptor
+      # - name: Print FOLIO module descriptor
+      #   if: ${{ env.PUBLISH_MOD_DESCRIPTOR == 'true' }}
+      #   run: cat module-descriptor.json
 
-      - name: Print FOLIO module descriptor
-        if: ${{ env.PUBLISH_MOD_DESCRIPTOR == 'true' }}
-        run: cat module-descriptor.json
+      # - name: Publish Jest unit test results
+      #   uses: docker://ghcr.io/enricomi/publish-unit-test-result-action:v1
+      #   if: always()
+      #   with:
+      #     github_token: ${{ github.token }}
+      #     files: "${{ env.JEST_JUNIT_OUTPUT_DIR }}/*.xml"
+      #     check_name: Jest Unit Test Results
+      #     comment_mode: update last
+      #     comment_title: Jest Unit Test Statistics
 
-      - name: Publish Jest unit test results
-        uses: docker://ghcr.io/enricomi/publish-unit-test-result-action:v1
-        if: always()
-        with:
-          github_token: ${{ github.token }}
-          files: "${{ env.JEST_JUNIT_OUTPUT_DIR }}/*.xml"
-          check_name: Jest Unit Test Results
-          comment_mode: update last
-          comment_title: Jest Unit Test Statistics
+      # - name: Publish Jest coverage report
+      #   uses: actions/upload-artifact@v2
+      #   if: always()
+      #   with:
+      #     name: jest-coverage-report
+      #     path: ${{ env.JEST_COVERAGE_REPORT_DIR }}
+      #     retention-days: 30
 
-      - name: Publish Jest coverage report
-        uses: actions/upload-artifact@v2
-        if: always()
-        with:
-          name: jest-coverage-report
-          path: ${{ env.JEST_COVERAGE_REPORT_DIR }}
-          retention-days: 30
+      # - name: Publish BigTest unit test results
+      #   uses: docker://ghcr.io/enricomi/publish-unit-test-result-action:v1
+      #   if: always()
+      #   with:
+      #     github_token: ${{ github.token }}
+      #     files: "${{ env.BIGTEST_JUNIT_OUTPUT_DIR }}/*.xml"
+      #     check_name: BigTest Unit Test Results
+      #     comment_mode: update last
+      #     comment_title: BigTest Unit Test Statistics
 
-      - name: Publish BigTest unit test results
-        uses: docker://ghcr.io/enricomi/publish-unit-test-result-action:v1
-        if: always()
-        with:
-          github_token: ${{ github.token }}
-          files: "${{ env.BIGTEST_JUNIT_OUTPUT_DIR }}/*.xml"
-          check_name: BigTest Unit Test Results
-          comment_mode: update last
-          comment_title: BigTest Unit Test Statistics
+      # - name: Publish BigTest coverage report
+      #   uses: actions/upload-artifact@v2
+      #   if: always()
+      #   with:
+      #     name: bigtest-coverage-report
+      #     path: ${{ env.BIGTEST_COVERAGE_REPORT_DIR }}
+      #     retention-days: 30
 
-      - name: Publish BigTest coverage report
-        uses: actions/upload-artifact@v2
-        if: always()
-        with:
-          name: bigtest-coverage-report
-          path: ${{ env.BIGTEST_COVERAGE_REPORT_DIR }}
-          retention-days: 30
-
-      - name: Publish yarn.lock
-        uses: actions/upload-artifact@v2
-        if: failure()
-        with:
-          name: yarn.lock
-          path: yarn.lock
-          retention-days: 5
+      # - name: Publish yarn.lock
+      #   uses: actions/upload-artifact@v2
+      #   if: failure()
+      #   with:
+      #     name: yarn.lock
+      #     path: yarn.lock
+      #     retention-days: 5
 
       - name: Set default branch as env variable
         run: echo "DEFAULT_BRANCH=${{ github.event.repository.default_branch }}" >> $GITHUB_ENV
