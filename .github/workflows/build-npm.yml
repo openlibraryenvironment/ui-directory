@@ -152,7 +152,7 @@ jobs:
         if: ${{ github.ref == 'refs/heads/master' || github.ref  == 'refs/heads/main' }}
         run: npm publish
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.RESHARE_NPM_RELEASE_TOKEN }}
 
       - name: Read module descriptor
         if: ${{ env.PUBLISH_MOD_DESCRIPTOR == 'true' && github.ref == 'refs/heads/master' || github.ref  == 'refs/heads/main' }}
