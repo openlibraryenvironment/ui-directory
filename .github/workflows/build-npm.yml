@@ -127,7 +127,7 @@ jobs:
         run: |
           echo setting authToken $NODE_AUTH_TOKEN
           npm config set @reshare:registry $RESHARE_NPM_REGISTRY
-          npm config set -- //nexus.libsdev.k-int.com/repository/libsdev-npm-snapshots-hosted/:_authToken $NODE_AUTH_TOKEN
+          npm config set -- //nexus.libsdev.k-int.com/repository/libsdev-npm-snapshots-hosted/:_authToken=$NODE_AUTH_TOKEN
           npm --registry "$RESHARE_NPM_REGISTRY" whoami
         env:
           NODE_AUTH_TOKEN: ${{ secrets.RESHARE_NPM_RELEASE_TOKEN }}
