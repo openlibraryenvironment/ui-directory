@@ -129,12 +129,8 @@ jobs:
           npm config set @reshare:registry $RESHARE_NPM_REGISTRY
           echo setting authToken for $RESHARE_NPM_REGISTRY to $NODE_AUTH_TOKEN
           npm config set -- //nexus.libsdev.k-int.com/repository/libsdev-npm-snapshots-hosted/:_authToken=$NODE_AUTH_TOKEN
-          echo npm config list
-          npm config list
           echo run whoami for $RESHARE_NPM_REGISTRY
           npm --registry $RESHARE_NPM_REGISTRY whoami
-          echo snapshots
-          npm --registry https://nexus.libsdev.k-int.com/repository/libsdev-npm-snapshots-hosted/ whoami
         env:
           NODE_AUTH_TOKEN: ${{ secrets.RESHARE_NPM_RELEASE_TOKEN }}
 
@@ -147,7 +143,7 @@ jobs:
 
       - name: Publish NPM
         if: ${{ github.ref == 'refs/heads/master' || github.ref  == 'refs/heads/main' }}
-        run: npm --registry "$RESHARE_NPM_REGISTRY`" publish
+        run: npm --registry "$RESHARE_NPM_REGISTRY" publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.RESHARE_NPM_RELEASE_TOKEN }}
 
