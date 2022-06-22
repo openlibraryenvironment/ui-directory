@@ -18,7 +18,7 @@ jobs:
   build-npm:
     env:
       FOLIO_NPM_REGISTRY: 'https://repository.folio.org/repository/npm-folioci/'
-      RESHARE_NPM_REGISTRY: 'https://nexus.libsdev.k-int.com/repository/libsdev-npm-snapshots-hosted'
+      RESHARE_NPM_REGISTRY: 'https://nexus.libsdev.k-int.com/repository/libsdev-npm-snapshots-hosted/'
       NODEJS_VERSION: '16'
 
     runs-on: ubuntu-latest
@@ -133,6 +133,8 @@ jobs:
           npm config list
           echo run whoami for $RESHARE_NPM_REGISTRY
           npm --registry $RESHARE_NPM_REGISTRY whoami
+          echo snapshots
+          npm --registry https://nexus.libsdev.k-int.com/repository/libsdev-npm-snapshots-hosted/ whoami
         env:
           NODE_AUTH_TOKEN: ${{ secrets.RESHARE_NPM_RELEASE_TOKEN }}
 
