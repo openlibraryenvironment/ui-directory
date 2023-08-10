@@ -43,6 +43,7 @@
     ],
     "displayName": "ui-directory.meta.title",
     "route": "/directory",
+    "home":"/directory/entries?filters=type.institution&sort=fullyQualifiedName",
     "queryResource": "query",
     "stripesDeps": [
       "@folio/stripes-erm-components",
