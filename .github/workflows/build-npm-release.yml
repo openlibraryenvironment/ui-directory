@@ -53,7 +53,7 @@ jobs:
 
       - name: Set _auth in .npmrc
         run: |
-          npm config set @reshare:registry $RESHARE_NPM_REGISTRY
+          npm config set @projectreshare:registry $RESHARE_NPM_REGISTRY
           npm config set -- //nexus.libsdev.k-int.com/repository/libsdev-npm-snapshots-hosted/:_authToken=$NODE_AUTH_TOKEN
           echo run whoami for $RESHARE_NPM_REGISTRY
           npm --registry $RESHARE_NPM_REGISTRY whoami
@@ -65,7 +65,7 @@ jobs:
 
       - name: Run yarn list
         run: yarn list --pattern @folio
-        run: yarn list --pattern @reshare
+        run: yarn list --pattern @projectreshare
 
       - name: Run yarn lint
         run: yarn lint

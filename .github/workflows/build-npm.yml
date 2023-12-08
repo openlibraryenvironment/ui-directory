@@ -39,7 +39,7 @@ jobs:
       - name: Set yarn config
         run: |
           yarn config set @folio:registry $FOLIO_NPM_REGISTRY
-          yarn config set @reshare:registry $RESHARE_NPM_REGISTRY
+          yarn config set @projectreshare:registry $RESHARE_NPM_REGISTRY
 
       - name: Set FOLIO NPM snapshot version
         run: |
@@ -126,7 +126,7 @@ jobs:
         if: ${{ github.ref == 'refs/heads/master' || github.ref  == 'refs/heads/main' }}
         run: |
           echo set reshare registry to $RESHARE_NPM_REGISTRY
-          npm config set @reshare:registry $RESHARE_NPM_REGISTRY
+          npm config set @projectreshare:registry $RESHARE_NPM_REGISTRY
           echo setting authToken for $RESHARE_NPM_REGISTRY to $NODE_AUTH_TOKEN
           npm config set -- //nexus.libsdev.k-int.com/repository/libsdev-npm-snapshots-hosted/:_authToken=$NODE_AUTH_TOKEN
           echo run whoami for $RESHARE_NPM_REGISTRY
@@ -144,7 +144,7 @@ jobs:
       - name: Publish NPM
         if: ${{ github.ref == 'refs/heads/master' || github.ref  == 'refs/heads/main' }}
         run: |
-          export STRIPES_TRANSPILE_TOKENS="@k-int @reshare" 
+          export STRIPES_TRANSPILE_TOKENS="@k-int @projectreshare" 
           export export NODE_OPTIONS="--max-old-space-size=4096 $NODE_OPTIONS"
           npm --registry "$RESHARE_NPM_REGISTRY" publish
         env:
