@@ -1,5 +1,5 @@
 {
-  "name": "@reshare/directory",
+  "name": "@projectreshare/directory",
   "version": "1.11.1",
   "description": "Interact with the library services directory",
   "main": "src/index.js",
