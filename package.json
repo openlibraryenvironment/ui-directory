@@ -1,6 +1,6 @@
 {
   "name": "@reshare/directory",
-  "version": "1.11.0",
+  "version": "1.11.1",
   "description": "Interact with the library services directory",
   "main": "src/index.js",
   "repository": "",
@@ -35,6 +35,10 @@
     "react": "*",
     "react-intl": "^5.0.0",
     "react-router-dom": "^5.2.0"
+  },
+  "resolutions": {
+        "@rehooks/local-storage": "2.4.4",
+        "postcss-nesting" : "^10.0.0"
   },
   "stripes": {
     "actsAs": [
