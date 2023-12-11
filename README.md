@@ -43,3 +43,9 @@ Now that your new app is running, search the code for "`stripes-new-app`" to fin
 Read the [Stripes Module Developer's Guide](https://github.com/folio-org/stripes/blob/master/doc/dev-guide.md).
 
 Update this README with information about your app.
+
+## Release Procedures
+* To prepare for a release, create a branch called release-N.N.x where N.N is the major and minor versions, and x is the letter x.
+* Push a tag to the release branch when changes are finalized.
+* From the Github repository page, create a release from the tag created in the previous step.
+* CI will publish appropriate artifacts when the release is published.
