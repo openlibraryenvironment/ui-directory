@@ -76,6 +76,8 @@ class DirectoryEntryFormInfo extends React.Component {
     const { values } = this.props;
     const layer = this.getCurrentLayer();
     const namingAuthorities = this.props?.parentResources?.namingAuthorities?.records.map(obj => ({ value: obj.id, label: obj.symbol }));
+    const managed = this.props?.managed;
+    const featureFlag = this.props?.featureFlag;
 
     const directoryEntryTypes = getRefdataValuesFromParentResources(this.props.parentResources, 'DirectoryEntry.Type');
     return (
@@ -137,7 +139,7 @@ class DirectoryEntryFormInfo extends React.Component {
                     label={placeholder[0]}
                     component={TextField}
                     placeholder={placeholder[0]}
-                    disabled={layer === 'edit'}
+                    disabled={layer === 'edit' && managed && featureFlag}
                     required
                     validate={required}
                   />

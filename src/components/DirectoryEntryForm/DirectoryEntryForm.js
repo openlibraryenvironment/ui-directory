@@ -31,6 +31,15 @@ const DirectoryEntryForm = ({
   stripes,
 }) => {
   const layer = resources?.query?.layer ?? parentResources?.query?.layer;
+  // Fetch featureFlag
+  const { data: relaxManaged = {}, isSuccess: relaxManagedLoaded } = useOkapiQuery('rs/settings/appSettings', {
+    searchParams: {
+      filters: 'hidden=true&&key=relax-manged-edit.feature_flag',
+      perPage: '1',
+      staleTime: 2 * 60 * 60 * 1000
+    }
+  });
+  const featureFlag = relaxManaged.length > 0 && relaxManaged[0]?.value === "true";
   const managed = initialValues?.status?.value === 'managed' ||
     layer === 'create' ||
     layer === 'unit';
@@ -80,6 +89,8 @@ const DirectoryEntryForm = ({
     form,
     onToggle: handleSectionToggle,
     parentResources,
+    managed,
+    featureFlag,
   };
 
   const name = resources?.selectedRecord?.records?.[0]?.fullyQualifiedName ??
@@ -108,13 +119,15 @@ const DirectoryEntryForm = ({
       </Layout>
       {tab === 'shared' &&
         <>
-          <Row>
-            <Col xs={12} lgOffset={1} lg={10}>
-              <MessageBanner>
-                <FormattedMessage id="ui-directory.information.heading.display-text" values={{ directory_entry: name }} />
-              </MessageBanner>
-            </Col>
-          </Row>
+          {!(managed && featureFlag) &&
+            <Row>
+              <Col xs={12} lgOffset={1} lg={10}>
+                <MessageBanner>
+                  <FormattedMessage id="ui-directory.information.heading.display-text" values={{ directory_entry: name }} />
+                </MessageBanner>
+              </Col>
+            </Row>
+          }
           <AccordionSet>
             <Row end="xs">
               <Col xs>
@@ -133,13 +146,15 @@ const DirectoryEntryForm = ({
       }
       {tab === 'local' &&
         <>
-          <Row>
-            <Col xs={12} lgOffset={1} lg={10}>
-              <MessageBanner>
-                <FormattedMessage id="ui-directory.information.local.heading.display-text" />
-              </MessageBanner>
-            </Col>
-          </Row>
+          {!(managed && featureFlag) &&
+            <Row>
+              <Col xs={12} lgOffset={1} lg={10}>
+                <MessageBanner>
+                  <FormattedMessage id="ui-directory.information.local.heading.display-text" />
+                </MessageBanner>
+              </Col>
+            </Row>
+          }
           <AccordionSet>
             <Row end="xs">
               <Col xs>
