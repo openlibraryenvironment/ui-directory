@@ -40,6 +40,15 @@ class ViewDirectoryEntry extends React.Component {
       path: 'directory/entry/:{id}',
     },
     query: {},
+    featureFlag: {
+      type: 'okapi',
+      path: 'rs/settings/appSettings',
+      params: {
+        filters: 'hidden=true&&key=relax-manged-edit.feature_flag',
+        perPage: '100'
+      },
+      shouldFetch: true
+    },
   });
 
   static propTypes = {
@@ -245,6 +254,14 @@ class ViewDirectoryEntry extends React.Component {
     const showEditButton = permissionToEdit(stripes, record);
     const showCreateUnitButton = stripes.hasPerm('ui-directory.create');
 
+    const { featureFlag } = this.props.resources;
+    let hideMessage = false;
+    if (featureFlag.hasLoaded && record.status) {
+      const relaxManaged = featureFlag.records || [];
+      const featureFlagEnabled = relaxManaged.length > 0 && relaxManaged[0]?.value === 'true';
+      hideMessage = record.status?.value !== 'reference' && featureFlagEnabled;
+    }
+
     return (
       <Pane
         id="pane-view-directoryentry"
@@ -275,13 +292,15 @@ class ViewDirectoryEntry extends React.Component {
         </Layout>
         {tab === 'shared' &&
           <>
-            <Row>
-              <Col xs={12} lgOffset={1} lg={10}>
-                <MessageBanner>
-                  <FormattedMessage id="ui-directory.information.heading.display-text" values={{ directory_entry: directoryEntry }} />
-                </MessageBanner>
-              </Col>
-            </Row>
+            {!hideMessage &&
+              <Row>
+                <Col xs={12} lgOffset={1} lg={10}>
+                  <MessageBanner>
+                    <FormattedMessage id="ui-directory.information.heading.display-text" values={{ directory_entry: directoryEntry }} />
+                  </MessageBanner>
+                </Col>
+              </Row>
+            }
             <AccordionSet accordionStatus={this.state.sectionsShared}>
               <DirectoryEntryInfo id="directoryEntryInfo" {...sectionProps} />
               <ContactInformation id="contactInformation" {...sectionProps} />
@@ -299,13 +318,15 @@ class ViewDirectoryEntry extends React.Component {
         }
         {tab === 'local' &&
           <>
-            <Row>
-              <Col xs={12} lgOffset={1} lg={10}>
-                <MessageBanner>
-                  <FormattedMessage id="ui-directory.information.local.heading.display-text" />
-                </MessageBanner>
-              </Col>
-            </Row>
+            {!hideMessage &&
+              <Row>
+                <Col xs={12} lgOffset={1} lg={10}>
+                  <MessageBanner>
+                    <FormattedMessage id="ui-directory.information.local.heading.display-text" />
+                  </MessageBanner>
+                </Col>
+              </Row>
+            }
             <AccordionSet accordionStatus={this.state.sectionsLocal}>
               <CustomProperties id="customProperties" {...sectionProps} />
             </AccordionSet>
