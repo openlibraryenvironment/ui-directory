@@ -22,6 +22,7 @@ import {
 import {
   DirectoryEntryFormCustomProperties,
 } from './components';
+import { useOkapiQuery } from '@projectreshare/stripes-reshare';
 
 const DirectoryEntryForm = ({
   form,
@@ -31,15 +32,18 @@ const DirectoryEntryForm = ({
   stripes,
 }) => {
   const layer = resources?.query?.layer ?? parentResources?.query?.layer;
-  // Fetch featureFlag
-  const { data: relaxManaged = {}, isSuccess: relaxManagedLoaded } = useOkapiQuery('rs/settings/appSettings', {
+  const { data: featureFlagData = {}, isSuccess: relaxManagedLoaded } = useOkapiQuery('rs/settings/appSettings', {
     searchParams: {
       filters: 'hidden=true&&key=relax-manged-edit.feature_flag',
       perPage: '1',
       staleTime: 2 * 60 * 60 * 1000
     }
   });
-  const featureFlag = relaxManaged.length > 0 && relaxManaged[0]?.value === "true";
+
+  let featureFlag = false;
+  if (relaxManagedLoaded && featureFlagData.length > 0) {
+    featureFlag = featureFlagData.length > 0 && featureFlagData[0]?.value === 'true';
+  }
   const managed = initialValues?.status?.value === 'managed' ||
     layer === 'create' ||
     layer === 'unit';

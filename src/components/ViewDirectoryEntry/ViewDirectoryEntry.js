@@ -19,7 +19,6 @@ import {
   ButtonGroup,
 } from '@folio/stripes/components';
 import { stripesConnect } from '@folio/stripes/core';
-import { useOkapiQuery } from '@projectreshare/stripes-reshare';
 
 import permissionToEdit from '../../util/permissionToEdit';
 import EditDirectoryEntry from '../EditDirectoryEntry';
@@ -41,6 +40,15 @@ class ViewDirectoryEntry extends React.Component {
       path: 'directory/entry/:{id}',
     },
     query: {},
+    featureFlag: {
+      type: 'okapi',
+      path: 'rs/settings/appSettings',
+      params: {
+        filters: 'hidden=true&&key=relax-manged-edit.feature_flag',
+        perPage: '100'
+      },
+      shouldFetch: true
+    },
   });
 
   static propTypes = {
@@ -245,16 +253,14 @@ class ViewDirectoryEntry extends React.Component {
     const directoryEntry = record.name || <FormattedMessage id="ui-directory.information.titleNotFound" />;
     const showEditButton = permissionToEdit(stripes, record);
     const showCreateUnitButton = stripes.hasPerm('ui-directory.create');
-    // Fetch featureFlag
-    const { data: relaxManaged = {}, isSuccess: relaxManagedLoaded } = useOkapiQuery('rs/settings/appSettings', {
-      searchParams: {
-        filters: 'hidden=true&&key=relax-manged-edit.feature_flag',
-        perPage: '1',
-        staleTime: 2 * 60 * 60 * 1000
-      }
-    });
-    const featureFlag = relaxManaged.length > 0 && relaxManaged[0]?.value === "true";
-    const hideMessage = record.status?.value === 'reference' && featureFlag
+
+    const { featureFlag } = this.props.resources;
+    let hideMessage = false;
+    if (featureFlag.hasLoaded && record.status) {
+      const relaxManaged = featureFlag.records || [];
+      const featureFlagEnabled = relaxManaged.length > 0 && relaxManaged[0]?.value === 'true';
+      hideMessage = record.status?.value !== 'reference' && featureFlagEnabled;
+    }
 
     return (
       <Pane
