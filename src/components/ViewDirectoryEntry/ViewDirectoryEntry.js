@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import { get } from 'lodash';
+import { areRecordsNotSynced } from '../../util/transformAndCompareRecords';
 
 import {
   AccordionSet,
@@ -38,6 +39,10 @@ class ViewDirectoryEntry extends React.Component {
     selectedRecord: {
       type: 'okapi',
       path: 'directory/entry/:{id}',
+    },
+    modRsRecord: {
+      type: 'okapi',
+      path: 'rs/directoryEntry/:{id}?full=true',
     },
     query: {},
     featureFlag: {
@@ -90,6 +95,10 @@ class ViewDirectoryEntry extends React.Component {
 
   getRecord() {
     return get(this.props.resources.selectedRecord, ['records', 0], {});
+  }
+
+  getModRsRecord() {
+    return get(this.props.resources.modRsRecord, ['records', 0], {});
   }
 
   handleToggleHelper = (helper, mutator, resources) => {
@@ -245,7 +254,7 @@ class ViewDirectoryEntry extends React.Component {
 
   render() {
     const { mutator, resources, stripes } = this.props;
-    const record = this.getRecord();
+    const record = this.cord();
     const sectionProps = this.getSectionProps();
     let title = record.name || 'Directory entry details';
     if (record.status) title += ` (${record.status.label})`;
@@ -261,6 +270,8 @@ class ViewDirectoryEntry extends React.Component {
       const featureFlagEnabled = relaxManaged.length > 0 && relaxManaged[0]?.value === 'true';
       hideMessage = record.status?.value !== 'reference' && featureFlagEnabled;
     }
+
+    const showNotSyncedMessage = areRecordsNotSynced(record, this.getModRsRecord());
 
     return (
       <Pane
@@ -300,6 +311,15 @@ class ViewDirectoryEntry extends React.Component {
                   </MessageBanner>
                 </Col>
               </Row>
+            }
+            {showNotSyncedMessage &&
+                <Row>
+                  <Col xs={12} lgOffset={1} lg={10}>
+                    <MessageBanner>
+                      <FormattedMessage id="ui-directory.information.heading.items-not-synced" />
+                    </MessageBanner>
+                  </Col>
+                </Row>
             }
             <AccordionSet accordionStatus={this.state.sectionsShared}>
               <DirectoryEntryInfo id="directoryEntryInfo" {...sectionProps} />
