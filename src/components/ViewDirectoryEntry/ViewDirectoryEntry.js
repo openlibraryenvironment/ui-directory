@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import { get } from 'lodash';
-import { areRecordsNotSynced } from '../../util/transformAndCompareRecords';
+import {getUnsyncedFields} from '../../util/transformAndCompareRecords';
 
 import {
   AccordionSet,
@@ -271,7 +271,11 @@ class ViewDirectoryEntry extends React.Component {
       hideMessage = record.status?.value !== 'reference' && featureFlagEnabled;
     }
 
-    const showNotSyncedMessage = areRecordsNotSynced(record, this.getModRsRecord());
+    const unsyncedFields =  getUnsyncedFields(record, this.getModRsRecord());
+    const hasUnsyncedFields = unsyncedFields && Object.keys(unsyncedFields).length > 0;
+    if (hasUnsyncedFields) {
+      console.warn("Unsynced fields detected:", unsyncedFields);
+    }
 
     return (
       <Pane
@@ -312,7 +316,7 @@ class ViewDirectoryEntry extends React.Component {
                 </Col>
               </Row>
             }
-            {showNotSyncedMessage &&
+            {hasUnsyncedFields &&
                 <Row>
                   <Col xs={12} lgOffset={1} lg={10}>
                     <MessageBanner>

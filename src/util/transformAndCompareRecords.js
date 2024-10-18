@@ -1,4 +1,7 @@
 import isEqual from 'lodash/isEqual';
+import get from 'lodash/get';
+import set from 'lodash/set';
+import has from 'lodash/has';
 
 /**
  * Transforms a record by applying necessary changes.
@@ -44,16 +47,46 @@ const transformRecord = (record) => {
 };
 
 /**
- * Compares two records after transforming them and checks if they are not synced.
+ * Compares two records after transforming them and identifies which fields are not synced.
  * @param {Object} record1 - The first record object.
  * @param {Object} record2 - The second record object.
- * @returns {boolean} True if the records are not synchronized (i.e., they differ), false otherwise.
+ * @returns {Object|null} An object with the differing fields, or null if records are identical.
  */
-export const areRecordsNotSynced = (record1, record2) => {
+export const getUnsyncedFields = (record1, record2) => {
   if (!record1 || !record2) {
-    return false;
+    return null;
   }
+
   const transformedRecord1 = transformRecord(record1);
   const transformedRecord2 = transformRecord(record2);
-  return !isEqual(transformedRecord1, transformedRecord2);
+
+  if (isEqual(transformedRecord1, transformedRecord2)) {
+    return null;
+  }
+
+  const differences = {};
+
+  const findDifferences = (obj1, obj2, path = '') => {
+    for (const key in obj1) {
+      const fullPath = path ? `${path}.${key}` : key;
+      if (has(obj2, key)) {
+        if (!isEqual(get(obj1, key), get(obj2, key))) {
+          set(differences, fullPath, { from: get(obj1, key), to: get(obj2, key) });
+        }
+      } else {
+        set(differences, fullPath, { from: get(obj1, key), to: undefined });
+      }
+    }
+
+    for (const key in obj2) {
+      const fullPath = path ? `${path}.${key}` : key;
+      if (!has(obj1, key)) {
+        set(differences, fullPath, { from: undefined, to: get(obj2, key) });
+      }
+    }
+  };
+
+  findDifferences(transformedRecord1, transformedRecord2);
+
+  return differences;
 };
