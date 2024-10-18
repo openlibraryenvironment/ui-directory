@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import { get } from 'lodash';
+import {getUnsyncedFields} from '../../util/transformAndCompareRecords';
 
 import {
   AccordionSet,
@@ -38,6 +39,10 @@ class ViewDirectoryEntry extends React.Component {
     selectedRecord: {
       type: 'okapi',
       path: 'directory/entry/:{id}',
+    },
+    modRsRecord: {
+      type: 'okapi',
+      path: 'rs/directoryEntry/:{id}?full=true',
     },
     query: {},
     featureFlag: {
@@ -90,6 +95,10 @@ class ViewDirectoryEntry extends React.Component {
 
   getRecord() {
     return get(this.props.resources.selectedRecord, ['records', 0], {});
+  }
+
+  getModRsRecord() {
+    return get(this.props.resources.modRsRecord, ['records', 0], {});
   }
 
   handleToggleHelper = (helper, mutator, resources) => {
@@ -262,6 +271,12 @@ class ViewDirectoryEntry extends React.Component {
       hideMessage = record.status?.value !== 'reference' && featureFlagEnabled;
     }
 
+    const unsyncedFields =  getUnsyncedFields(record, this.getModRsRecord());
+    const hasUnsyncedFields = unsyncedFields && Object.keys(unsyncedFields).length > 0;
+    if (hasUnsyncedFields) {
+      console.warn("Unsynced fields detected:", unsyncedFields);
+    }
+
     return (
       <Pane
         id="pane-view-directoryentry"
@@ -300,6 +315,15 @@ class ViewDirectoryEntry extends React.Component {
                   </MessageBanner>
                 </Col>
               </Row>
+            }
+            {hasUnsyncedFields &&
+                <Row>
+                  <Col xs={12} lgOffset={1} lg={10}>
+                    <MessageBanner>
+                      <FormattedMessage id="ui-directory.information.heading.items-not-synced" />
+                    </MessageBanner>
+                  </Col>
+                </Row>
             }
             <AccordionSet accordionStatus={this.state.sectionsShared}>
               <DirectoryEntryInfo id="directoryEntryInfo" {...sectionProps} />
