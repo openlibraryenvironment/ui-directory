@@ -10,7 +10,18 @@ import has from 'lodash/has';
  */
 const transformRecord = (record) => {
   const { customProperties = {}, services = [] } = record || {};
-  const extractValues = key => (customProperties[key] || []).map(item => item.value).sort();
+  const extractValues = key => {
+    const items = customProperties[key] || [];
+    return items.map(item => {
+      let currentValue = item.value;
+
+      while (typeof currentValue === 'object' && currentValue && 'value' in currentValue) {
+        currentValue = currentValue.value;
+      }
+
+      return currentValue || item;
+    }).sort();
+  };
   const sortSummary = summary => summary?.split(',').map(item => item.trim()).sort() || [];
   const getPropertyValue = obj => obj?.value || null;
 
@@ -48,8 +59,8 @@ const transformRecord = (record) => {
 
 /**
  * Compares two records after transforming them and identifies which fields are not synced.
- * @param {Object} record1 - The first record object.
- * @param {Object} record2 - The second record object.
+ * @param {Object} record1 - mod-directory record object.
+ * @param {Object} record2 - mod-rs record object.
  * @returns {Object|null} An object with the differing fields, or null if records are identical.
  */
 export const getUnsyncedFields = (record1, record2) => {
@@ -71,17 +82,17 @@ export const getUnsyncedFields = (record1, record2) => {
       const fullPath = path ? `${path}.${key}` : key;
       if (has(obj2, key)) {
         if (!isEqual(get(obj1, key), get(obj2, key))) {
-          set(differences, fullPath, { from: get(obj1, key), to: get(obj2, key) });
+          set(differences, fullPath, { 'from-mod-directory': get(obj1, key), 'to-mod-rs': get(obj2, key) });
         }
       } else {
-        set(differences, fullPath, { from: get(obj1, key), to: undefined });
+        set(differences, fullPath, { 'from-mod-directory': get(obj1, key), 'to-mod-rs': undefined });
       }
     }
 
     for (const key in obj2) {
       const fullPath = path ? `${path}.${key}` : key;
       if (!has(obj1, key)) {
-        set(differences, fullPath, { from: undefined, to: get(obj2, key) });
+        set(differences, fullPath, { 'from-mod-directory': undefined, 'to-mod-rs': get(obj2, key) });
       }
     }
   };
