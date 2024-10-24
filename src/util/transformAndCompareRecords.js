@@ -59,8 +59,8 @@ const transformRecord = (record) => {
 
 /**
  * Compares two records after transforming them and identifies which fields are not synced.
- * @param {Object} record1 - The first record object.
- * @param {Object} record2 - The second record object.
+ * @param {Object} record1 - mod-directory record object.
+ * @param {Object} record2 - mod-rs record object.
  * @returns {Object|null} An object with the differing fields, or null if records are identical.
  */
 export const getUnsyncedFields = (record1, record2) => {
