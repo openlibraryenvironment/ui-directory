@@ -34,7 +34,7 @@ const DirectoryEntryForm = ({
   const layer = resources?.query?.layer ?? parentResources?.query?.layer;
   const { data: featureFlagData = {}, isSuccess: relaxManagedLoaded } = useOkapiQuery('rs/settings/appSettings', {
     searchParams: {
-      filters: 'hidden=true&&key=relax-manged-edit.feature_flag',
+      filters: 'hidden=true&&key=~relax-man&&key=~ged-edit.feature_flag',
       perPage: '1',
       staleTime: 2 * 60 * 60 * 1000
     }
