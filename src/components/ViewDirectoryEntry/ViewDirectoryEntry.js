@@ -49,8 +49,8 @@ class ViewDirectoryEntry extends React.Component {
       type: 'okapi',
       path: 'rs/settings/appSettings',
       params: {
-        filters: 'hidden=true&&key=relax-manged-edit.feature_flag',
-        perPage: '100'
+        filters: 'hidden=true&&key=~relax-man&&key=~ged-edit.feature_flag',
+        perPage: '1'
       },
       shouldFetch: true
     },
