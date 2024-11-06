@@ -114,6 +114,7 @@
   "information.services.accountDetails": "Account details",
   "information.services.service": "Service",
   "information.services.deleteText": "Delete service account \"{slug}\"",
+  "information.symbols.deleteText": "Delete symbol {authority}-{symbol}?",
 
   "information.heading.directoryEntry": "Directory entry info",
   "information.heading.symbols": "Symbols",
