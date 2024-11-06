@@ -25,6 +25,7 @@ class SymbolListField extends React.Component {
       label: PropTypes.string,
     })),
     onAddField: PropTypes.func.isRequired,
+    onDeleteField: PropTypes.func.isRequired,
   };
 
   renderAddSymbol = () => {
@@ -39,15 +40,25 @@ class SymbolListField extends React.Component {
   }
 
   render() {
-    const { items, namingAuthorities } = this.props;
+    const { items, namingAuthorities, onDeleteField } = this.props;
     return (
       <>
         {items?.map((symbol, index) => {
           return (
-            <EditCard
-              header={<FormattedMessage id="ui-directory.information.symbol.index" values={{ index }} />}
-              key={`symbols[${index}].editCard`}
-            >
+              <EditCard
+                  header={<FormattedMessage id="ui-directory.information.symbol.index" values={{ index }} />}
+                  key={`symbols[${index}].editCard`}
+                  onDelete={() => onDeleteField(index)}
+                  deleteButtonTooltipText={
+                    <FormattedMessage
+                        id="ui-directory.information.symbols.deleteText"
+                        values={{
+                          authority: symbol?.authority?.symbol,
+                          symbol: symbol?.symbol
+                        }}
+                    />
+                  }
+              >
               <Row>
                 <Col md={4}>
                   <Field
