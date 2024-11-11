@@ -4,6 +4,7 @@
   "edit": "Edit",
   "createUnit": "Create unit",
   "notSet": "Not set",
+  "deleteUnit": "Delete",
 
   "create": "Create",
   "create.callout": "<strong>Directory entry created:</strong> {name}",
