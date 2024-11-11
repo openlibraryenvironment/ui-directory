@@ -80,6 +80,9 @@ class ViewDirectoryEntry extends React.Component {
       }),
     }),
     stripes: PropTypes.object,
+    history: PropTypes.shape({
+      push: PropTypes.func.isRequired,
+    }).isRequired
   };
 
   state = {
@@ -225,13 +228,10 @@ class ViewDirectoryEntry extends React.Component {
     const recordId = selectedRecord?.records[0]?.id;
 
     if (recordId) {
-      mutator.selectedRecord.DELETE({ id: recordId })
-          .then(() => {
-            this.props.onClose();
-          })
-          .catch(error => {
-            console.error("Error deleting directory entry:", error);
-          });
+      if (recordId) {
+        mutator.selectedRecord.DELETE({ id: recordId });
+        this.props.history.push('/directory/entries?filters=type.institution&sort=fullyQualifiedName');
+      }
     }
   };
 
