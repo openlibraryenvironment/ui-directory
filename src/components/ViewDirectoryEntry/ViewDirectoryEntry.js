@@ -40,6 +40,9 @@ class ViewDirectoryEntry extends React.Component {
       type: 'okapi',
       path: 'directory/entry/:{id}',
     },
+    DELETE: {
+      path: 'directory/entry/:{id}',
+    },
     modRsRecord: {
       type: 'okapi',
       path: 'rs/directoryEntry/:{id}?full=true',
@@ -211,8 +214,29 @@ class ViewDirectoryEntry extends React.Component {
     );
   };
 
-  getActionMenu = ({ onToggle }, showEditButton, showCreateUnitButton) => {
-    if (!showEditButton && !showCreateUnitButton) {
+  handleDeleteConfirmation = () => {
+    if (window.confirm("Do you really want to delete this directory?")) {
+      this.handleDeleteDirectory();
+    }
+  };
+
+  handleDeleteDirectory = () => {
+    const { mutator, resources: { selectedRecord } } = this.props;
+    const recordId = selectedRecord?.records[0]?.id;
+
+    if (recordId) {
+      mutator.selectedRecord.DELETE({ id: recordId })
+          .then(() => {
+            this.props.onClose();
+          })
+          .catch(error => {
+            console.error("Error deleting directory entry:", error);
+          });
+    }
+  };
+
+  getActionMenu = ({ onToggle }, showEditButton, showCreateUnitButton, showDeleteButton) => {
+    if (!showEditButton && !showCreateUnitButton && !showDeleteButton) {
       // Nothing to include in the menu, so don't make one at all
       return null;
     }
@@ -248,6 +272,20 @@ class ViewDirectoryEntry extends React.Component {
             </Icon>
           </Button>
         ) : null}
+        {showDeleteButton ? (
+            <Button
+                buttonStyle="dropdownItem"
+                id="clickable-delete-directoryentry"
+                onClick={() => {
+                  onToggle();
+                  this.handleDeleteConfirmation();
+                }}
+            >
+              <Icon icon="trash">
+                <FormattedMessage id="ui-directory.deleteUnit" />
+              </Icon>
+            </Button>
+        ) : null}
       </>
     );
   }
@@ -262,6 +300,7 @@ class ViewDirectoryEntry extends React.Component {
     const directoryEntry = record.name || <FormattedMessage id="ui-directory.information.titleNotFound" />;
     const showEditButton = permissionToEdit(stripes, record);
     const showCreateUnitButton = stripes.hasPerm('ui-directory.create');
+    let showDeleteButton = false;
 
     const { featureFlag } = this.props.resources;
     let hideMessage = false;
@@ -269,6 +308,7 @@ class ViewDirectoryEntry extends React.Component {
       const relaxManaged = featureFlag.records || [];
       const featureFlagEnabled = relaxManaged.length > 0 && relaxManaged[0]?.value === 'true';
       hideMessage = record.status?.value !== 'reference' && featureFlagEnabled;
+      showDeleteButton = featureFlagEnabled;
     }
 
     const unsyncedFields =  getUnsyncedFields(record, this.getModRsRecord());
@@ -285,7 +325,7 @@ class ViewDirectoryEntry extends React.Component {
         dismissible
         onClose={this.props.onClose}
         lastMenu={this.paneButtons(mutator, resources)}
-        actionMenu={(x) => this.getActionMenu(x, showEditButton, showCreateUnitButton)}
+        actionMenu={(x) => this.getActionMenu(x, showEditButton, showCreateUnitButton, showDeleteButton)}
       >
         <Layout className="textCentered">
           <ButtonGroup>
