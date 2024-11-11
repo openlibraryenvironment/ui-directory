@@ -228,10 +228,8 @@ class ViewDirectoryEntry extends React.Component {
     const recordId = selectedRecord?.records[0]?.id;
 
     if (recordId) {
-      if (recordId) {
-        mutator.selectedRecord.DELETE({ id: recordId });
-        this.props.history.push('/directory/entries?filters=type.institution&sort=fullyQualifiedName');
-      }
+      mutator.selectedRecord.DELETE({ id: recordId });
+      this.props.history.push('/directory/entries?filters=type.institution&sort=fullyQualifiedName');
     }
   };
 
