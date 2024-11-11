@@ -227,12 +227,10 @@ class ViewDirectoryEntry extends React.Component {
     if (recordId) {
       mutator.selectedRecord.DELETE({ id: recordId })
           .then(() => {
-            alert("Directory deleted successfully.");
             this.props.onClose();
           })
           .catch(error => {
             console.error("Error deleting directory entry:", error);
-            alert("Failed to delete the directory. Please try again.");
           });
     }
   };
