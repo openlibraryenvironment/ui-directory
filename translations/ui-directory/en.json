@@ -123,7 +123,8 @@
   "information.heading.developer": "Developer info",
   "information.heading.developer.help": "(JSON dump of raw record)",
   "information.heading.display-text": "The information in this section is managed by {directory_entry} themselves. If something is not updated, please reach out to {directory_entry} and ask them to update it.",
-  "information.heading.items-not-synced": "Directory record is not in sync with mod-rs",
+  "information.heading.items-not-synced": "Directory record is not in sync with mod-rs. Click to ",
+  "information.heading.sync-now": " now.",
 
   "information.titleNotFound": "[Title not found]",
 
