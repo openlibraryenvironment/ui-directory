@@ -23,6 +23,7 @@ import { stripesConnect } from '@folio/stripes/core';
 
 import permissionToEdit from '../../util/permissionToEdit';
 import EditDirectoryEntry from '../EditDirectoryEntry';
+import css from './ViewDirectoryEntry.css';
 
 import {
   CustomProperties
@@ -46,6 +47,7 @@ class ViewDirectoryEntry extends React.Component {
     modRsRecord: {
       type: 'okapi',
       path: 'rs/directoryEntry/:{id}?full=true',
+      throwErrors: false,
     },
     query: {},
     featureFlag: {
@@ -65,6 +67,9 @@ class ViewDirectoryEntry extends React.Component {
       query: PropTypes.shape({
         replace: PropTypes.func,
       }),
+      selectedRecord: PropTypes.shape({
+        PUT: PropTypes.func.isRequired,
+      }).isRequired,
     }),
     onClose: PropTypes.func,
     onCloseEdit: PropTypes.func,
@@ -97,6 +102,22 @@ class ViewDirectoryEntry extends React.Component {
       localDirectoryEntryInfo: false,
     },
     tab: 'shared',
+  }
+
+  syncRecord = () => {
+    const recordId = this.getRecord()?.id;
+    if (recordId) {
+      this.props.mutator.selectedRecord.PUT({ id: recordId })
+          .then(response => {
+            console.log('Record synchronized successfully!', response);
+            this.props.history.push(`/directory/entries/view/${recordId}?filters=type.institution&sort=fullyQualifiedName`);
+          })
+          .catch(error => {
+            console.error('Error syncing record:', error);
+          });
+    } else {
+      console.warn('No record ID found for syncing.');
+    }
   }
 
   getRecord() {
@@ -301,7 +322,7 @@ class ViewDirectoryEntry extends React.Component {
     let showDeleteButton = false;
 
     const { featureFlag } = this.props.resources;
-    let hideMessage = false;
+    let hideMessage = true;
     if (featureFlag.hasLoaded && record.status) {
       const relaxManaged = featureFlag.records || [];
       const featureFlagEnabled = relaxManaged.length > 0 && relaxManaged[0]?.value === 'true';
@@ -354,15 +375,29 @@ class ViewDirectoryEntry extends React.Component {
                 </Col>
               </Row>
             }
-            {hasUnsyncedFields &&
-                <Row>
-                  <Col xs={12} lgOffset={1} lg={10}>
-                    <MessageBanner>
-                      <FormattedMessage id="ui-directory.information.heading.items-not-synced" />
-                    </MessageBanner>
-                  </Col>
-                </Row>
-            }
+            {hasUnsyncedFields && (
+              <Row className={css.marginBottom15}>
+                <Col xs={12} lgOffset={1} lg={10}>
+                  <MessageBanner>
+                    <div className="content">
+                      <span>
+                        <FormattedMessage
+                          id="information.heading.items-not-synced"
+                          defaultMessage="Directory record is not in sync with mod-rs. Click to "
+                        />
+                        <span className={css.syncLink} onClick={this.syncRecord}>
+                          sync
+                        </span>
+                        <FormattedMessage
+                          id="information.heading.sync-now"
+                          defaultMessage=" now."
+                        />
+                      </span>
+                    </div>
+                  </MessageBanner>
+                </Col>
+              </Row>
+            )}
             <AccordionSet accordionStatus={this.state.sectionsShared}>
               <DirectoryEntryInfo id="directoryEntryInfo" {...sectionProps} />
               <ContactInformation id="contactInformation" {...sectionProps} />
