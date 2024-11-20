@@ -322,7 +322,7 @@ class ViewDirectoryEntry extends React.Component {
     let showDeleteButton = false;
 
     const { featureFlag } = this.props.resources;
-    let hideMessage = false;
+    let hideMessage = true;
     if (featureFlag.hasLoaded && record.status) {
       const relaxManaged = featureFlag.records || [];
       const featureFlagEnabled = relaxManaged.length > 0 && relaxManaged[0]?.value === 'true';
