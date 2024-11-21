@@ -64,7 +64,8 @@ const transformRecord = (record) => {
  * @returns {Object|null} An object with the differing fields, or null if records are identical.
  */
 export const getUnsyncedFields = (record1, record2) => {
-  if (!record1 || !record2) {
+  if ((record1 == null || !Object.keys(record1).length) ||
+        (record2 == null || !Object.keys(record2).length)) {
     return null;
   }
 
