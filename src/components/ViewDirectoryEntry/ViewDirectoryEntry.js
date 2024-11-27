@@ -102,6 +102,7 @@ class ViewDirectoryEntry extends React.Component {
       localDirectoryEntryInfo: false,
     },
     tab: 'shared',
+    showUnsyncedMessage: true,
   }
 
   syncRecord = () => {
@@ -110,6 +111,7 @@ class ViewDirectoryEntry extends React.Component {
       this.props.mutator.selectedRecord.PUT({ id: recordId })
           .then(response => {
             console.log('Record synchronized successfully!', response);
+            this.setState({ showUnsyncedMessage: false });
             this.props.history.push(`/directory/entries/view/${recordId}?filters=type.institution&sort=fullyQualifiedName`);
           })
           .catch(error => {
@@ -331,6 +333,7 @@ class ViewDirectoryEntry extends React.Component {
     }
 
     const unsyncedFields =  getUnsyncedFields(record, this.getModRsRecord());
+    const { showUnsyncedMessage } = this.state;
     const hasUnsyncedFields = unsyncedFields && Object.keys(unsyncedFields).length > 0;
     if (hasUnsyncedFields) {
       console.warn("Unsynced fields detected:", unsyncedFields);
@@ -375,7 +378,7 @@ class ViewDirectoryEntry extends React.Component {
                 </Col>
               </Row>
             }
-            {hasUnsyncedFields && (
+            {hasUnsyncedFields && showUnsyncedMessage && (
               <Row className={css.marginBottom15}>
                 <Col xs={12} lgOffset={1} lg={10}>
                   <MessageBanner>
