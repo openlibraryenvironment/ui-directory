@@ -40,6 +40,7 @@ class ViewDirectoryEntry extends React.Component {
     selectedRecord: {
       type: 'okapi',
       path: 'directory/entry/:{id}',
+      throwErrors: false,
     },
     DELETE: {
       path: 'directory/entry/:{id}',
@@ -48,6 +49,7 @@ class ViewDirectoryEntry extends React.Component {
       type: 'okapi',
       path: 'rs/directoryEntry/:{id}?full=true',
       throwErrors: false,
+      shouldFetch: false,
     },
     query: {},
     featureFlag: {
@@ -68,6 +70,9 @@ class ViewDirectoryEntry extends React.Component {
         replace: PropTypes.func,
       }),
       selectedRecord: PropTypes.shape({
+        PUT: PropTypes.func.isRequired,
+      }).isRequired,
+      modRsRecord: PropTypes.shape({
         PUT: PropTypes.func.isRequired,
       }).isRequired,
     }),
@@ -103,6 +108,32 @@ class ViewDirectoryEntry extends React.Component {
     },
     tab: 'shared',
     showUnsyncedMessage: true,
+  }
+
+  timeoutId = null;
+  timeout = 3000;
+
+  componentDidMount() {
+    this.timeoutId = setTimeout(() => {
+      this.setState({ shouldFetchModRsRecord: true });
+      this.initiateModRsRecordFetch();
+    }, this.timeout);
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.timeoutId);
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (this.state.shouldFetchModRsRecord && !prevState.shouldFetchModRsRecord) {
+      this.initiateModRsRecordFetch();
+    }
+  }
+
+  initiateModRsRecordFetch() {
+    this.props.mutator.query.update({
+      modRsRecordFetchTrigger: Date.now(),
+    });
   }
 
   syncRecord = () => {
