@@ -72,6 +72,9 @@ class ViewDirectoryEntry extends React.Component {
       selectedRecord: PropTypes.shape({
         PUT: PropTypes.func.isRequired,
       }).isRequired,
+      modRsRecord: PropTypes.shape({
+        PUT: PropTypes.func.isRequired,
+      }).isRequired,
     }),
     onClose: PropTypes.func,
     onCloseEdit: PropTypes.func,
@@ -83,11 +86,8 @@ class ViewDirectoryEntry extends React.Component {
         layer: PropTypes.string,
       }),
       selectedRecord: PropTypes.shape({
-        PUT: PropTypes.func.isRequired,
-      }).isRequired,
-      modRsRecord: PropTypes.shape({
-        PUT: PropTypes.func.isRequired,
-      }).isRequired,
+        records: PropTypes.array,
+      }),
     }),
     stripes: PropTypes.object,
     history: PropTypes.shape({
