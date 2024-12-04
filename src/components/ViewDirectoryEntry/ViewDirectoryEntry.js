@@ -48,7 +48,6 @@ class ViewDirectoryEntry extends React.Component {
       type: 'okapi',
       path: 'rs/directoryEntry/:{id}?full=true',
       throwErrors: false,
-      shouldFetch: false,
     },
     query: {},
     featureFlag: {
