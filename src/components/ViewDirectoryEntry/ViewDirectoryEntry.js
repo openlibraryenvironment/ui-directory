@@ -40,7 +40,6 @@ class ViewDirectoryEntry extends React.Component {
     selectedRecord: {
       type: 'okapi',
       path: 'directory/entry/:{id}',
-      throwErrors: false,
     },
     DELETE: {
       path: 'directory/entry/:{id}',
@@ -70,9 +69,6 @@ class ViewDirectoryEntry extends React.Component {
         replace: PropTypes.func,
       }),
       selectedRecord: PropTypes.shape({
-        PUT: PropTypes.func.isRequired,
-      }).isRequired,
-      modRsRecord: PropTypes.shape({
         PUT: PropTypes.func.isRequired,
       }).isRequired,
     }),
@@ -109,33 +105,6 @@ class ViewDirectoryEntry extends React.Component {
     tab: 'shared',
     showUnsyncedMessage: true,
   }
-
-  timeoutId = null;
-  timeout = 3000;
-
-  componentDidMount() {
-    this.timeoutId = setTimeout(() => {
-      this.setState({ shouldFetchModRsRecord: true });
-      this.initiateModRsRecordFetch();
-    }, this.timeout);
-  }
-
-  componentWillUnmount() {
-    clearTimeout(this.timeoutId);
-  }
-
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    if (this.state.shouldFetchModRsRecord && !prevState.shouldFetchModRsRecord) {
-      this.initiateModRsRecordFetch();
-    }
-  }
-
-  initiateModRsRecordFetch() {
-    this.props.mutator.query.update({
-      modRsRecordFetchTrigger: Date.now(),
-    });
-  }
-
   syncRecord = () => {
     const recordId = this.getRecord()?.id;
     if (recordId) {
@@ -365,7 +334,15 @@ class ViewDirectoryEntry extends React.Component {
 
     const unsyncedFields =  getUnsyncedFields(record, this.getModRsRecord());
     const { showUnsyncedMessage } = this.state;
-    const hasUnsyncedFields = unsyncedFields && Object.keys(unsyncedFields).length > 0;
+
+    const showMessage = sessionStorage.getItem('showMessage');
+    let hasUnsyncedFields = unsyncedFields && Object.keys(unsyncedFields).length > 0;
+
+    if (showMessage === 'false') {
+      hasUnsyncedFields = false;
+      sessionStorage.removeItem('showMessage');
+    }
+
     if (hasUnsyncedFields) {
       console.warn("Unsynced fields detected:", unsyncedFields);
     }

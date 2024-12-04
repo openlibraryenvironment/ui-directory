@@ -25,7 +25,10 @@ import DirectoryEntryForm from '../DirectoryEntryForm';
 
 const defaultSubmit = (directory, dispatch, props) => {
   return props.onUpdate(directory)
-    .then(() => props.onCancel());
+    .then(() => {
+      sessionStorage.setItem('showMessage', 'false');
+      props.onCancel();
+    });
 };
 
 const EditDirectoryEntry = (props) => {
