@@ -103,15 +103,26 @@ class ViewDirectoryEntry extends React.Component {
       localDirectoryEntryInfo: false,
     },
     tab: 'shared',
-    showUnsyncedMessage: true,
+    hideMessageOnSync: false,
   }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    const currentRecord = this.getRecord(this.props.resources.selectedRecord);
+    const previousRecord = get(prevProps.resources.selectedRecord, ['records', 0], {});
+
+    if (previousRecord?.id !== currentRecord?.id) {
+      this.setState({ hideMessageOnSync: false });
+      sessionStorage.removeItem("showMessage");
+    }
+  }
+
   syncRecord = () => {
     const recordId = this.getRecord()?.id;
     if (recordId) {
       this.props.mutator.selectedRecord.PUT({ id: recordId })
           .then(response => {
             console.log('Record synchronized successfully!', response);
-            this.setState({ showUnsyncedMessage: false });
+            this.setState({ hideMessageOnSync: true });
             this.props.history.push(`/directory/entries/view/${recordId}?filters=type.institution&sort=fullyQualifiedName`);
           })
           .catch(error => {
@@ -317,7 +328,7 @@ class ViewDirectoryEntry extends React.Component {
     const sectionProps = this.getSectionProps();
     let title = record.name || 'Directory entry details';
     if (record.status) title += ` (${record.status.label})`;
-    const { tab } = this.state;
+    const { tab, hideMessageOnSync } = this.state;
     const directoryEntry = record.name || <FormattedMessage id="ui-directory.information.titleNotFound" />;
     const showEditButton = permissionToEdit(stripes, record);
     const showCreateUnitButton = stripes.hasPerm('ui-directory.create');
@@ -332,16 +343,19 @@ class ViewDirectoryEntry extends React.Component {
       showDeleteButton = featureFlagEnabled;
     }
 
-    const unsyncedFields =  getUnsyncedFields(record, this.getModRsRecord());
-    const { showUnsyncedMessage } = this.state;
+    // Unsynced fields checks
+    const unsyncedFields = getUnsyncedFields(record, this.getModRsRecord());
+    let hasUnsyncedFields = unsyncedFields != null && Object.keys(unsyncedFields).length > 0;
 
+    // Hide after edit checks
     const showMessage = sessionStorage.getItem('showMessage');
-    let hasUnsyncedFields = unsyncedFields && Object.keys(unsyncedFields).length > 0;
-
+    let hideAfterEdit = false;
     if (showMessage === 'false') {
-      hasUnsyncedFields = false;
-      sessionStorage.removeItem('showMessage');
+      hideAfterEdit = true;
     }
+
+    // Final check for showing the message
+    const showUnsyncedMessage = hasUnsyncedFields && !hideAfterEdit && !hideMessageOnSync;
 
     if (hasUnsyncedFields) {
       console.warn("Unsynced fields detected:", unsyncedFields);
@@ -386,7 +400,7 @@ class ViewDirectoryEntry extends React.Component {
                 </Col>
               </Row>
             }
-            {hasUnsyncedFields && showUnsyncedMessage && (
+            {showUnsyncedMessage && (
               <Row className={css.marginBottom15}>
                 <Col xs={12} lgOffset={1} lg={10}>
                   <MessageBanner>
