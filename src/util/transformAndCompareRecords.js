@@ -69,6 +69,10 @@ export const getUnsyncedFields = (record1, record2) => {
     return null;
   }
 
+  if (record1?.id !== record2?.id) {
+    return null;
+  }
+
   const transformedRecord1 = transformRecord(record1);
   const transformedRecord2 = transformRecord(record2);
 
