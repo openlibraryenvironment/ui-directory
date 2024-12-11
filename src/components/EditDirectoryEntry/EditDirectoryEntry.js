@@ -8,6 +8,7 @@ import { Prompt } from 'react-router-dom';
 import { useMutation } from 'react-query';
 
 import { useOkapiKy } from '@folio/stripes/core';
+import { useOkapiQuery } from '@projectreshare/stripes-reshare';
 
 import {
   Button,
@@ -39,6 +40,19 @@ const EditDirectoryEntry = (props) => {
     parentResources
   } = props;
   const ky = useOkapiKy();
+
+  const { data: featureFlagData = {}, isSuccess: relaxManagedLoaded } = useOkapiQuery('rs/settings/appSettings', {
+    searchParams: {
+      filters: 'hidden=true&&key=~relax-man&&key=~ged-edit.feature_flag',
+      perPage: '1',
+      staleTime: 2 * 60 * 60 * 1000
+    }
+  });
+
+  let featureFlag = false;
+  if (relaxManagedLoaded && featureFlagData.length > 0) {
+    featureFlag = featureFlagData.length > 0 && featureFlagData[0]?.value === 'true';
+  }
 
   const { mutateAsync: validate } = useMutation(
     ['@projectreshare/ui-directory', 'validateDirectoryEntry'],
@@ -109,7 +123,7 @@ const EditDirectoryEntry = (props) => {
 
       // TODO in future we may also pass validation.errors.
       // Those should also be handled in this logic, eg slug is not unique pre-attempt to POST
-      if (validation?.warnings?.length) {
+      if (validation?.warnings?.length && !featureFlag) {
         setWarnings(validation.warnings?.map(warning => <FormattedMessage id={`ui-directory.directoryEntry.warning.${warning}`} />));
         return () => setRootWarning(true);
       }
