@@ -299,6 +299,7 @@ class DirectoryEntries extends React.Component {
             symbolSummary: a => a.symbolSummary || '',
           }}
           renderFilters={this.renderFilters}
+          pagingType="click"
         />
       </>
     );
