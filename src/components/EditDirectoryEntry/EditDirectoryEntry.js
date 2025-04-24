@@ -183,7 +183,7 @@ const EditDirectoryEntry = (props) => {
     if (initialValues.services) {
       const newServices = [];
       initialValues.services.forEach(serviceacct => {
-        newServices.push({ ...serviceacct, service: serviceacct.service.id });
+        newServices.push({ ...serviceacct, service: serviceacct.service?.id });
       });
       initialValues.services = newServices;
     }
