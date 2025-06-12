@@ -6,7 +6,7 @@
   "notSet": "nicht belegt",
   "deleteUnit": "Löschen",
 
-  "create": "Neu",
+  "create": "Speichern",
   "create.callout": "<strong>FL-Eintrag erstellt:</strong>{name}",
   "create.callout.error": "Fehler beim Erstellen des <strong>FL-Eintrags</strong>. {err}",
   "update": "Aktualisieren",
@@ -67,7 +67,7 @@
   "information.mainContactName": "Kontaktperson",
   "information.description": "Beschreibung",
   "information.symbols": "Symbole",
-  "information.lmsLocationCode": "Code der Fernleihstelle im Lokalsystem",
+  "information.lmsLocationCode": "Code der Servicestelle im Lokalsystem",
   "information.control": "Eintrag in FL-Bibliotheken überprüfen.",
   "information.symbols.authority": "Art des Symbols",
   "information.symbols.symbol": "Symbol",
