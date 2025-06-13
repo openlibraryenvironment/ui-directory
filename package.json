@@ -1,6 +1,6 @@
 {
   "name": "@projectreshare/directory",
-  "version": "1.13.5",
+  "version": "1.13.6",
   "description": "Interact with the library services directory",
   "main": "src/index.js",
   "repository": "",
