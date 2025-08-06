@@ -55,6 +55,11 @@
   "filter.tags": "Tags",
   "filter.type": "Type",
 
+  "searchIndex.searchAllFields": "Search all fields",
+  "searchIndex.name": "Name",
+  "searchIndex.tags": "Tags",
+  "searchIndex.symbols": "Symbols",
+
   "information.name": "Name",
   "information.status": "Status",
   "information.type": "Type",
