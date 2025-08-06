@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'react-intl';
 import compose from 'compose-function';
 
 import { MultiSelectionFilter, SearchAndSort, withTags } from '@folio/stripes/smart-components';
@@ -18,13 +18,6 @@ import packageInfo from '../../package';
 import { parseFilters, deparseFilters } from '../util/parseFilters';
 
 const INITIAL_RESULT_COUNT = 100;
-
-const searchableIndexes = [
-  { label: 'Search all fields', value: 'name,tags.value,symbols.symbol' },
-  { label: 'Name', value: 'name' },
-  { label: 'Tags', value: 'tags.value' },
-  { label: 'Symbols', value: 'symbols.symbol' },
-];
 
 const appDetails = {
   directory: {
@@ -141,11 +134,23 @@ class DirectoryEntries extends React.Component {
         log: PropTypes.func,
       }),
     }),
+
+    intl: PropTypes.object.isRequired,
   }
 
   constructor(props) {
     super(props);
     this.onClose = this.onClose.bind(this);
+  }
+
+  getSearchableIndexes = () => {
+    const { intl } = this.props;
+    return [
+      { label: intl.formatMessage({ id: 'ui-directory.searchIndex.searchAllFields' }), value: 'name,tags.value,symbols.symbol' },
+      { label: intl.formatMessage({ id: 'ui-directory.searchIndex.name' }), value: 'name' },
+      { label: intl.formatMessage({ id: 'ui-directory.searchIndex.tags' }), value: 'tags.value' },
+      { label: intl.formatMessage({ id: 'ui-directory.searchIndex.symbols' }), value: 'symbols.symbol' },
+    ];
   }
 
   onClose() {
@@ -253,7 +258,7 @@ class DirectoryEntries extends React.Component {
           key="dirents"
           objectName="dirents"
           packageInfo={packageInfo}
-          searchableIndexes={searchableIndexes}
+          searchableIndexes={this.getSearchableIndexes()}
           selectedIndex={_.get(this.props.resources.query, 'qindex')}
           onChangeIndex={this.onChangeIndex}
           initialResultCount={INITIAL_RESULT_COUNT}
@@ -309,4 +314,5 @@ class DirectoryEntries extends React.Component {
 export default compose(
   stripesConnect,
   withTags,
+  injectIntl,
 )(DirectoryEntries);
