@@ -85,6 +85,7 @@
   "information.units": "Units",
   "information.members": "Members",
   "information.tags": "Tags",
+  "information.tags.none": "No tags",
   "information.addresses": "Addresses",
   "information.addresses.add": "Add contact information",
   "information.addresses.namePlaceholder": "Enter a label for this contact information",
