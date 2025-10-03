@@ -300,7 +300,7 @@ class DirectoryEntries extends React.Component {
           }}
           resultsFormatter={{
             type: a => a.type?.label || '',
-            tagSummary: a => a.tagSummary || '',
+            tagSummary: a => (a.tagSummary === 'No tags' ? <FormattedMessage id="ui-directory.information.tags.none" /> : a.tagSummary),
             symbolSummary: a => a.symbolSummary || '',
           }}
           renderFilters={this.renderFilters}

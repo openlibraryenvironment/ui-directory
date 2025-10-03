@@ -55,6 +55,11 @@
   "filter.tags": "Tags",
   "filter.type": "Typ",
 
+  "searchIndex.searchAllFields": "Alle Felder",
+  "searchIndex.name": "Name",
+  "searchIndex.tags": "Tags",
+  "searchIndex.symbols": "Symbole",
+
   "information.name": "Name",
   "information.status": "Status",
   "information.type": "Typ",
@@ -80,6 +85,7 @@
   "information.units": "Einheiten",
   "information.members": "Mitglieder",
   "information.tags": "Tags",
+  "information.tags.none": "Keine Tags",
   "information.addresses": "Adressen",
   "information.addresses.add": "Kontaktinformationen hinzufügen",
   "information.addresses.namePlaceholder": "Eine Bezeichnung für die Kontaktinformationen hinzufügen",

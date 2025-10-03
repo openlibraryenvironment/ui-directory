@@ -158,7 +158,7 @@ class DirectoryEntryInfo extends React.Component {
           <Col xs={12}>
             <KeyValue
               label={<FormattedMessage id="ui-directory.information.tags" />}
-              value={record.tagSummary}
+              value={record.tagSummary === 'No tags' ? <FormattedMessage id="ui-directory.information.tags.none" /> : record.tagSummary}
             />
           </Col>
         </Row>
