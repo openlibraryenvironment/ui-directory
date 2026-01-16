@@ -104,7 +104,7 @@ const CustomPropertiesListField = ({
       custProps.map((cp, i) => {
         return (
           <KeyValue
-            label={cp.label}
+            label={<FormattedMessage id={`ui-directory.custprops.${cp.value}`} defaultMessage={cp.label} />}
             key={i}
             value={renderCustPropValue(cp, i)}
           />
