@@ -126,7 +126,7 @@
   "information.heading.directoryEntry": "FL-Bibliotheken Info",
   "information.heading.symbols": "Symbole",
   "information.heading.customProps": "Benutzerbezogene Eigenschaften",
-  "custprops.ILLPreferredNamespaces": "FL Bevorzugte Namensräume",
+  "custprops.ILLPreferredNamespaces": "FL Bevorzugter Namensraum",
   "custprops.url": "URL",
   "custprops.Z3950BaseName": "Z39.50 Basis",
   "custprops.policy.ill.returns": "Rücksendungen möglich",
